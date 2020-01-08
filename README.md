@@ -1,2 +1,2 @@
 # SWEP
-Plattform für unser Proejkt
+ich bin eine :pizza:
