@@ -7,3 +7,4 @@ Versuch 2
 Saftschnecke
 kann man lutschen
 keine Schnecke mehr
+hallo
