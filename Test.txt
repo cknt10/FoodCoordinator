@@ -1,1 +1,3 @@
-AAA
+Author:
+    Christian Knoth
+    Dustin Bastke
