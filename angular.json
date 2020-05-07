@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "FoodCoordinator"
+    }
+  },
+  "defaultProject": "FoodCoordinator",
+  "cli": {
+    "analytics": false
+  }
 }
