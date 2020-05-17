@@ -20,9 +20,9 @@ class Ingredient{
      */
     private string $description;
     /**
-     * @var Nutrients
+     * @var array
      */
-    private Nutrients $nutrients;
+    private array $nutrients;
     /**
      * @var float
      */
@@ -147,7 +147,7 @@ class Ingredient{
     /**
      * Get the value of nutrients
      *
-     * @return  Nutrients
+     * @return  array
      */ 
     public function getNutrients()
     {
@@ -209,9 +209,9 @@ class Ingredient{
      * 
      * @return self
      */
-    public function createNutrients(Nutrients $nutrients){
+    public function createNutrients(Nutrient $nutrient){
         if($this->nutrients){ return $this;}
-        $this->nutrients = $nutrients;
+        $this->nutrients.push($nutrient);
         return $this;
     }
 
@@ -236,8 +236,14 @@ class Ingredient{
      * @return self
      */
     public function removeNutrion(string $name){
-        $this->nutrients[$name] = null;
-        return $this;
+        $_nutrient = $this->nutrients[$name];
+
+        $key= array_search($_nutrient, $this->nutrients);
+        if ($key !== false) {
+            unset($this->nutrients[$key]);
+        };
+
+        return $this->nutrients;
     }
 
 }

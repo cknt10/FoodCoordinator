@@ -1,15 +1,18 @@
 <?php
 
-class Connection extends POD{
+class Connection{
 
 
 /**
  * Create an connection 
  */
-public function __construct()
+public function connection()
 {
-    parant::__construct('mysql:host=localhost;dbname=FoodCoord', 'usr4FC', 'Usr4FC#20!');
-
+    try {
+        return new PDO('mysql:host=localhost;dbname=fluid_challenge', 'dsone', 'dsmSQL_19!');
+    } catch (PDOException $e) {
+        echo 'Connection failed: ' . $e->getMessage();
+    }
 }
 
 
