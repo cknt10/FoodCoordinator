@@ -1,22 +1,39 @@
 <?php 
     require_once('../sql/coni.php');
     session_start();
-    $pdoclass = new Connection();
-    $pdo = $pdoclass->connection();
+    header("Content-Type: application/json; charset=UTF-8");
 
-    $UName = 'dsone';
 
-    $statement = $pdo->prepare("SELECT * FROM users WHERE UName = :UName");
-    $result = $statement->execute(array('UName' => $UName));
-    $user = $statement->fetch();
-    //Überprüfung des Passworts
-    if ($user !== false) {
-        $_SESSION['userid'] = $user['UName'];
-        $_SESSION['uid'] = $user['UID'];
+    try {
+
+        $pdoclass = new Connection();
+        $pdo = $pdoclass->connection();
+
+        $_userArray = array();
+    
+        $_statement = $pdo->prepare("SELECT * FROM user WHERE Username = ?");
+        $_statement->execute(array($_username));
+
+        $result = $_statement->fetchAll(PDO::FETCH_ASSOC);       
+
+        //Format DATA
+        for($_i = 0; $_i < sizeof($result); $_i++){
+            $_userArray = array(
+                'id' => $result[$_i]['U_ID'], 
+                'email' => $result[$_i]['Mail'], 
+                'name' => $result[$_i]['Username'], 
+                'firstname' => $result[$_i]['FirstName'], 
+                'name' => $result[$_i]['Name'], 
+                'gender' => $result[$_i]['Gender'], 
+                'street' => $result[$_i]['Street']
+            );
+        }
         
-        echo $user['UName'];
-    } else {
-        $errorMessage = "E-Mail oder Passwort war ung&uuml;ltig<br>";
+        echo json_encode($_userArray) . "\n";
+        //echo json_encode($result) . "\n";
+    } catch (\PDOException $e) {
+        echo($e->getMessage());
     }
+
 
 ?>

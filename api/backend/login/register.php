@@ -1,6 +1,5 @@
 <?php 
 require_once('../sql/coni.php');
-require_once('../../classes/reguser.php');
 session_start();
 $pdo = new Connection();
 
@@ -53,7 +52,7 @@ class Register{
             if(!$error) {	
                 $passwort_hash = password_hash($passwort, PASSWORD_DEFAULT);
                 
-                $statement = $pdo->prepare("INSERT INTO users (email, passwort, vorname, nachname) VALUES (" .$user->getEmail(). ", " .$user->getPassword().", ".$user->getFirstname().", " .$user->getName().")");
+                $statement = $pdo->prepare("INSERT INTO user (email, passwort, vorname, nachname) VALUES (" .$user->getEmail(). ", " .$user->getPassword().", ".$user->getFirstname().", " .$user->getName().")");
                 $result = $statement->execute(array('email' => $email, 'passwort' => $passwort_hash, 'vorname' => $vorname, 'nachname' => $nachname));
                 
                 if($result) {		

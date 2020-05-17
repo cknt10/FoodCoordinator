@@ -156,7 +156,7 @@ class RegUser{
      *
      * @return  self
      */ 
-    public function setFirstname(string $firstname)
+    public function setFirstname($firstname)
     {
         $this->firstname = $firstname;
 
@@ -378,12 +378,7 @@ class RegUser{
       */
      public function removeRecipe(Recipe $recipe)
      {
-        $key= array_search($recipe, $this->recipes);
-        if ($key !== false) {
-            unset($this->recipes[$key]);
-        };
-
-        return $this->recipes;
+        //TODO: 
      }
 
 
