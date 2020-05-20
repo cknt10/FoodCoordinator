@@ -1,77 +1,153 @@
 <?php 
-require_once('../sql/coni.php');
-session_start();
-$pdo = new Connection();
+// required headers
+header("Access-Control-Allow-Origin: *");
+header("Content-Type: application/json; charset=UTF-8");
+
+// include database and object files
+include_once '../sql/coni.php';
+include_once '../../classes/reguser.php';
+  
+// instantiate database and product object
+$database = new Connection();
+$db = $database->connection();
+$_user = new RegUser($db);
 
 
-class Register{
+$error = false;
+$result = array();
+$insertResult = "";
 
-    public function register()
-    {
-        $showFormular = true; //Variable ob das Registrierungsformular anezeigt werden soll
+// $_username = trim($_POST['username']);
+// $_email = trim($_POST['mail']);
+// $_password = trim($_POST['passwort']);
+// $passwort2 = $_POST['passwort2'];
+// $_firstName = trim($_POST['vorname']);
+// $_name = trim($_POST['nachname']);
+// $_gender = trim($_POST['gender']);
+// $_street = trim($_POST['street']) . ' ' . trim($_POST['streetnumber']);
+// $_birthday = trim($_POST['birthday']);
+
+// $_city = trim($_POST['aaaa']); //SQL Statement
+// $_zip = trim($_POST['aaaa']); //SQL Statement
+
+
+$_username = "test";
+$_email = "test@mail.com";
+$_password = "123456";
+$passwort2 = "123456";
+$_firstName = "testfirstname";
+$_name = "testname";
+$_gender = "m";
+$_street = "test street 3";
+$_birthday = "1990-10-19";
+
+$_city = "Frankfurt am Main"; //SQL Statement
+$_zip = 60639; //SQL Statement
+
+
+if(empty($_firstName) || empty($_name) || empty($_username)) {
+    $error = true;
+}
+
+if(!filter_var($_email, FILTER_VALIDATE_EMAIL)) {
+    $error = true;
+} 	
+if(strlen($_password) == 0) {
+
+    $error = true;
+}
+if($_password != $passwort2) {
+    $error = true;
+}
+
+
+
+//Check Email exist
+if(!$error) { 
+    $error = $_user->checkEmail($_email); 
+}
+
  
-        if(isset($_GET['register'])) {
-            $user = new RegUser();
-            $error = false;
 
-
-            $user->setFirstname(trim($_POST['vorname']));
-            $user->setName(trim($_POST['nachname']));
-            $user->setEmail(trim($_POST['email']));
-            $user->setPassword($_POST['passwort']);
-
-            $passwort2 = $_POST['passwort2'];
-            
-            if(empty($user->getFistname()) || empty($user->getName()) || empty($user->getEmail())) {
-                $error = true;
-            }
-          
-            if(!filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-                $error = true;
-            } 	
-            if(strlen($user->getPassword()) == 0) {
-
-                $error = true;
-            }
-            if($user->getPassword() != $passwort2) {
-                $error = true;
-            }
-            
-            //Überprüfe, dass die E-Mail-Adresse noch nicht registriert wurde
-            if(!$error) { 
-                $statement = $pdo->prepare("SELECT * FROM user WHERE Mail =" .$user->getEmail());
-                $result = $statement->execute(array('email' => $email));
-                $dbuser = $statement->fetch();
-                
-                if($dbuser !== false) {
-                    $error = true;
-                }	
-            }
-            
-            //Keine Fehler, wir können den Nutzer registrieren
-            if(!$error) {	
-                $passwort_hash = password_hash($passwort, PASSWORD_DEFAULT);
-                
-                $statement = $pdo->prepare("INSERT INTO user (email, passwort, vorname, nachname) VALUES (" .$user->getEmail(). ", " .$user->getPassword().", ".$user->getFirstname().", " .$user->getName().")");
-                $result = $statement->execute(array('email' => $email, 'passwort' => $passwort_hash, 'vorname' => $vorname, 'nachname' => $nachname));
-                
-                if($result) {		
-                    echo 'Du wurdest erfolgreich registriert. <a href="login.php">Zum Login</a>';
-                    $showFormular = false;
-                } else {
-                    echo 'Beim Abspeichern ist leider ein Fehler aufgetreten<br>';
-                }
-            } 
-    }
-
-}
-
+//Check location exist. If not create Location and set ID into Object
+if(!$error) { 
     
+    //$error = $_user->checkLocation($_zip);
+
+    if(!$_user->checkLocation($_zip)){
+        //Create City Entry
+        $_user->createLocation($_zip, $_city);
+    }
 }
 
-$REGISTER = new Register;
-header('Content-Type: application/json');
-echo $LOGIN->register();
+
+
+//If still no errors, register can be create
+if(!$error) {	
+    //Fill object with missing informations
+    $_user->setUsername($_username);
+    $_user->setEmail($_email);
+    $_user->setPassword($_password);
+    $_user->setFirstname($_firstName);
+    $_user->setName($_name);
+    $_user->setGender($_gender);
+    $_user->setStreet($_street);
+    $_user->setBirthday($_birthday);
+    $_user->setLocation($_city);
+    $_user->setPostcode($_zip);
+
+    //Call Insert
+    $insertResult = $_user->createUser( 
+        $_email, 
+        $_username, 
+        $_password, 
+        $_firstName,
+        $_name, 
+        $_gender, 
+        $_street,
+        $_birthday,
+        $_user->getCityId());
+}
+
+if($insertResult !== "201"){
+    $error = true;
+}
+
+//Prepare and set json 
+if(!$error){
+
+    $result["user"] =array(
+        'id' => $_user->getId(), 
+        'username' => $_user->getUsername(),
+        'email' => $_user->getEmail(), 
+        'firstname' => $_user->getFirstname(), 
+        'name' => $_user->getName(), 
+        'birthday' => $_user->getBirthday(),
+        'gender' => $_user->getGender(), 
+        'street' => $_user->getStreet(),
+        'cityId' => $_user->getCityId(),
+        'postcode' => $_user->getPostcode(),
+        'city' => $_user->getLocation(),
+    );
+
+    // set response code - 201 OK
+    http_response_code(201);
+
+    // show result data in json format
+    echo json_encode($result);
+}else{
+    // set response code - 404 Not found
+    http_response_code(500);
+
+    // tell the user no result found
+    echo json_encode(
+        array("message" => "Internal Server Error")
+    );
+}
+
+
+
+
 
 
 ?>

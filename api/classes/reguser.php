@@ -1,236 +1,329 @@
 <?php
-require_once('recipe.php');
+//require_once('recipe.php');
 
 
 class RegUser{
 
-    /**
-     * @var int 
-     */
-    private int $id;
 
+    // database connection and table name
     /**
-     * @var string
+     * @var POD
      */
-    private string $username;
+    private $_conn;
 
-    /**
-     * @var string
-     */
-    private string $email;
-    /**
-     * @var string
-     */
-    private string $firstname;
-    /**
-     * @var string
-     */
-    private string $name;
-    /**
-     * @var string
-     */
-    private string $password;
-    /**
-     * @var string
-     */
-    private string $gender;
-    /**
-     * @var string
-     */
-    private string $street;
     /**
      * @var int
      */
-    private int $postcode;
+    private $_cityId;
+    
+    /**
+     * @var int
+     */
+    private $_id;
+
+    /**
+     * @var string
+     */
+    private $_username;
+    /**
+     * @var string
+     */
+    private $_email;
+    /**
+     * @var string
+     */
+    private $_firstname;
+    /**
+     * @var string
+     */
+    private $_name;
+    /**
+     * @var string
+     */
+    private $_password;
+    /**
+     * @var string
+     */
+    private $_gender;
+    /**
+     * @var string
+     */
+    private $_street;
+    /**
+     * @var date
+     */
+    private $_birthday;
+    /**
+     * @var int
+     */
+    private $_postcode;    
     /**
      * @var string Homelocation / ORT
      */
-    private string $location;
+    private $_location;
     /**
      * @var array Array of type Orders
      */
-    private array $orders;
+    private $_orders;
     /**
      * @var array Array of type Recipe
      */
-    private array $recipes;
+    private $_recipes;
     /**
      * @var bool
      */
-    private bool $loggedin;
+    private $_loggedin;
 
 
-    public function __construct()
-    {
-        # code...
+
+
+    // constructor with $db as database connection
+    public function __construct($db){
+        $this->_conn = $db;
     }
 
-    
-
     /**
-     * Get the value of id
+     * Get the value of _id
      *
      * @return  int
      */ 
     public function getId()
     {
-        return $this->id;
+        return $this->_id;
     }
 
     /**
-     * Set the value of id
+     * Set the value of _id
      *
-     * @param  int  $id
+     * @param  int  $_id
      *
      * @return  self
      */ 
-    public function setId(int $id)
+    public function setId($_id)
     {
-        $this->id = $id;
+        $this->_id = $_id;
 
         return $this;
     }
 
     /**
-     * Get the value of username
+     * Get the value of _cityId
      *
-     * @return  string
+     * @return  int
      */ 
-    public function getUsername()
+    public function getCityId()
     {
-        return $this->username;
+        return $this->_cityId;
     }
 
     /**
-     * Set the value of username
+     * Set the value of _cityId
      *
-     * @param  string  $username
+     * @param  int  $_cityId
      *
      * @return  self
      */ 
-    public function setUsername(string $username)
+    public function setCityId($_cityId)
     {
-        $this->username = $username;
+        $this->_cityId = $_cityId;
 
         return $this;
     }
 
     /**
-     * Get the value of email
-     *
-     * @return  string
-     */ 
-    public function getEmail()
+     * @return string Username
+     */
+
+     public function getUsername()
+     {
+         return $this->_username;
+     }
+
+    /**
+     * @param string Username
+     */
+    public function setUsername($name)
     {
-        return $this->email;
+       $this->_username = $name;
     }
 
     /**
-     * Set the value of email
-     *
-     * @param  string  $email
-     *
-     * @return  self
-     */ 
-    public function setEmail(string $email)
-    {
-        $this->email = $email;
+    * @return string
+    */
+   public function getEmail()
+   {
+      return $this->_email;
+   }
+   /**
+    * @param string Username
+    */
+   public function setEmail($name)
+   {
+      $this->_email = $name;
+   }
 
-        return $this;
-    }
-
-    /**
-     * Get the value of firstname
-     *
-     * @return  string
+       /**
+     * Get the value of _firstname
      */ 
     public function getFirstname()
     {
-        return $this->firstname;
+        return $this->_firstname;
     }
 
     /**
-     * Set the value of firstname
-     *
-     * @param  string  $firstname
+     * Set the value of _firstname
      *
      * @return  self
      */ 
-    public function setFirstname($firstname)
+    public function setFirstname($_firstname)
     {
-        $this->firstname = $firstname;
+        $this->_firstname = $_firstname;
 
         return $this;
     }
 
+    
+
     /**
-     * Get the value of name
+     * Get the value of _name
      *
      * @return  string
      */ 
     public function getName()
     {
-        return $this->name;
+        return $this->_name;
     }
 
     /**
-     * Set the value of name
+     * Set the value of _name
      *
-     * @param  string  $name
+     * @param  string  $_name
      *
      * @return  self
      */ 
-    public function setName(string $name)
+    public function setName($_name)
     {
-        $this->name = $name;
+        $this->_name = $_name;
 
         return $this;
     }
 
     /**
-     * Get the value of street
+     * Get the value of _password
+     *
+     * @return  string
+     */ 
+    public function getPassword()
+    {
+        return $this->_password;
+    }
+
+    /**
+     * Set the value of _password
+     *
+     * @param  string  $_password
+     *
+     * @return  self
+     */ 
+    public function setPassword($_password)
+    {
+        $this->_password = $_password;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of _gender
+     *
+     * @return  string
+     */ 
+    public function getGender()
+    {
+        return $this->_gender;
+    }
+
+    /**
+     * Set the value of _gender
+     *
+     * @param  string  $_gender
+     *
+     * @return  self
+     */ 
+    public function setGender($_gender)
+    {
+        $this->_gender = $_gender;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of _street
      *
      * @return  string
      */ 
     public function getStreet()
     {
-        return $this->street;
+        return $this->_street;
     }
 
     /**
-     * Set the value of street
+     * Set the value of _street
      *
-     * @param  string  $street
+     * @param  string  $_street
      *
      * @return  self
      */ 
-    public function setStreet(string $street)
+    public function setStreet($_street)
     {
-        $this->street = $street;
+        $this->_street = $_street;
 
         return $this;
     }
 
     /**
-     * Get the value of postcode
+     * Get the value of _birthday
+     *
+     * @return  date
+     */ 
+    public function getBirthday()
+    {
+        return $this->_birthday;
+    }
+
+    /**
+     * Set the value of _birthday
+     *
+     * @param  date  $_birthday
+     *
+     * @return  self
+     */ 
+    public function setBirthday($_birthday)
+    {
+        $this->_birthday = $_birthday;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of _postcode
      *
      * @return  int
      */ 
     public function getPostcode()
     {
-        return $this->postcode;
+        return $this->_postcode;
     }
 
     /**
-     * Set the value of postcode
+     * Set the value of _postcode
      *
-     * @param  int  $postcode
+     * @param  int  $_postcode
      *
      * @return  self
      */ 
-    public function setPostcode(int $postcode)
+    public function setPostcode($_postcode)
     {
-        $this->postcode = $postcode;
+        $this->_postcode = $_postcode;
 
         return $this;
     }
@@ -242,31 +335,21 @@ class RegUser{
      */ 
     public function getLocation()
     {
-        return $this->location;
+        return $this->_location;
     }
 
     /**
      * Set homelocation / ORT
      *
-     * @param  string  $location  Homelocation / ORT
+     * @param  string  $_location  Homelocation / ORT
      *
      * @return  self
      */ 
-    public function setLocation(string $location)
+    public function setLocation($_location)
     {
-        $this->location = $location;
+        $this->_location = $_location;
 
         return $this;
-    }
-
-    /**
-     * Get array of type Orders
-     *
-     * @return  array
-     */ 
-    public function getOrders()
-    {
-        return $this->orders;
     }
 
     /**
@@ -276,159 +359,279 @@ class RegUser{
      */ 
     public function getRecipes()
     {
-        return $this->recipes;
+        return $this->_recipes;
     }
 
+    /**
+     * Set array of type Recipe
+     *
+     * @param  array  $_recipes  Array of type Recipe
+     *
+     * @return  self
+     */ 
+    public function setRecipes($_recipes)
+    {
+        $this->_recipes = $_recipes;
+
+        return $this;
+    }
 
     /**
-     * Get the value of loggedin
+     * Get the value of _loggedin
      *
      * @return  bool
      */ 
     public function getLoggedin()
     {
-        return $this->loggedin;
+        return $this->_loggedin;
+    }
+
+    /**
+     * Set the value of _loggedin
+     *
+     * @param  bool  $_loggedin
+     *
+     * @return  self
+     */ 
+    public function setLoggedin($_loggedin)
+    {
+        $this->_loggedin = $_loggedin;
+
+        return $this;
+    }
+
+   
+
+
+    /**
+     *  
+     * @param string $name Mail from Frontend
+     * 
+     * Return true if mail exists in DB
+     * @return bool
+     */
+    public function checkEmail($name)
+    {
+        $_result = false;
+        
+            
+        // select all query
+        $query = "SELECT * FROM user WHERE Mail = :Mail";
+
+        // prepare query statement
+        $stmt = $this->_conn->prepare($query);
+    
+        // sanitize
+        $name=htmlspecialchars(strip_tags($name));
+
+        // bind values
+        $stmt->bindParam(":Mail", $name);
+
+
+        // execute query
+        $stmt->execute();
+        
+        $_num = $stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num == 0) {
+            $this->_email = "";  
+        }else{
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($row);
+                $this->_email = $Mail;
+                //Set ID if not exist
+                if($this->_id == null){ $this->_id = $U_ID;}
+                $_result = true;
+            }
+        }
+        return $_result;
     }
 
 
+    /**
+     *  
+     * @param string $postcode Postcode from Frontend
+     * 
+     * Return true if postcode exists in DB
+     * @return bool
+     */
+    public function checkLocation($postcode)
+    {
+        $_result = false;
+        // select all query
+        $query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
+
+        // prepare query statement
+        $stmt = $this->_conn->prepare($query);
+    
+        // sanitize
+        //$postcode=htmlspecialchars(strip_tags($postcode));
+
+        // bind values
+        $stmt->bindParam(":PostalCode", $postcode);
+
+
+        // execute query
+        $stmt->execute();
+
+        $_num = $stmt->rowCount();
+        
+
+        //If entry exists then Error
+        if($_num == 0) {
+            $this->_postcode = null;  
+        }else{
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($row);
+                $this->_postcode = $PostalCode;
+
+                //Fill Objekt with City informations
+                if($this->_location == null){ $this->_location = $City; }
+                if($this->_cityId == null){ $this->_cityId = $C_ID; }
+            }
+        }
+
+
+        if($this->_postcode == $postcode) { $_result = true;}
+
+        return $_result;
+    }
+
+    /**
+     * Insert a Location to Database
+     * @param int $postcode
+     * @param string $location
+     */
+    public function createLocation($postcode, $location)
+    {
+        // select all query
+        $query = "INSERT INTO cities (City, PostalCode) VALUES (:City, :PostalCode)";
+
+        // prepare query statement
+        $stmt = $this->_conn->prepare($query);
+    
+        // sanitize
+        $location=htmlspecialchars(strip_tags($location));
+
+        // bind values
+        $stmt->bindParam(":PostalCode", $postcode);
+        $stmt->bindParam(":City", $location);
+
+
+        // execute query
+        $stmt->execute();
+
+        $this->checkLocation($postcode);
+    }
+
+    /**
+     * Insert a Location to Database
+     * @param string $mail
+     * @param string $username
+     * @param string $password
+     * @param string $firstname
+     * @param string $name
+     * @param string $gender
+     * @param string $street
+     * @param date $birthday
+     * @param int $c_id
+     * 
+     * @return string
+     */
+    public function createUser(
+        $mail, 
+        $username, 
+        $password, 
+        $firstname,
+        $name, 
+        $gender, 
+        $street,
+        $birthday,
+        $c_id
+        )
+    {
+        $result = "";
+        try{
+            $sql = "INSERT INTO user (Mail, Username, Password, FirstName, Name, Gender, Street, Birthday, C_ID) VALUES (:Mail, :Username, :Password, :FirstName, :Name, :Gender, :Street, :Birthday, :C_ID)";
+            $stmt= $this->_conn->prepare($sql);
+    
+            // sanitize
+            $mail=htmlspecialchars(strip_tags($mail));
+            $username=htmlspecialchars(strip_tags($username));
+            $password=htmlspecialchars(strip_tags($password));
+            $firstname=htmlspecialchars(strip_tags($firstname));
+            $name=htmlspecialchars(strip_tags($name));
+            $gender=htmlspecialchars(strip_tags($gender));
+            $street=htmlspecialchars(strip_tags($street));
+    
+            //Hash Password
+            $passwort_hash = password_hash($password, PASSWORD_DEFAULT);
+    
+            // bind values
+            $stmt->bindParam(":Mail", $mail);
+            $stmt->bindParam(":Username", $username);
+            $stmt->bindParam(":Password", $passwort_hash);
+            $stmt->bindParam(":FirstName", $firstname);
+            $stmt->bindParam(":Name", $name);
+            $stmt->bindParam(":Gender", $gender);
+            $stmt->bindParam(":Street", $street);
+            $stmt->bindParam(":Birthday", $birthday);
+            $stmt->bindParam(":C_ID", $c_id);
+    
+            $stmt->execute();
+            $result = "201";
+        }catch(Eception $e){
+            $result = $e-getMessage();
+        }
+       
+
+        return $result;
+    }
 
     public function login()
     {
-        $this->loggedin = true;
-    }
+        // select all query
+        $query = "SELECT * FROM user WHERE Username = :Username";
 
-    public function logout()
-    {
-        $this->loggedin = false;
-    }
+        // prepare query statement
+        $stmt = $this->_conn->prepare($query);
+    
+        // sanitize
+        $this->_username=htmlspecialchars(strip_tags($this->_username));
 
+        // bind values
+        $stmt->bindParam(":Username", $this->_username);
+
+
+        // execute query
+        $stmt->execute();
+    
+        return $stmt;
+    }
 
     /**
-     * Resets all Attributes of RegUser
      * 
-     * @return self
      */
     public function clearUser()
     {
-        $this->id = null;
-        $this->username = "";
-        $this->firstname = "";
-        $this->name = "";
-        $this->email = "";
-        $this->street = "";
-        $this->postcode = null;
-        $this->location = "";
-        $this->orders = null;
-        $this->recipes = null;
-        $this->loggedin = false;
-
-
-        return $this;
+        # TODO Dustin: alle Attribute aus diesem Objekt auf null setzen
     }
 
 
 
-    /**
-     * Extends Order Array
-     * 
-     * @param Order $order
-     */
-    public function extendOrder(Order $order)
-    {
-        $this->orders.push($order);
-    }
-
-    /**
-     * @param Order $order
-     * 
-     * @return array of orders
-     */
-    public function removeOrder(Order $order)
-    {
-        $key= array_search($order, $this->orders);
-        if ($key !== false) {
-            unset($this->orders[$key]);
-        };
-
-        return $this->orders;
-    }
-
-
-    /**
-     * TODO: Check if needed
-     */
-
-     public function upgradePremium(Type $var = null)
-     {
-         # code...
-     }
-
-     /**
-      * @param Recipe $recipe
-      */
-     public function createRecipe(Recipe $recipe)
-     {
-        $this->recipes.push($recipe);
-     }
-
-     /**
-      * @param Recipe $recipe
-      * 
-      * @return array of Recipes
-      */
-     public function removeRecipe(Recipe $recipe)
-     {
-        //TODO: 
-     }
-
-
-    /**
-     * Get the value of gender
-     *
-     * @return  string
-     */ 
-    public function getGender()
-    {
-        return $this->gender;
-    }
-
-    /**
-     * Set the value of gender
-     *
-     * @param  string  $gender
-     *
-     * @return  self
-     */ 
-    public function setGender(string $gender)
-    {
-        $this->gender = $gender;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of password
-     *
-     * @return  string
-     */ 
-    public function getPassword()
-    {
-        return $this->password;
-    }
-
-    /**
-     * Set the value of password
-     *
-     * @param  string  $password
-     *
-     * @return  self
-     */ 
-    public function setPassword(string $password)
-    {
-        $this->password = $password;
-
-        return $this;
-    }
 }
 
 ?>
