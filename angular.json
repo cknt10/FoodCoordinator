@@ -123,5 +123,8 @@
       }
     }
   },
-  "defaultProject": "FoodCoordinator"
+  "defaultProject": "FoodCoordinator",
+  "cli": {
+    "analytics": "255a16cf-771b-42d4-b630-7a1d1975c26a"
+  }
 }
