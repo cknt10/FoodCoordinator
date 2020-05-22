@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
 
 
 import { AppComponent } from './app.component';
@@ -21,7 +21,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     ReactiveFormsModule,
     HttpClientModule,
-    MaterialModule,
+    MatButtonModule,
     RouterModule.forRoot([
 //Vielleicht stehen die Komponenten hier für den outlet
     ]),
