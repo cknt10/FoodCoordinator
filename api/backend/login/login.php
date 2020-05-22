@@ -49,7 +49,7 @@ if($num>0){
     }
     //Check Password
     //TODO
-    if ("123456" == $_wrongPassword) {
+    if (password_verify($passwort, $_wrongPassword)) {
         $_SESSION['userid'] = $result_arr["user"]['id'];
 
         // set response code - 200 OK
