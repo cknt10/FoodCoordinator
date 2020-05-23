@@ -10,6 +10,8 @@ import { AppComponent } from './app.component';
 import { HeaderComponent} from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { from } from 'rxjs';
+import { RegComponent } from './reg/reg.component';
+import { VorteileComponent } from './vorteile/vorteile.component';
 
 
 @NgModule({
@@ -17,6 +19,8 @@ import { from } from 'rxjs';
     AppComponent,
     HeaderComponent,
     LoginComponent,
+    RegComponent,
+    VorteileComponent,
 
   ],
   imports: [
