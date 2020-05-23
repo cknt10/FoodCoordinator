@@ -1,0 +1,44 @@
+.containerLogin{
+  float: left;
+  width: 40%;
+  height: 40vh;
+  margin: 15% 30% 10% 30%;
+  background-color: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
+}
+input{
+  width: 30%;
+  height: 3em;
+  text-align: center;
+  display: block;
+  margin: 3% auto;
+  background: #E5E5E5;
+  border: 0.5px solid #000000;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+}
+a{
+  text-decoration: none;
+  color: #FCA100;
+}
+#login{
+  width: 90%;
+  height: 50%;
+  margin: 10% 5% 0 5%;
+  text-align: center;
+  display: block;
+  border-bottom: solid #FCA100;
+}
+#subLogin{
+  color: white;
+  background-color: #FCA100;
+}
+
+#goReg{
+  margin-top: 5%;
+  text-align: center;
+}
+#close{
+  float: right;
+}
