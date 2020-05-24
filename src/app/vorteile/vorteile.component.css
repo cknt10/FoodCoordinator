@@ -1,4 +1,4 @@
-.containerLogin{
+.info{
   float: left;
   width: 40%;
   height: 40vh;
@@ -25,16 +25,14 @@ a{
 #login{
   width: 90%;
   height: 50%;
-  margin: 10% 5% 0 5%;
+  margin: 15% 5% 0 5%;
   text-align: center;
   display: block;
-  border-bottom: solid #FCA100;
 }
 #subLogin{
   color: white;
   background-color: #FCA100;
 }
-
 #goReg{
   margin-top: 5%;
   text-align: center;
