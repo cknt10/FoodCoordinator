@@ -1,11 +1,13 @@
-<div class="containerLogin">
-  <button id="close" mat-raised-button><mat-icon>close</mat-icon></button>
-  <div id="login">
-    <input type="text" placeholder="Benutzername oder Email" name="username" [(ngModel)]="username" required>
-    <input type="password" placeholder="Passwort" name="password" [(ngModel)]="password" required>
-    <button id="subLogin" mat-raised-button color="warn" (click)="loginUser()">Login</button>
-  </div>
-  <div id="goReg">
-    <p>Du hast noch kein Konto? <a routerLink="/reg" id="reg">Werde Mitglied</a></p>
+<div class="background">
+  <div class="containerLogin">
+    <button id="close" mat-raised-button><mat-icon>close</mat-icon></button>
+    <div id="login">
+      <input type="text" placeholder="Benutzername oder Email" name="username" [(ngModel)]="username" required>
+      <input type="password" placeholder="Passwort" name="password" [(ngModel)]="password" required>
+      <button id="subLogin" mat-raised-button color="warn" (click)="loginUser()">Login</button>
+    </div>
+    <div id="goReg">
+      <p>Du hast noch kein Konto? <a routerLink="/reg" id="reg">Werde Mitglied</a></p>
+    </div>
   </div>
 </div>
