@@ -7,9 +7,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  username: string;
+  password: string;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  loginUser(){
+    if (this.username == "test" && this.password == "test"){
+      window.alert ("Sie sind nun eingeloggt!");
+      this.username = "";
+      this.password = "";
+    }
+    else{
+      window.alert ("Falsche Login Daten, bitte versuchen Sie es erneut!");
+      this.username = "";
+      this.password = "";
+    }
   }
 
 }
