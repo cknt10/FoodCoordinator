@@ -1,21 +1,21 @@
 <?php
-require_once('recipe.php');
+include_once 'recipe.php';
 
 
 class Favourite{
 /**
  * @var string $name
  */
-private string $name;
+private $name;
 /**
  * @var Recipe[] $recipes
  */
-private array $recipes;
+private $recipes;
 
 /**
  * @var date $date
  */
-private date $date;
+private $date;
 
 
 
@@ -36,7 +36,7 @@ return $this->name;
  *
  * @return  self
  */ 
-public function setName(string $name)
+public function setName($name)
 {
 $this->name = $name;
 
@@ -60,7 +60,7 @@ return $this->recipes;
  *
  * @return  self
  */ 
-public function setRecipes(array $recipes)
+public function setRecipes($recipes)
 {
 $this->recipes = $recipes;
 
@@ -84,7 +84,7 @@ return $this->date;
  *
  * @return  self
  */ 
-public function setDate(date $date)
+public function setDate($date)
 {
 $this->date = $date;
 
@@ -95,7 +95,7 @@ return $this;
  * 
  * @param Recipe $recipe
  */
-public function addRecipe(Recipe $recipe)
+public function addRecipe($recipe)
 {
     $this->recipes.push($recipe);
 }
@@ -103,7 +103,7 @@ public function addRecipe(Recipe $recipe)
 /**
  * @param Recipe $recipe
  */
-public function removeRecipe(Recipe $recipe)
+public function removeRecipe($recipe)
 {
     $key= array_search($recipe, $this->recipes);
     if ($key !== false) {

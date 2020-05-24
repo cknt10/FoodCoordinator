@@ -1,5 +1,5 @@
 <?php
-//require_once('recipe.php');
+include_once 'recipe.php';
 
 
 class RegUser{

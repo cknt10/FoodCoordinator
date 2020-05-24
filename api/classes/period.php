@@ -4,11 +4,11 @@ class Period{
     /**
      * @var int
      */
-    private int $duration;
+    private $duration;
     /**
      * @var string
      */
-    private string $unit;
+    private $unit;
 
 
     public function __construct($duration = 0, $unit = ""){
@@ -33,7 +33,7 @@ class Period{
      *
      * @return  self
      */ 
-    public function setDuration(int $duration)
+    public function setDuration($duration)
     {
         $this->duration = $duration;
 
@@ -57,7 +57,7 @@ class Period{
      *
      * @return  self
      */ 
-    public function setUnit(string $unit)
+    public function setUnit($unit)
     {
         $this->unit = $unit;
 

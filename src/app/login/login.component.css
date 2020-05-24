@@ -1,13 +1,13 @@
 .containerLogin{
   float: left;
   width: 40%;
-  height: 40vh;
+  height: auto;
   margin: 15% 30% 10% 30%;
   background-color: white;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
 }
 input{
-  width: 30%;
+  display: flex;
   height: 3em;
   text-align: center;
   display: block;
@@ -24,13 +24,14 @@ a{
 }
 #login{
   width: 90%;
-  height: 50%;
+  height: auto;
   margin: 10% 5% 0 5%;
   text-align: center;
   display: block;
   border-bottom: solid #FCA100;
 }
 #subLogin{
+  margin-bottom: 2%;
   color: white;
   background-color: #FCA100;
 }
@@ -41,4 +42,13 @@ a{
 }
 #close{
   float: right;
+  background-color: transparent;
+  color: #686868;
+  box-shadow: none;
+}
+
+#closeContainer{
+  float: left;
+  width: 100%;
+  height: auto;
 }

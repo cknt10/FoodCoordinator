@@ -6,14 +6,16 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../sql/coni.php';
 include_once '../../classes/reguser.php';
+include_once '../../classes/premiumuser.php';
   
 // instantiate database and product object
 $database = new Connection();
 $db = $database->connection();
   
 // initialize object
-$_user = new RegUser($db);
-$_user->setUsername("dsone");
+$_user = new PremiumUser($db);
+$_user->setUsername("test");
+$passwort = "123456";
 // query products
 $stmt = $_user->login();
 $num = $stmt->rowCount();
@@ -24,6 +26,7 @@ if($num>0){
     //user array
     $result_arr=array();
     $_wrongPassword = "";
+    
   
     // retrieve our table contents
     // fetch() is faster than fetchAll()
@@ -47,9 +50,14 @@ if($num>0){
         $_wrongPassword = $Password;
 
     }
+    //Check for Premium
+    echo $_user->isPremium($result_arr["user"]['id'], "");
+
+
+
     //Check Password
     //TODO
-    if ("123456" == $_wrongPassword) {
+    if (password_verify($passwort, $_wrongPassword)) {
         $_SESSION['userid'] = $result_arr["user"]['id'];
 
         // set response code - 200 OK
