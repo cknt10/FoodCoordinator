@@ -1,37 +1,74 @@
 <?php
-require_once('reguser.php');
-require_once('favourite.php');
+include_once 'reguser.php';
+include_once 'favourite.php';
+include_once 'premium.php';
 
 class PremiumUser extends RegUser{
+    // database connection and table name
+    /**
+     * @var POD
+     */
+    private $_conn;
+
+    /**
+     * @var int $premiumId
+     */
+    private $_premiumId;
 
     /**
      * @var array $premium
      */
-    private array $premium;
+    private $_premium;
 
     /**
      * @var array $gifts
      */
-    private array $gifts;
+    private $_gifts;
 
     /**
      * @var array $favourites
      */
-    private array $favourites;
+    private $_favourites;
 
     /**
      * @var bool $payed Check if this User payed his Premium
      */
-    private bool $payed;
+    private $_payed;
 
     /**
      * @var date 
      */
-    private date $startDate;
+    private $_startDate;
 
-    
+    // constructor with $db as database connection
+    public function __construct($db){
+        parent::__construct($db);
+        $this->_conn = $db;
+    }
 
+    /**
+     * Get $premiumId
+     *
+     * @return  int
+     */ 
+    public function getPremiumId()
+    {
+        return $this->_premiumId;
+    }
 
+    /**
+     * Set $premiumId
+     *
+     * @param  int  $premiumId  $premiumId
+     *
+     * @return  self
+     */ 
+    public function setPremiumId($premiumId)
+    {
+        $this->_premiumId = $premiumId;
+
+        return $this;
+    }
 
     /**
      * Get $premium
@@ -40,7 +77,7 @@ class PremiumUser extends RegUser{
      */ 
     public function getPremium()
     {
-        return $this->premium;
+        return $this->_premium;
     }
 
     /**
@@ -50,9 +87,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */ 
-    public function setPremium(array $premium)
+    public function setPremium($premium)
     {
-        $this->premium = $premium;
+        $this->_premium = $premium;
 
         return $this;
     }
@@ -64,7 +101,7 @@ class PremiumUser extends RegUser{
      */ 
     public function getGifts()
     {
-        return $this->gifts;
+        return $this->_gifts;
     }
 
     /**
@@ -74,9 +111,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */ 
-    public function setGifts(array $gifts)
+    public function setGifts($gifts)
     {
-        $this->gifts = $gifts;
+        $this->_gifts = $gifts;
 
         return $this;
     }
@@ -88,7 +125,7 @@ class PremiumUser extends RegUser{
      */ 
     public function getFavourites()
     {
-        return $this->favourites;
+        return $this->_favourites;
     }
 
     /**
@@ -98,7 +135,7 @@ class PremiumUser extends RegUser{
      */ 
     public function getPayed()
     {
-        return $this->payed;
+        return $this->_payed;
     }
 
     /**
@@ -108,9 +145,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */ 
-    public function setPayed(bool $payed)
+    public function setPayed($payed)
     {
-        $this->payed = $payed;
+        $this->_payed = $payed;
 
         return $this;
     }
@@ -122,7 +159,7 @@ class PremiumUser extends RegUser{
      */ 
     public function getStartDate()
     {
-        return $this->startDate;
+        return $this->_startDate;
     }
 
     /**
@@ -132,9 +169,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */ 
-    public function setStartDate(date $startDate)
+    public function setStartDate($startDate)
     {
-        $this->startDate = $startDate;
+        $this->_startDate = $startDate;
 
         return $this;
     }
@@ -145,9 +182,9 @@ class PremiumUser extends RegUser{
      * 
      * @return Gift
      */
-    public function getGift(int $id, date $timestamp)
+    public function getGift($id, $timestamp)
     {
-        $gift = $this->gifts[$id];
+        $gift = $this->_gifts[$id];
         //TODO:......
 
         return $gift;
@@ -160,7 +197,7 @@ class PremiumUser extends RegUser{
      */
     public function addFavourite(Favourite $favourite)
     {
-        $this->favourites.push($favourite);
+        $this->_favourites.push($favourite);
     }
 
     /**
@@ -170,13 +207,13 @@ class PremiumUser extends RegUser{
      * 
      * @return array of Favourites
      */
-    public function removeFavourite(Favourite $favourite)
+    public function removeFavourite($favourite)
     {
-        $key= array_search($favourite, $this->favourites);
+        $key= array_search($favourite, $this->_favourites);
         if ($key !== false) {
-            unset($this->favourites[$key]);
+            unset($this->_favourites[$key]);
         };
-        return $this->favourites;
+        return $this->_favourites;
     }
 
     /**
@@ -186,14 +223,65 @@ class PremiumUser extends RegUser{
      * 
      * @return bool 
      */
-    public function isPremium(date $timestamp)
+    public function isPremium($userid, $timestamp)
     {
-        //TODO test needed
-       if($premium[0]->startDate + $premium[0]->duration <= $timestamp){
-        return true;
-       }
-       return false;
-    }
-}
+        $result = false;
+        $_date = "";
 
+        // select all query
+        $query = "SELECT pu.PU_ID, pu.Premium_ID, pu.U_ID, pu.PM_ID, pu.StartingDate as UserStaringDate, p.StartingDate as PremiumStartingDate, p.Premium_Descr, p.Price, p.Duration
+        from premiumUser as pu
+        Inner Join premium as p
+        ON pu.Premium_ID = p.Premium_ID
+        Where pu.U_ID = :U_ID";
+
+
+
+        // prepare query statement
+        $stmt = $this->_conn->prepare($query);
+
+        // bind values
+        $stmt->bindParam(":U_ID", $userid);
+
+
+        // execute query
+        $stmt->execute();
+
+
+        $_num = $stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num !== 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($row);
+
+                
+
+                //Split date from db
+                $_date = explode(' ', $UserStaringDate);
+
+                //Check if he is still Premium
+                $date1 = new DateTime($_date[0]);
+                $date1->add(new DateInterval('P'. strval($Duration) .'D'));
+                $date2 = new DateTime($timestamp);
+
+                if($date1 > $date2){
+                    $result = true;
+                    $this->_premiumId = $PU_ID;
+                    $this->_startDate = $_date[0];
+                }                
+            }
+        }
+    
+        return $result;
+    }
+
+
+}
 ?>

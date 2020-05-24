@@ -5,19 +5,19 @@ class Nutrient{
     /**
      * @var int
      */
-    private int $id;
+    private $id;
     /**
      * @var string
      */
-    private string $description;
+    private $description;
     /**
      * @var string
      */
-    private string $unit;
+    private $unit;
     /**
      * @var float
      */
-    private float $amount;
+    private $amount;
    
    
 
@@ -38,7 +38,7 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -62,7 +62,7 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -86,7 +86,7 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setUnit(string $unit)
+    public function setUnit($unit)
     {
         $this->unit = $unit;
 
@@ -110,7 +110,7 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setAmount(float $amount)
+    public function setAmount($amount)
     {
         $this->amount = $amount;
 
