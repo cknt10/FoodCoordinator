@@ -50,7 +50,7 @@ class RegUser{
      */
     private $_street;
     /**
-     * @var date
+     * @var string
      */
     private $_birthday;
     /**
@@ -406,26 +406,29 @@ class RegUser{
     /**
      *  
      * @param string $name Mail from Frontend
+     * @param string $username Username from Frontend
      * 
      * Return true if mail exists in DB
      * @return bool
      */
-    public function checkEmail($name)
+    public function checkUserExist($name = "", $username = "")
     {
         $_result = false;
         
             
         // select all query
-        $query = "SELECT * FROM user WHERE Mail = :Mail";
+        $query = "SELECT * FROM user WHERE Mail = :Mail OR Username = :Username";
 
         // prepare query statement
         $stmt = $this->_conn->prepare($query);
     
         // sanitize
         $name=htmlspecialchars(strip_tags($name));
+        $username=htmlspecialchars(strip_tags($username));
 
         // bind values
         $stmt->bindParam(":Mail", $name);
+        $stmt->bindParam(":Username", $username);
 
 
         // execute query
@@ -434,9 +437,7 @@ class RegUser{
         $_num = $stmt->rowCount();
 
         //If entry exists then Error
-        if($_num == 0) {
-            $this->_email = "";  
-        }else{
+        if($_num > 0) {
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
@@ -446,6 +447,7 @@ class RegUser{
                 // just $name only
                 extract($row);
                 $this->_email = $Mail;
+                $this->_username = $Username;
                 //Set ID if not exist
                 if($this->_id == null){ $this->_id = $U_ID;}
                 $_result = true;
@@ -462,20 +464,37 @@ class RegUser{
      * Return true if postcode exists in DB
      * @return bool
      */
-    public function checkLocation($postcode)
+    public function checkLocation($postcode, $location, $cityId = null)
     {
         $_result = false;
+        $query = "";
+
         // select all query
-        $query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
+        if($cityId){
+            $query = "SELECT * FROM cities WHERE C_ID = :C_ID";
 
-        // prepare query statement
-        $stmt = $this->_conn->prepare($query);
+            // prepare query statement
+            $stmt = $this->_conn->prepare($query);
+        
+            // sanitize
+            //$postcode=htmlspecialchars(strip_tags($postcode));
     
-        // sanitize
-        //$postcode=htmlspecialchars(strip_tags($postcode));
+            // bind values
+            $stmt->bindParam(":C_ID", $cityId);
 
-        // bind values
-        $stmt->bindParam(":PostalCode", $postcode);
+        }else{
+            $query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
+
+            // prepare query statement
+            $stmt = $this->_conn->prepare($query);
+        
+            // sanitize
+            //$postcode=htmlspecialchars(strip_tags($postcode));
+    
+            // bind values
+            $stmt->bindParam(":PostalCode", $postcode);     
+        }
+
 
 
         // execute query
@@ -485,9 +504,7 @@ class RegUser{
         
 
         //If entry exists then Error
-        if($_num == 0) {
-            $this->_postcode = null;  
-        }else{
+        if($_num > 0) {
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
@@ -498,14 +515,16 @@ class RegUser{
                 extract($row);
                 $this->_postcode = $PostalCode;
 
-                //Fill Objekt with City informations
-                if($this->_location == null){ $this->_location = $City; }
-                if($this->_cityId == null){ $this->_cityId = $C_ID; }
+                //Check for the right location
+                if(strcmp(strtolower($location), strtolower($City))){
+                    //Fill Objekt with City informations
+                    if($this->_location == null){ $this->_location = $City; }
+                    if($this->_cityId == null){ $this->_cityId = $C_ID; }
+                    $_result = true;
+                }
+
             }
         }
-
-
-        if($this->_postcode == $postcode) { $_result = true;}
 
         return $_result;
     }
@@ -601,25 +620,61 @@ class RegUser{
         return $result;
     }
 
-    public function login()
+    /**
+     * @param string $username 
+     * @param string $mail
+     * 
+     * @return int cout of entries
+     */
+
+    public function login($username = "", $mail ="")
     {
         // select all query
-        $query = "SELECT * FROM user WHERE Username = :Username";
+        $query = "SELECT * FROM user WHERE Username = :Username OR Mail = :Mail";
 
         // prepare query statement
         $stmt = $this->_conn->prepare($query);
     
         // sanitize
-        $this->_username=htmlspecialchars(strip_tags($this->_username));
+        $username=htmlspecialchars(strip_tags($username));
+        $mail=htmlspecialchars(strip_tags($mail));
 
         // bind values
-        $stmt->bindParam(":Username", $this->_username);
-
+        $stmt->bindParam(":Username", $username);
+        $stmt->bindParam(":Mail", $mail);
 
         // execute query
         $stmt->execute();
-    
-        return $stmt;
+
+        $num = $stmt->rowCount();
+
+        if($num>0){
+
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($row);
+
+                $this->_id = $U_ID;
+                $this->_username = $Username;
+                $this->_email = $Mail;
+                $this->_firstname = $FirstName;
+                $this->_name = $Name;
+                $this->_birthday = $Birthdady;
+                $this->_gender = $Gender;
+                $this->_street = $Street;
+                $this->_password = $Password;
+                $this->_cityId = $C_ID;
+            }
+
+            $this->checkLocation("", "", $this->_cityId);
+        }
+        
+        return $num;
     }
 
     /**
