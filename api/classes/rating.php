@@ -4,12 +4,12 @@ class Rating{
     /**
      * @var float
      */
-    private float $rating;
+    private $rating;
 
     /**
      * @var string
      */
-    private string $comment;
+    private $comment;
     
     public function __construct($rating = 0, $comment = ""){
         $this->rating = $rating;
@@ -33,7 +33,7 @@ class Rating{
      *
      * @return  self
      */ 
-    public function setRating(float $rating)
+    public function setRating($rating)
     {
         $this->rating = $rating;
 
@@ -57,7 +57,7 @@ class Rating{
      *
      * @return  self
      */ 
-    public function setComment(string $comment)
+    public function setComment($comment)
     {
         $this->comment = $comment;
 

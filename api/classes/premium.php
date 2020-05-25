@@ -4,26 +4,26 @@ class Premium{
     /**
      * @var int
      */
-    private int $id;
+    private $id;
 
     /**
      * @var string
      */
-    private string $description;
+    private $description;
 
     /**
      * @var int
      */
-    private int $duration;
+    private $duration;
 
     /**
      * @var float
      */
-    private float $netprice;
+    private $netprice;
     /**
      * @var date
      */
-    private date $startDate;
+    private $startDate;
 
     
 
@@ -44,7 +44,7 @@ class Premium{
      *
      * @return  self
      */ 
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -68,7 +68,7 @@ class Premium{
      *
      * @return  self
      */ 
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -92,7 +92,7 @@ class Premium{
      *
      * @return  self
      */ 
-    public function setDuration(int $duration)
+    public function setDuration($duration)
     {
         $this->duration = $duration;
 
@@ -116,7 +116,7 @@ class Premium{
      *
      * @return  self
      */ 
-    public function setNetprice(float $netprice)
+    public function setNetprice($netprice)
     {
         $this->netprice = $netprice;
 
@@ -140,7 +140,7 @@ class Premium{
      *
      * @return  self
      */ 
-    public function setStartDate(date $startDate)
+    public function setStartDate($startDate)
     {
         $this->startDate = $startDate;
 
