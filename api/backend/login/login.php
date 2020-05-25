@@ -17,41 +17,35 @@ $_user = new PremiumUser($db);
 $_user->setUsername("test");
 $passwort = "123456";
 // query products
-$stmt = $_user->login();
-$num = $stmt->rowCount();
+$num = $_user->login();
   
 // check if more than 0 record found
 if($num>0){
-  
     //user array
     $result_arr=array();
     $_wrongPassword = "";
     
   
-    // retrieve our table contents
-    // fetch() is faster than fetchAll()
-    // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        // extract row
-        // this will make $row['name'] to
-        // just $name only
-        extract($row);
   
-        $result_arr["user"] =array(
-            'id' => $U_ID, 
-            'username' => $Username,
-            'email' => $Mail, 
-            'firstname' => $FirstName, 
-            'name' => $Name, 
-            'birthday' => $Birthdady,
-            'gender' => $Gender, 
-            'street' => $Street
-        );
-        $_wrongPassword = $Password;
+    $result_arr["user"] =array(
+        'id' => $_user->getId(), 
+        'username' => $_user->getUsername(),
+        'email' => $_user->getEmail(), 
+        'firstname' => $_user->getFirstname(), 
+        'name' => $_user->getName(), 
+        'birthday' => $_user->getBirthday(),
+        'gender' => $_user->getGender(), 
+        'street' => $_user->getStreet(),
+        'postalCode' => $_user->getPostcode(),
+        'city' => $_user->getLocation(),
+        'isPremium' => ''
+    );
 
-    }
+
+    $_wrongPassword = $_user->getPassword();
+
     //Check for Premium
-    echo $_user->isPremium($result_arr["user"]['id'], "");
+    $result_arr["user"]['isPremium'] = $_user->isPremium($result_arr["user"]['id'], "") ? true : false;
 
 
 

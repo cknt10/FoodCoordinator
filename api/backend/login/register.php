@@ -76,7 +76,7 @@ if(!$error) {
     
     //$error = $_user->checkLocation($_zip);
 
-    if(!$_user->checkLocation($_zip)){
+    if(!$_user->checkLocation($_zip, $_city)){
         //Create City Entry
         $_user->createLocation($_zip, $_city);
     }
@@ -140,13 +140,13 @@ if(!$error){
 }else{
 
     if($mailError){
-            // set response code - 500 Not found
-    http_response_code(401);
+        // set response code - 500 Not found
+        http_response_code(401);
 
-    // tell the user no result found
-    echo json_encode(
-        array("message" => "Email or Username already exits")
-    );
+        // tell the user no result found
+        echo json_encode(
+            array("message" => "Email or Username already exits")
+        );
 
     }else{
             // set response code - 500 Not found
