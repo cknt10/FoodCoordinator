@@ -406,26 +406,29 @@ class RegUser{
     /**
      *  
      * @param string $name Mail from Frontend
+     * @param string $username Username from Frontend
      * 
      * Return true if mail exists in DB
      * @return bool
      */
-    public function checkEmail($name)
+    public function checkUserExist($name = "", $username = "")
     {
         $_result = false;
         
             
         // select all query
-        $query = "SELECT * FROM user WHERE Mail = :Mail";
+        $query = "SELECT * FROM user WHERE Mail = :Mail OR Username = :Username";
 
         // prepare query statement
         $stmt = $this->_conn->prepare($query);
     
         // sanitize
         $name=htmlspecialchars(strip_tags($name));
+        $username=htmlspecialchars(strip_tags($username));
 
         // bind values
         $stmt->bindParam(":Mail", $name);
+        $stmt->bindParam(":Username", $username);
 
 
         // execute query
@@ -434,9 +437,7 @@ class RegUser{
         $_num = $stmt->rowCount();
 
         //If entry exists then Error
-        if($_num == 0) {
-            $this->_email = "";  
-        }else{
+        if($_num !== 0) {
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
@@ -446,6 +447,7 @@ class RegUser{
                 // just $name only
                 extract($row);
                 $this->_email = $Mail;
+                $this->_username = $Username;
                 //Set ID if not exist
                 if($this->_id == null){ $this->_id = $U_ID;}
                 $_result = true;
