@@ -33,7 +33,7 @@ import { BenefitsComponent } from './benefits/benefits.component';
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },
-      { path: 'benefits', component: BenefitsComponent }
+      { path: 'vorteile', component: BenefitsComponent }
     ]),
   ],
   providers: [
