@@ -17,7 +17,7 @@ $_user = new PremiumUser($db);
 $_user->setUsername("test");
 $passwort = "123456";
 // query products
-$num = $_user->login();
+$num = $_user->login("", "test");
   
 // check if more than 0 record found
 if($num>0){

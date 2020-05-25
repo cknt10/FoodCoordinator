@@ -620,7 +620,14 @@ class RegUser{
         return $result;
     }
 
-    public function login()
+    /**
+     * @param string $username 
+     * @param string $mail
+     * 
+     * @return int cout of entries
+     */
+
+    public function login($username = "", $mail ="")
     {
         // select all query
         $query = "SELECT * FROM user WHERE Username = :Username OR Mail = :Mail";
@@ -629,12 +636,12 @@ class RegUser{
         $stmt = $this->_conn->prepare($query);
     
         // sanitize
-        $this->_username=htmlspecialchars(strip_tags($this->_username));
-        $this->_email=htmlspecialchars(strip_tags($this->_email));
+        $username=htmlspecialchars(strip_tags($username));
+        $mail=htmlspecialchars(strip_tags($mail));
 
         // bind values
-        $stmt->bindParam(":Username", $this->_username);
-        $stmt->bindParam(":Mail", $this->_email);
+        $stmt->bindParam(":Username", $username);
+        $stmt->bindParam(":Mail", $mail);
 
         // execute query
         $stmt->execute();
