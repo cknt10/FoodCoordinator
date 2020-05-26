@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenicationService } from '../authenication.service'
 
 @Component({
   selector: 'app-login',
@@ -7,16 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  username: string;
-  password: string;
+  username: String;
+  password: String;
 
-  constructor() { }
+  constructor(private wert: AuthenicationService) { }
 
   ngOnInit(): void {
   }
 
   loginUser(){
-    if (this.username == "test" && this.password == "test"){
+
+    console.log('start logging');
+
+    this.username=this.wert.getUser();
+
+    console.log("login successfull");
+
+
+
+   /* if (this.username == "test" && this.password == "test"){
       window.alert ("Sie sind nun eingeloggt!");
       this.username = "";
       this.password = "";
@@ -25,7 +35,7 @@ export class LoginComponent implements OnInit {
       window.alert ("Falsche Login Daten, bitte versuchen Sie es erneut!");
       this.username = "";
       this.password = "";
-    }
+    }*/
   }
 
 }
