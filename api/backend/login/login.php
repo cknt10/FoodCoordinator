@@ -11,13 +11,22 @@ include_once '../../classes/premiumuser.php';
 // instantiate database and product object
 $database = new Connection();
 $db = $database->connection();
-  
+
+// Get the posted data.
+$postdata = file_get_contents("php://input");
+
+if(isset($postdata) && !empty($postdata))
+{
+  // Extract the data.
+  $request = json_decode($postdata);
+  echo $request . '\n';
+}
 // initialize object
 $_user = new PremiumUser($db);
 $_user->setUsername("test");
 $passwort = "123456";
 // query products
-$num = $_user->login("", "test");
+$num = $_user->login("test", "");
   
 // check if more than 0 record found
 if($num>0){
@@ -26,7 +35,7 @@ if($num>0){
     $_wrongPassword = "";
     
   
-  
+    $result_arr["message"] = "Wrong Username or Password";
     $result_arr["user"] =array(
         'id' => $_user->getId(), 
         'username' => $_user->getUsername(),

@@ -50,7 +50,7 @@ class RegUser{
      */
     private $_street;
     /**
-     * @var string
+     * @var date
      */
     private $_birthday;
     /**
@@ -664,7 +664,7 @@ class RegUser{
                 $this->_email = $Mail;
                 $this->_firstname = $FirstName;
                 $this->_name = $Name;
-                $this->_birthday = $Birthdady;
+                $this->_birthday = $Birthday;
                 $this->_gender = $Gender;
                 $this->_street = $Street;
                 $this->_password = $Password;
