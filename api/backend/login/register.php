@@ -14,6 +14,7 @@ $_user = new RegUser($db);
 
 
 $error = false;
+$mailError = false;
 $result = array();
 $insertResult = "";
 
@@ -64,7 +65,8 @@ if($_password != $passwort2) {
 
 //Check Email exist
 if(!$error) { 
-    $error = $_user->checkEmail($_email); 
+    $error = $_user->checkUserExist($_email, $_username); 
+    if($error){$mailError = true;}
 }
 
  
@@ -74,7 +76,7 @@ if(!$error) {
     
     //$error = $_user->checkLocation($_zip);
 
-    if(!$_user->checkLocation($_zip)){
+    if(!$_user->checkLocation($_zip, $_city)){
         //Create City Entry
         $_user->createLocation($_zip, $_city);
     }
@@ -136,13 +138,27 @@ if(!$error){
     // show result data in json format
     echo json_encode($result);
 }else{
-    // set response code - 404 Not found
+
+    if($mailError){
+        // set response code - 500 Not found
+        http_response_code(401);
+
+        // tell the user no result found
+        echo json_encode(
+            array("message" => "Email or Username already exits")
+        );
+
+    }else{
+            // set response code - 500 Not found
     http_response_code(500);
 
     // tell the user no result found
     echo json_encode(
         array("message" => "Internal Server Error")
     );
+    }
+
+
 }
 
 

@@ -1,36 +1,36 @@
 <?php
-require_once('nutrients.php');
+include_once 'nutrient.php';
 
 
 class Ingredient{
     /**
      * @var int
      */
-    private int $id;
+    private $id;
     /**
      * @var int
      */
-    private int $amount;
+    private $amount;
     /**
      * @var string
      */
-    private string $unit;
+    private $unit;
     /**
      * @var string
      */
-    private string $description;
+    private $description;
     /**
      * @var array
      */
-    private array $nutrients;
+    private $nutrients;
     /**
      * @var float
      */
-    private float $alc;
+    private $alc;
     /**
      * @var string
      */
-    private string $type;
+    private $type;
 
     
 
@@ -65,7 +65,7 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -89,7 +89,7 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setAmount(int $amount)
+    public function setAmount($amount)
     {
         $this->amount = $amount;
 
@@ -113,7 +113,7 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setUnit(string $unit)
+    public function setUnit($unit)
     {
         $this->unit = $unit;
 
@@ -137,7 +137,7 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -171,7 +171,7 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setAlc(float $alc)
+    public function setAlc($alc)
     {
         $this->alc = $alc;
 
@@ -195,7 +195,7 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setType(string $type)
+    public function setType($type)
     {
         $this->type = $type;
 
@@ -209,7 +209,7 @@ class Ingredient{
      * 
      * @return self
      */
-    public function createNutrients(Nutrient $nutrient){
+    public function createNutrients($nutrient){
         if($this->nutrients){ return $this;}
         $this->nutrients.push($nutrient);
         return $this;
@@ -223,7 +223,7 @@ class Ingredient{
      * 
      * @return self
      */
-    public function changeNutrients(string $name, float $value){
+    public function changeNutrients($name, $value){
         $this->nutrients[$name] = $value;
         return $this;
     }
@@ -235,7 +235,7 @@ class Ingredient{
      * 
      * @return self
      */
-    public function removeNutrion(string $name){
+    public function removeNutrion($name){
         $_nutrient = $this->nutrients[$name];
 
         $key= array_search($_nutrient, $this->nutrients);

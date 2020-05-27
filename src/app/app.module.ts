@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { RegComponent } from './reg/reg.component';
-import { VorteileComponent } from './vorteile/vorteile.component';
+import { BenefitsComponent } from './benefits/benefits.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,7 @@ import { VorteileComponent } from './vorteile/vorteile.component';
     HeaderComponent,
     LoginComponent,
     RegComponent,
-    VorteileComponent,
+    BenefitsComponent,
 
   ],
   imports: [
@@ -32,7 +32,7 @@ import { VorteileComponent } from './vorteile/vorteile.component';
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },
-      { path: 'vorteile', component: VorteileComponent }
+      { path: 'vorteile', component: BenefitsComponent }
     ]),
   ],
   providers: [
