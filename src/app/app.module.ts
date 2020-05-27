@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { from } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';

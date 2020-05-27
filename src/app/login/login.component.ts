@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenicationService } from '../authenication.service'
+import { User } from '../User';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,9 @@ export class LoginComponent implements OnInit {
 
     console.log('start logging');
 
-    this.username=this.wert.getUser();
+    console.log(this.wert.gethim().username);
+
+
 
     console.log("login successfull");
 
