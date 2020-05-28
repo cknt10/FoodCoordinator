@@ -13,6 +13,7 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { RegComponent } from './reg/reg.component';
 import { BenefitsComponent } from './benefits/benefits.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { BenefitsComponent } from './benefits/benefits.component';
     LoginComponent,
     RegComponent,
     BenefitsComponent,
+    FooterComponent,
 
   ],
   imports: [
