@@ -14,7 +14,8 @@ import * as tabelle from 'testnutzer.json';
 export class AuthenicationService {
 
 
-private UserData: User;
+private  UserData: User;
+private convert: User;
 
 
   constructor(private reqService: LoginReqService, private http: HttpClient) {
@@ -42,26 +43,38 @@ setUserData(): Observable<User>{
 
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*  async getUser(){
+ getUser(){
 
-    this.setUserData().subscribe((res: User) => {
-      this.ConvertedUserData = res;
-    },
-    (err) => {
-      this.error= err;
-    }
-    );
+  this.reqService.getServerLoginData().subscribe((data: User) =>{
 
-    console.log("Auslesen erfolreich");
 
-    return this.UserData;
-} */
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+    this.UserData=data['user'];
 
- gethim(){
-  this.UserData =
-   new User (tabelle.id, tabelle.username,tabelle.email,tabelle.firstname,tabelle.name,tabelle.birthday,tabelle.gender,tabelle.street)
+   // this.UserData = new User (data.id, data.username, data.email, data.firstname, data.name,
+     // data.birthday, data.gender, data.street, data.postalCode, data.city, data.isPremium);
+//this.UserData= new User(data);
+console.log(this.UserData);
+
+
+  }), error => {
+    console.log('Dat mit der Entfaltung klappt noch nich so gut');
+  };
+  ;
+
+ /*this.UserData = new User (this.convert.id, this.convert.username, this.convert.email, this.convert.firstname, this.convert.name,
+    this.convert.birthday, this.convert.gender, this.convert.street, this.convert.postalCode, this.convert.city, this.convert.isPremium);*/
+    console.log('bis hierher klappts');
+    //console.log(this.UserData);
 
   return this.UserData;
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+ gethim(){
+  this.UserData =
+   new User (tabelle.id, tabelle.username,tabelle.email,tabelle.firstname,
+    tabelle.name,tabelle.birthday,tabelle.gender,tabelle.street, tabelle.postalCode, tabelle.city, tabelle.isPremium)
+
+  return this.UserData;
+}*/
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenicationService } from '../authenication.service'
 import { User } from '../User';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -17,11 +18,13 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  loginUser(){
+  async loginUser(){
 
     console.log('start logging');
 
-    console.log(this.wert.gethim().username);
+    //console.log(this.wert.gethim().postalCode);
+
+    console.log(this.wert.getUser().postalCode);
 
 
 

@@ -7,5 +7,8 @@
   "name": "Pantheon",
   "birthday": "11-10-1992",
   "gender": "male",
-  "street": "bakery_street"
+  "street": "bakery_street",
+  "postalCode": 61169,
+  "city": "Friedberg",
+  "isPremium": false
 }
