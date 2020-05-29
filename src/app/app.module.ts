@@ -12,6 +12,9 @@ import { HeaderComponent } from './header/header.component';
 import { LoginComponent } from './login/login.component';
 import { RegComponent } from './reg/reg.component';
 import { BenefitsComponent } from './benefits/benefits.component';
+import { FooterComponent } from './footer/footer.component';
+import { ImpressumComponent } from './footer/impressum/impressum.component';
+import { DatenschutzComponent } from './footer/datenschutz/datenschutz.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,9 @@ import { BenefitsComponent } from './benefits/benefits.component';
     LoginComponent,
     RegComponent,
     BenefitsComponent,
+    FooterComponent,
+    ImpressumComponent,
+    DatenschutzComponent,
 
   ],
   imports: [
@@ -32,7 +38,9 @@ import { BenefitsComponent } from './benefits/benefits.component';
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },
-      { path: 'vorteile', component: BenefitsComponent }
+      { path: 'benefits', component: BenefitsComponent },
+      { path: 'impressum', component: ImpressumComponent },
+      { path: 'datenschutz', component: DatenschutzComponent }
     ]),
   ],
   providers: [
