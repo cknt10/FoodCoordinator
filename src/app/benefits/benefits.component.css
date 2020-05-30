@@ -8,6 +8,16 @@
   font-size: 14px;
 }
 
+#imgcontainer{
+position: absolute;
+}
+
+img{
+  width: 40%;
+  height: auto;
+position: relative;
+bottom: 7em;
+}
 
 h2{
   font-family: "Century Gothic", sans-serif;
