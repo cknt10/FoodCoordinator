@@ -20,12 +20,14 @@ export class LoginComponent implements OnInit {
   }
 
 ///////////////////////////////////////////////////////////http request to get user and password///////////////////////////////////////////////////////////////////
- async loginUser(username: String, password: String){
+ async loginUser(){
 
     console.log('start logging...');
 
 //add parameter username and password
-  this.authentication.getUser();
+
+
+   console.log((await this.authentication.setUserData()).getFirstname());
 
   }
 }

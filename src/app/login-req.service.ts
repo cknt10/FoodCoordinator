@@ -14,7 +14,7 @@ export class LoginReqService {
   ) { }
 
 ///////////////////////////////////////HTTP-Request method//////////////////////////////////////////////////////////////////
-getServerLoginData(): Observable<User>{
+ getServerLoginData(): Promise<User>{
 
 console.log("frage Server an");
 
@@ -26,7 +26,9 @@ const httpOptions = {
   })
 };
 
-const anfragelink=this.http.get<User>('http://xcsd.ddns.net/api/backend/login/login.php' /*, httpOptions*/);//to-post including incoming parameter: username, password
+const anfragelink=this.http.get<User>('http://xcsd.ddns.net/api/backend/login/login.php' /*, httpOptions*/).toPromise();
+
+//to-post including incoming parameter: username, password
 
 console.log("request finished");
 

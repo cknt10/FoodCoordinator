@@ -26,12 +26,12 @@ public UserData: User;
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 // set data from json to new user
-async setUserData(){
+async setUserData(): Promise<User>{
 
-  this.reqService.getServerLoginData().subscribe((data: User) =>{
+  await this.reqService.getServerLoginData().then((data: User) =>{
 
 
-    this.UserData=new User (data['user']);
+   this.UserData=new User (data['user']);
 
     console.log(this.UserData);
 
@@ -44,12 +44,14 @@ async setUserData(){
 
  console.log('bis hierher klappts');
 
+ return this.UserData;
+
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 //get user data
 async getUser(){
   if(this.UserData==null){
-    this.setUserData();
+    await this.setUserData();
   }
   return this.UserData;
 }
