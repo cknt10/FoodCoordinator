@@ -3,21 +3,20 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './User';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class LoginReqService {
 
-  //private serverUrl = '../../api/backend/login';
-
   constructor(
     private http: HttpClient
   ) { }
 
+///////////////////////////////////////HTTP-Request method//////////////////////////////////////////////////////////////////
+getServerLoginData(): Observable<User>{
 
-getServerLoginData(){
-
-  console.log("frage Server an");
+console.log("frage Server an");
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -25,16 +24,14 @@ const httpOptions = {
     'username': 'test',
     'password': '123456'
   })
-
 };
 
-  //return  this.http.get(`${this.serverUrl}/login.php`, httpOptions);
-  console.log('Du bist jetzt hier');
-  //console.log(this.http.get('http://xcsd.ddns.net/api/backend/login/login.php' /*, httpOptions*/));
-  return  this.http.get('http://xcsd.ddns.net/api/backend/login/login.php' /*, httpOptions*/);
+const anfragelink=this.http.get<User>('http://xcsd.ddns.net/api/backend/login/login.php' /*, httpOptions*/);//to-post including incoming parameter: username, password
+
+console.log("request finished");
+
+return anfragelink;
 }
-
-
 
 
 
