@@ -10,6 +10,7 @@ include_once '../sql/coni.php';
 include_once '../../classes/recipe.php';
 include_once '../../classes/rating.php';
 include_once '../../classes/ingredient.php';
+include_once '../../classes/nutrient.php';
 
 //instantiate database and product object
 $database = new Connection();
@@ -50,6 +51,8 @@ function search($keywords, $conn){
                             keywords.KW_ID, 
                             food.F_ID, 
                             food.F_Descr, 
+                            ingredient.Amount AS IngredientAmount,
+                            ingredient.Unit AS IngredientUnit,
                             keywords.KW_Name, 
                             BananaAmount, 
                             Comment, 
@@ -142,13 +145,21 @@ if($num > 0){
       $_recipe->setDifficulty($Difficulty);
       $_recipe->setCertified($certified);
       $_recipe->setKeywords(array($KW_Name));
-      $_recipe->setIngredients("TODO");
+
       $_recipe->setServings($servings);
       $_recipe->setType("TODO");
       $_recipe->setCreatedUser($U_ID);
       
       $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
       $_recipe->addRating($_rating->getObjectAsArray());
+
+      $_ingredient = new Ingredient();
+      $_ingredient->setId($F_ID);
+      $_ingredient->setDescription($F_Descr);
+      $_ingredient->setAmount($IngredientAmount);
+      $_ingredient->setUnit($IngredientUnit);
+
+      $_recipe->setIngredients($_ingredient->getObjectAsArray());
 
       // $_item["ingredient"] = array(
         
