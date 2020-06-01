@@ -59,7 +59,7 @@ class Recipe{
     /**
      * @var Ingredient[]
      */
-    private $_ingredients;
+    private $_ingredients = array();
     /**
      * @var float
      */
@@ -75,7 +75,7 @@ class Recipe{
     /**
      * @var Rating[]
      */
-    private $_ratings;
+    private $_ratings = array();
 
 
     /**
@@ -576,6 +576,27 @@ class Recipe{
         return $this->_ingredients;
     }
 
+        /**
+     * Add an Ingredient to the Recipe
+     * 
+     * @param Ingredient $ingredient
+     * 
+     */
+    public function addRating($rating){
+        array_push($this->_ratings, $rating);
+    }
+
+    /**
+     * Remove Ingredient from the Recipe
+     * 
+     * @param Ingredient $ingredient
+     * 
+     * @return Ingredient[]
+     */
+    public function removeRating($rating){
+        //TODO 
+    }
+
     /**
      * Get this Object as Array for JSON import
      * 
@@ -583,9 +604,14 @@ class Recipe{
      */
     public function getObjectAsArray()
     {
+        //TODOs
+        //order ratings by Creation Date
+        //order keywords 
+        //calculate ratins for this recipe
         return array(
             "id" => $this->_id,
             "title" => $this->_title,
+            "picture" => $this->_picture,
             "servings" => $this->_servings,
             "description" => $this->_description,
             "instruction" => $this->_instruction,
