@@ -67,10 +67,6 @@ class Recipe{
     /**
      * @var string
      */
-    private $_type;
-    /**
-     * @var string
-     */
     private $_createdUser;
     /**
      * @var Rating[]
@@ -437,30 +433,6 @@ class Recipe{
     }
 
     /**
-     * Get the value of type
-     *
-     * @return  string
-     */ 
-    public function getType()
-    {
-        return $this->_type;
-    }
-
-    /**
-     * Set the value of type
-     *
-     * @param  string  $type
-     *
-     * @return  self
-     */ 
-    public function setType($type)
-    {
-        $this->_type = $type;
-
-        return $this;
-    }
-
-    /**
      * Get the value of createdUser
      *
      * @return  string
@@ -625,7 +597,6 @@ class Recipe{
             "rating" => $this->_rating,
             "ratings" => $this->_ratings,
             "ingredients" => $this->_ingredients,
-            "type" => $this->_type
           );
     }
 

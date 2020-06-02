@@ -146,9 +146,7 @@ if($num > 0){
       $_recipe->setDifficulty($Difficulty);
       $_recipe->setCertified($certified);
       $_recipe->setKeywords(array($KW_Name));
-
       $_recipe->setServings($servings);
-      $_recipe->setType("TODO");
       $_recipe->setCreatedUser($U_ID);
       
       $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
@@ -166,7 +164,7 @@ if($num > 0){
       $_nutrient->setUnit($N_Unit);
       $_nutrient->setAmount($N_Amount);
       
-      
+
       $_ingredient->addNutrient($_nutrient->getObjectAsArray());
       $_recipe->setIngredients($_ingredient->getObjectAsArray());
 
