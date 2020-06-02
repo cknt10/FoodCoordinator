@@ -110,6 +110,8 @@ function search($keywords, $conn){
 $searchResults = search($testData, $db);
 $num = $searchResults->rowCount();
 $_lastID = -1;
+$_lastIngredientId = -1;
+$_lastNutrientId = -1;
 $_index = -1;
 
 if($num > 0){
@@ -164,13 +166,14 @@ if($num > 0){
       $_ingredient->setDescription($F_Descr);
       $_ingredient->setAmount($IngredientAmount);
       $_ingredient->setUnit($IngredientUnit);
+      $_lastIngredientId = $F_ID;
 
       $_nutrient = new Nutrient();
       $_nutrient->setId($N_ID);
       $_nutrient->setDescription($N_Descr);
       $_nutrient->setUnit($N_Unit);
       $_nutrient->setAmount($N_Amount);
-      
+      $_lastNutrientId = $N_ID;
 
       $_ingredient->addNutrient($_nutrient->getObjectAsArray());
       $_recipe->setIngredients($_ingredient->getObjectAsArray());
@@ -185,6 +188,36 @@ if($num > 0){
 
       $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
       $_recipe->addRating($_rating->getObjectAsArray());
+
+      //Check if new Ingredient
+      if($_lastIngredientId != $F_ID){
+        $_lastIngredientId = $F_ID;
+
+        $_ingredient = new Ingredient();
+        $_ingredient->setId($F_ID);
+        $_ingredient->setDescription($F_Descr);
+        $_ingredient->setAmount($IngredientAmount);
+        $_ingredient->setUnit($IngredientUnit);
+
+        if($_lastNutrientId != $N_ID){
+          $_lastNutrientId = $N_ID;
+
+          $_nutrient = new Nutrient();
+          $_nutrient->setId($N_ID);
+          $_nutrient->setDescription($N_Descr);
+          $_nutrient->setUnit($N_Unit);
+          $_nutrient->setAmount($N_Amount);
+
+          $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+        }
+
+
+        $_recipe->addIngredient($_ingredient->getObjectAsArray());
+      }else{
+        //TODO extend ingredient and filter NULL
+      }
+
+
 
       //Update object
       $searchArray["recipe"][$_index] = $_recipe->getObjectAsArray(); 
