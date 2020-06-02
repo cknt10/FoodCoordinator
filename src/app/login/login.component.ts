@@ -26,8 +26,9 @@ export class LoginComponent implements OnInit {
 
 //add parameter username and password
 
-
    console.log((await this.authentication.setUserData()).getFirstname());
+   }
 
-  }
+
+
 }

@@ -77,7 +77,6 @@ getEmail(){
   return this.email;
 }
 getFirstname(){
-  console.log("Firstname: " + this.firstname );
   return this.firstname;
 }
 getName(){
