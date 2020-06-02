@@ -55,7 +55,7 @@ class Recipe{
     /**
      * @var string[]
      */
-    private $_keywords;
+    private $_keywords  = array();
     /**
      * @var Ingredient[]
      */
@@ -493,14 +493,19 @@ class Recipe{
     }
 
     /**
-     * Add a new Keyword to the Array
+     * Add a new keyword to the array distinct
      * 
      * @param string $name
      * 
      * @return array
      */
     public function addKeyword($name){
-        $this->_keywords.push($name);
+        if(count($this->_keywords) > 0){
+            if(in_array($name, $this->_keywords)){
+                return $this->_keywords;
+            }
+        }
+        array_push($this->_keywords, $name);
 
         return $this->_keywords;
     }
@@ -523,13 +528,18 @@ class Recipe{
     }
 
     /**
-     * Add an Ingredient to the Recipe
+     * Add an ingredient to the recipe distinct
      * 
      * @param Ingredient $ingredient
      * 
      */
     public function addIngredient($ingredient){
-        $this->_ingredients.push($ingredient);
+        if(count($this->_ingredients) > 0){
+            if(in_array($ingredient, $this->_ingredients)){
+                return $this->_ingredients;
+            }
+        }
+        array_push($this->_ingredients, $ingredient);
     }
 
     /**
@@ -548,13 +558,18 @@ class Recipe{
         return $this->_ingredients;
     }
 
-        /**
-     * Add an Ingredient to the Recipe
+    /**
+     * Add an rating to the recipe distinct
      * 
      * @param Ingredient $ingredient
      * 
      */
     public function addRating($rating){
+        if(count($this->_ratings) > 0){
+            if(in_array($rating, $this->_ratings)){
+                return $this->_ratings;
+            }
+        }
         array_push($this->_ratings, $rating);
     }
 

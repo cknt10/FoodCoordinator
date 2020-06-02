@@ -210,7 +210,11 @@ class Ingredient{
      * @return self
      */
     public function addNutrient($nutrient){
-
+        if(count($this->_nutrients) > 0){
+            if(in_array($nutrient, $this->_nutrients)){
+                return $this->_nutrients;
+            }
+        }
         array_push($this->_nutrients, $nutrient);
         return $this;
     }

@@ -110,12 +110,18 @@ function search($keywords, $conn){
 $searchResults = search($testData, $db);
 $num = $searchResults->rowCount();
 $_lastID = -1;
+$_index = -1;
 
 if($num > 0){
-//   //Analyze search results
+  //Analyze search results
   $searchArray=array();
   $searchArray["recipe"]=array();
-
+  
+  //initiate variable
+  // $_recipe;
+  // $_rating;
+  // $_ingredient;
+  // $_nutrient;
 
   // retrieve our table contents
   // fetch() is faster than fetchAll()
@@ -131,6 +137,7 @@ if($num > 0){
     if($_lastID != $R_ID){
       //unique recipe id
       $_lastID = $R_ID;
+      $_index++;
 
       //instantiate classes
       $_recipe = new Recipe();
@@ -145,7 +152,7 @@ if($num > 0){
       $_recipe->setLastChange($LastChange);
       $_recipe->setDifficulty($Difficulty);
       $_recipe->setCertified($certified);
-      $_recipe->setKeywords(array($KW_Name));
+      $_recipe->addKeyword($KW_Name);
       $_recipe->setServings($servings);
       $_recipe->setCreatedUser($U_ID);
       
@@ -169,14 +176,23 @@ if($num > 0){
       $_recipe->setIngredients($_ingredient->getObjectAsArray());
 
       $_item = $_recipe->getObjectAsArray(); 
+      array_push($searchArray["recipe"], $_item);
     }else{
       //same recipe id therefore extend properties
 
+      //Extend object
+      $_recipe->addKeyword($KW_Name);
 
+      $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
+      $_recipe->addRating($_rating->getObjectAsArray());
 
+      //Update object
+      $searchArray["recipe"][$_index] = $_recipe->getObjectAsArray(); 
+      
     }
 
-    array_push($searchArray["recipe"], $_item);
+    
+    
 
 
   }
