@@ -61,7 +61,8 @@ function search($keywords, $conn){
                             FavDate, 
                             FavGroup, 
                             foodHasNutrients.N_ID, 
-                            nutrients.N_Descr, 
+                            nutrients.N_Descr,
+                            nutrients.N_Unit,  
                             foodHasNutrients.N_Amount
                     FROM recipe r 
                       LEFT join recipeHasKeywords
@@ -159,17 +160,17 @@ if($num > 0){
       $_ingredient->setAmount($IngredientAmount);
       $_ingredient->setUnit($IngredientUnit);
 
+      $_nutrient = new Nutrient();
+      $_nutrient->setId($N_ID);
+      $_nutrient->setDescription($N_Descr);
+      $_nutrient->setUnit($N_Unit);
+      $_nutrient->setAmount($N_Amount);
+      
+      
+      $_ingredient->addNutrient($_nutrient->getObjectAsArray());
       $_recipe->setIngredients($_ingredient->getObjectAsArray());
 
-      // $_item["ingredient"] = array(
-        
-
-      // );
-      // $_item["ingredient"]["nutrient"] = array(
-
-      // );
-      $_item = $_recipe->getObjectAsArray();
-      array_push($searchArray["recipe"], $_item);
+      $_item = $_recipe->getObjectAsArray(); 
     }else{
       //same recipe id therefore extend properties
 
@@ -177,7 +178,7 @@ if($num > 0){
 
     }
 
-
+    array_push($searchArray["recipe"], $_item);
 
 
   }

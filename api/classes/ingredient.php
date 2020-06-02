@@ -26,7 +26,7 @@ class Ingredient{
     /**
      * @var array
      */
-    private $_nutrients;
+    private $_nutrients = array();
     
 
     /**
@@ -209,7 +209,7 @@ class Ingredient{
      * 
      * @return self
      */
-    public function createNutrients($nutrient){
+    public function addNutrient($nutrient){
 
         array_push($this->_nutrients, $nutrient);
         return $this;
