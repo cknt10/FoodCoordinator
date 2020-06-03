@@ -10,12 +10,14 @@ import { from } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { LoginComponent } from './login/login.component';
-import { RegComponent } from './reg/reg.component';
-import { BenefitsComponent } from './benefits/benefits.component';
+import { LoginComponent } from './header/login/login.component';
+import { RegComponent } from './header/reg/reg.component';
+import { BenefitsComponent } from './header/benefits/benefits.component';
 import { FooterComponent } from './footer/footer.component';
 import { ImpressumComponent } from './footer/impressum/impressum.component';
 import { DatenschutzComponent } from './footer/datenschutz/datenschutz.component';
+import { ContentComponent } from './content/content.component';
+import { SearchComponent } from './content/search/search.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { DatenschutzComponent } from './footer/datenschutz/datenschutz.component
     FooterComponent,
     ImpressumComponent,
     DatenschutzComponent,
+    ContentComponent,
+    SearchComponent,
 
   ],
   imports: [
