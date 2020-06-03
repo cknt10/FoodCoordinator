@@ -16,6 +16,8 @@ import { BenefitsComponent } from './benefits/benefits.component';
 import { FooterComponent } from './footer/footer.component';
 import { ImpressumComponent } from './footer/impressum/impressum.component';
 import { DatenschutzComponent } from './footer/datenschutz/datenschutz.component';
+import { ContentComponent } from './content/content.component';
+import { SearchComponent } from './content/search/search.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { DatenschutzComponent } from './footer/datenschutz/datenschutz.component
     FooterComponent,
     ImpressumComponent,
     DatenschutzComponent,
+    ContentComponent,
+    SearchComponent,
 
   ],
   imports: [
