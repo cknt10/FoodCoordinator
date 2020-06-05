@@ -26,13 +26,13 @@ const httpOptions = {
   })
 };
 
-const anfragelink=this.http.get<User>('http://xcsd.ddns.net/api/backend/login/login.php' /*, httpOptions*/).toPromise();
+const anfrageLink='http://xcsd.ddns.net/api/backend/login/login.php';
 
 //to-post including incoming parameter: username, password
 
 console.log("request finished");
 
-return anfragelink;
+return this.http.get<User>(anfrageLink/*, httpOptions*/).toPromise();
 }
 
 

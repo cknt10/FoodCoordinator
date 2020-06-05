@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
   password: String;
 
   constructor(
-    private authentication: AuthenticationService
+    private authenticationService: AuthenticationService
     ) { }
 
   ngOnInit(): void {
@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
 
 //add parameter username and password
 
-   console.log((await this.authentication.setUserData()).getFirstname());
+   console.log((await this.authenticationService.setUserData()).getFirstname());
    }
 
 
