@@ -41,7 +41,7 @@ import { SearchComponent } from './content/search/search.component';
     MatButtonModule,
     MatIconModule,
     RouterModule.forRoot([
-      { path: 'home', component: ContentComponent },
+      { path: 'home', component: SearchComponent },
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },
       { path: 'benefits', component: BenefitsComponent },
