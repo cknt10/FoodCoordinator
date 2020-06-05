@@ -561,7 +561,7 @@ class Recipe{
     /**
      * Add an rating to the recipe distinct
      * 
-     * @param Ingredient $ingredient
+     * @param Rating $ingredient
      * 
      */
     public function addRating($rating){
@@ -576,9 +576,9 @@ class Recipe{
     /**
      * Remove Ingredient from the Recipe
      * 
-     * @param Ingredient $ingredient
+     * @param Rating $ingredient
      * 
-     * @return Ingredient[]
+     * @return Rating[]
      */
     public function removeRating($rating){
         //TODO 

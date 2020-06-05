@@ -210,12 +210,19 @@ class Ingredient{
      * @return self
      */
     public function addNutrient($nutrient){
+        $unique = true;
         if(count($this->_nutrients) > 0){
-            if(in_array($nutrient, $this->_nutrients)){
-                return $this->_nutrients;
+            for($i = 0; $i < count($this->_nutrients); $i++){
+                if($this->_nutrients[$i]["id"] == $nutrient["id"]){
+                    $unique = false;
+                }
             }
         }
-        array_push($this->_nutrients, $nutrient);
+        
+        if($unique){
+            array_push($this->_nutrients, $nutrient);
+        }
+
         return $this;
     }
 

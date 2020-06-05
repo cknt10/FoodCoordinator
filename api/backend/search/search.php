@@ -113,11 +113,13 @@ $_lastID = -1;
 $_lastIngredientId = -1;
 $_lastNutrientId = -1;
 $_index = -1;
+$_ingredientindex = -1;
 
 if($num > 0){
   //Analyze search results
   $searchArray=array();
   $searchArray["recipe"]=array();
+  $_ingredient = new Ingredient();
   
   //initiate variable
   // $_recipe;
@@ -133,13 +135,14 @@ if($num > 0){
     // this will make $row['name'] to
     // just $name only
     extract($row);
-
+    $_changesingredient = false;
 
     //remember last recipe Id for push
     if($_lastID != $R_ID){
       //unique recipe id
       $_lastID = $R_ID;
       $_index++;
+      $_ingredientindex++;
 
       //instantiate classes
       $_recipe = new Recipe();
@@ -176,7 +179,7 @@ if($num > 0){
       $_lastNutrientId = $N_ID;
 
       $_ingredient->addNutrient($_nutrient->getObjectAsArray());
-      $_recipe->setIngredients($_ingredient->getObjectAsArray());
+      $_recipe->addIngredient($_ingredient->getObjectAsArray());
 
       $_item = $_recipe->getObjectAsArray(); 
       array_push($searchArray["recipe"], $_item);
@@ -190,8 +193,10 @@ if($num > 0){
       $_recipe->addRating($_rating->getObjectAsArray());
 
       //Check if new Ingredient
-      if($_lastIngredientId != $F_ID){
+      if($_lastIngredientId != $F_ID || $_ingredientindex == -1){
         $_lastIngredientId = $F_ID;
+        $_ingredientindex++;
+        $_changesingredient = true;
 
         $_ingredient = new Ingredient();
         $_ingredient->setId($F_ID);
@@ -199,8 +204,28 @@ if($num > 0){
         $_ingredient->setAmount($IngredientAmount);
         $_ingredient->setUnit($IngredientUnit);
 
+        //new Nutrient
+
+        $_lastNutrientId = $N_ID;
+
+        $_nutrient = new Nutrient();
+        $_nutrient->setId($N_ID);
+        $_nutrient->setDescription($N_Descr);
+        $_nutrient->setUnit($N_Unit);
+        $_nutrient->setAmount($N_Amount);
+
+        //Add nutrient to ingredient
+        $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+
+        //Add ingredient to recipe
+        $_recipe->addIngredient($_ingredient->getObjectAsArray());
+      }else{
+        //TODO extend ingredient and filter NULL
+        $_changesingredient = false;
+        //Same ingredient check new nutrient
         if($_lastNutrientId != $N_ID){
           $_lastNutrientId = $N_ID;
+          $_changesingredient = true;
 
           $_nutrient = new Nutrient();
           $_nutrient->setId($N_ID);
@@ -208,16 +233,17 @@ if($num > 0){
           $_nutrient->setUnit($N_Unit);
           $_nutrient->setAmount($N_Amount);
 
+          //Update object
           $_ingredient->addNutrient($_nutrient->getObjectAsArray());
         }
 
-
-        $_recipe->addIngredient($_ingredient->getObjectAsArray());
-      }else{
-        //TODO extend ingredient and filter NULL
+        //Update ingredient in recipe if needed
+        if($_changesingredient && $_ingredientindex != -1){
+          $_update = $_recipe->getIngredients();
+          $_update[$_ingredientindex] = $_ingredient->getObjectAsArray();
+          $_recipe->setIngredients($_update);
+        }
       }
-
-
 
       //Update object
       $searchArray["recipe"][$_index] = $_recipe->getObjectAsArray(); 
