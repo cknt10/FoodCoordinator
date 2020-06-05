@@ -534,12 +534,18 @@ class Recipe{
      * 
      */
     public function addIngredient($ingredient){
+        $unique = true;
         if(count($this->_ingredients) > 0){
-            if(in_array($ingredient, $this->_ingredients)){
-                return $this->_ingredients;
+            for($i = 0; $i < count($this->_ingredients); $i++){
+                if($this->_ingredients[$i]["id"] == $ingredient["id"]){
+                    $unique = false;
+                }
             }
         }
-        array_push($this->_ingredients, $ingredient);
+        
+        if($unique){
+            array_push($this->_ingredients, $ingredient);
+        }
     }
 
     /**
