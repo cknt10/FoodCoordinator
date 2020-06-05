@@ -684,45 +684,17 @@ class RegUser{
     {
         # TODO Dustin: Alle Attribute aus diesem Objekt auf null setzen
 
-        // Update user attributes to NULL
-        $sql = "UPDATE user
-                SET Mail=NULL, Username=NULL, Password=NULL, FirstName=NULL, Name=NULL, Gender=NULL, Street=NULL, Birthday=NULL, C_ID=NULL
-                WHERE U_ID='$this->_id'";
+        $mail = null;
+        $username = null;
+        $password = null;
+        $firstname = null;
+        $name = null;
+        $gender = null;
+        $street = null;
+        $birthday = null;
+        $c_id = null;
 
-        // prepare query statement
-        $stmt= $this->_conn->prepare($sql);
-                // sanitize
-                $mail=htmlspecialchars(strip_tags($mail));
-                $username=htmlspecialchars(strip_tags($username));
-                $password=htmlspecialchars(strip_tags($password));
-                $firstname=htmlspecialchars(strip_tags($firstname));
-                $name=htmlspecialchars(strip_tags($name));
-                $gender=htmlspecialchars(strip_tags($gender));
-                $street=htmlspecialchars(strip_tags($street));
-                // bind values
-                $stmt->bindParam(NULL, $mail);
-                $stmt->bindParam(NULL, $username);
-                $stmt->bindParam(NULL, $passwort_hash);
-                $stmt->bindParam(NULL, $firstname);
-                $stmt->bindParam(NULL, $name);
-                $stmt->bindParam(NULL, $gender);
-                $stmt->bindParam(NULL, $street);
-                $stmt->bindParam(NULL, $birthday);
-                $stmt->bindParam(NULL, $c_id);
-        // execute query
-        $stmt->execute();
-
-        if ($db->query($sql) === TRUE){
-          echo "Clear erfolgreich";
-          $db = null;
-        }
-        else {
-          echo "Clear fehlgeschlagen";
-        }
     }
-
-
-
 }
 
 ?>
