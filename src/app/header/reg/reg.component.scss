@@ -37,6 +37,11 @@ input[type='text'] {
   margin: 0 auto;
   color: black;
   background-color: #FCA100;
+  text-align: center;
+  border: 0.5px solid #000000;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
 }
 label {
   display: block;

@@ -1,0 +1,21 @@
+.content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+#ergebnis{
+  height: auto;
+  background-color: yellow;
+}
+input {
+  width: 20%;
+  height: auto;
+}
+
+button {
+  margin-left: 3%;
+}
