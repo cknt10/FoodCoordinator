@@ -236,15 +236,14 @@ if($num > 0){
           //Update object
           $_ingredient->addNutrient($_nutrient->getObjectAsArray());
         }
-
-        //Update ingredient in recipe if needed
-        if($_changesingredient && $_ingredientindex != -1){
-          $_update = $_recipe->getIngredients();
-          $_update[$_ingredientindex] = $_ingredient->getObjectAsArray();
-          $_recipe->setIngredients($_update);
-        }
       }
 
+      //Update ingredient in recipe if needed
+      if($_changesingredient && $_ingredientindex != -1){
+        $_update = $_recipe->getIngredients();
+        $_update[$_ingredientindex] = $_ingredient->getObjectAsArray();
+        $_recipe->setIngredients($_update);
+      }
       //Update object
       $searchArray["recipe"][$_index] = $_recipe->getObjectAsArray(); 
       
