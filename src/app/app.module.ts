@@ -10,9 +10,14 @@ import { from } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { LoginComponent } from './login/login.component';
-import { RegComponent } from './reg/reg.component';
-import { BenefitsComponent } from './benefits/benefits.component';
+import { LoginComponent } from './header/login/login.component';
+import { RegComponent } from './header/reg/reg.component';
+import { BenefitsComponent } from './header/benefits/benefits.component';
+import { FooterComponent } from './footer/footer.component';
+import { ImpressumComponent } from './footer/impressum/impressum.component';
+import { DatenschutzComponent } from './footer/datenschutz/datenschutz.component';
+import { ContentComponent } from './content/content.component';
+import { SearchComponent } from './content/search/search.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +26,11 @@ import { BenefitsComponent } from './benefits/benefits.component';
     LoginComponent,
     RegComponent,
     BenefitsComponent,
+    FooterComponent,
+    ImpressumComponent,
+    DatenschutzComponent,
+    ContentComponent,
+    SearchComponent,
 
   ],
   imports: [
@@ -31,9 +41,12 @@ import { BenefitsComponent } from './benefits/benefits.component';
     MatButtonModule,
     MatIconModule,
     RouterModule.forRoot([
+      { path: 'home', component: SearchComponent },
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },
-      { path: 'vorteile', component: BenefitsComponent }
+      { path: 'benefits', component: BenefitsComponent },
+      { path: 'impressum', component: ImpressumComponent },
+      { path: 'datenschutz', component: DatenschutzComponent }
     ]),
   ],
   providers: [
