@@ -678,12 +678,10 @@ class RegUser{
     }
 
     /**
-     *
+     *Clear the User
      */
     public function clearUser()
     {
-      # TODO Dustin: Alle Attribute aus diesem Objekt auf null setzen
-
       $this->_conn = null;
       $this->_cityId = null;
       $this->_id = null;
@@ -700,7 +698,17 @@ class RegUser{
       $this->_orders = null;
       $this->_recipes = null;
       $this->_loggedin = null;
+    }
 
+    /**
+     * Get this Object as Array for JSON import
+     * 
+     * @return array of this Class
+     */
+    public function getObjectAsArray()
+    {
+        //TODO Dustin: Alle Attribute aus diesem Objekt außer _conn und _loggedin als assoziatives Array zurückgeben
+        // Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
     }
 }
 

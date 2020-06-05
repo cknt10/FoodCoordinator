@@ -282,6 +282,25 @@ class PremiumUser extends RegUser{
         return $result;
     }
 
+    /**
+     *Clear the User
+     */
+    public function clearUser()
+    {
+        //TODO Dustin: Alle Attribute aus diesem Objekt und aus dem Elternobjekt auf null setzten
+    }
+
+
+    /**
+     * Get this Object as Array for JSON import
+     * 
+     * @return array of this Class
+     */
+    public function getObjectAsArray()
+    {
+        //TODO Dustin: Alle Attribute aus diesem Objekt und dem Elternobjekt außer _conn und _loggedin als assoziatives Array zurückgeben
+        //Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
+    }
 
 }
 ?>
