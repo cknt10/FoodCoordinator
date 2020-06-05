@@ -680,19 +680,44 @@ class RegUser{
     /**
      *
      */
-    public function clearUser($mail, $username, $password, $firstname, $name, $gender, $street, $birthday, $c_id)
+    public function clearUser(
+      $_conn,
+      $_cityId,
+      $_id,
+      $_username,
+      $_email,
+      $_firstname,
+      $_name,
+      $_password,
+      $_gender,
+      $_street,
+      $_birthday,
+      $_postcode,
+      $_location,
+      $_orders,
+      $_recipes,
+      $_loggedin)
     {
         # TODO Dustin: Alle Attribute aus diesem Objekt auf null setzen
 
-        $mail = null;
-        $username = null;
-        $password = null;
-        $firstname = null;
-        $name = null;
-        $gender = null;
-        $street = null;
-        $birthday = null;
-        $c_id = null;
+      $this->_conn = null;
+      $this->_cityId = null;
+      $this->_id = null;
+      $this->_username = null;
+      $this->_email = null;
+      $this->_firstname = null;
+      $this->_name = null;
+      $this->_password = null;
+      $this->_gender = null;
+      $this->_street = null;
+      $this->_birthday = null;
+      $this->_postcode = null;
+      $this->_location = null;
+      $this->_orders = null;
+      $this->_recipes = null;
+      $this->_loggedin = null;
+
+      return $this;
 
     }
 }
