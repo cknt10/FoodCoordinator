@@ -3,38 +3,30 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from './User';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginReqService {
+  constructor(private http: HttpClient) {}
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  ///////////////////////////////////////HTTP-Request method//////////////////////////////////////////////////////////////////
+  getServerLoginData(): Promise<User> {
+    console.log('frage Server an');
 
-///////////////////////////////////////HTTP-Request method//////////////////////////////////////////////////////////////////
- getServerLoginData(): Promise<User>{
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        username: 'test',
+        password: '123456',
+      }),
+    };
 
-console.log("frage Server an");
+    const requestLink = 'http://xcsd.ddns.net/api/backend/login/login.php';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Content-Type': 'application/json',
-    'username': 'test',
-    'password': '123456'
-  })
-};
+    //to-post including incoming parameter: username, password
 
-const anfrageLink='http://xcsd.ddns.net/api/backend/login/login.php';
+    console.log('request finished');
 
-//to-post including incoming parameter: username, password
-
-console.log("request finished");
-
-return this.http.get<User>(anfrageLink/*, httpOptions*/).toPromise();
-}
-
-
-
+    return this.http.get<User>(requestLink /*, httpOptions*/).toPromise();
+  }
 }
