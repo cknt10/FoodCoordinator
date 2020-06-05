@@ -680,25 +680,9 @@ class RegUser{
     /**
      *
      */
-    public function clearUser(
-      $_conn,
-      $_cityId,
-      $_id,
-      $_username,
-      $_email,
-      $_firstname,
-      $_name,
-      $_password,
-      $_gender,
-      $_street,
-      $_birthday,
-      $_postcode,
-      $_location,
-      $_orders,
-      $_recipes,
-      $_loggedin)
+    public function clearUser()
     {
-        # TODO Dustin: Alle Attribute aus diesem Objekt auf null setzen
+      # TODO Dustin: Alle Attribute aus diesem Objekt auf null setzen
 
       $this->_conn = null;
       $this->_cityId = null;
@@ -716,8 +700,6 @@ class RegUser{
       $this->_orders = null;
       $this->_recipes = null;
       $this->_loggedin = null;
-
-      return $this;
 
     }
 }
