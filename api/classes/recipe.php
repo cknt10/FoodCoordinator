@@ -537,7 +537,7 @@ class Recipe{
         $unique = true;
         if(count($this->_ingredients) > 0){
             for($i = 0; $i < count($this->_ingredients); $i++){
-                if($this->_ingredients[$i]["id"] == $ingredient["id"]){
+                if($this->_ingredients[$i]["id"] == $ingredient["id"] && $ingredient["id"] != null){
                     $unique = false;
                 }
             }
@@ -556,10 +556,7 @@ class Recipe{
      * @return Ingredient[]
      */
     public function removeIngredient($ingredient){
-        $key= array_search($ingredient, $this->_ingredients);
-        if ($key !== false) {
-            unset($this->_ingredients[$key]);
-        };
+        $this->_ingredients = array_diff($this->_ingredients, $ingredient);
 
         return $this->_ingredients;
     }
@@ -614,10 +611,10 @@ class Recipe{
             "certified" => $this->_certified,
             "lastChangeDate" => $this->_lastChange,
             "userId" => $this->_createdUser,
-            "keywords" => $this->_keywords,
+            "keywords" => empty($this->_keywords) ? null : $this->_keywords,
             "rating" => $this->_rating,
-            "ratings" => $this->_ratings,
-            "ingredients" => $this->_ingredients,
+            "ratings" => empty($this->_ratings) ? null : $this->_ratings,
+            "ingredients" =>  empty($this->_ingredients) ? null : $this->_ingredients,
           );
     }
 

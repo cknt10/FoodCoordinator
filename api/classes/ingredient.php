@@ -213,7 +213,7 @@ class Ingredient{
         $unique = true;
         if(count($this->_nutrients) > 0){
             for($i = 0; $i < count($this->_nutrients); $i++){
-                if($this->_nutrients[$i]["id"] == $nutrient["id"]){
+                if($this->_nutrients[$i]["id"] == $nutrient["id"] && $nutrient["id"] != null){
                     $unique = false;
                 }
             }
@@ -269,7 +269,7 @@ class Ingredient{
             "amount" => $this->_amount,
             "unit" => $this->_unit,
             "description" => $this->_description,
-            "nutrients" => $this->_nutrients, 
+            "nutrients" => empty($this->_nutrients) ? null : $this->_nutrients, 
           );
     }
 
