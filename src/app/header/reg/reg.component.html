@@ -1,0 +1,63 @@
+<div class="containerReg">
+  <div id="closing">
+    <button id="close" mat-mini-fab><mat-icon>close</mat-icon></button>
+  </div>
+  <div id="left">
+    <label>* Vorname:</label>
+    <input type="text" [(ngModel)]="firstname"><br>
+    <label>* Nachname:</label>
+    <input type="text" [(ngModel)]="name"><br>
+    <label>Geschlecht:</label>
+      <div id="geschlechter">
+      <input type="radio" value="male" name="gender" [(ngModel)]="gender" >
+        <label for="male">m</label>
+      <input type="radio" value="female" name="gender" [(ngModel)]="gender" >
+        <label for="female">w</label>
+      <input type="radio" value="divers" name="gender" [(ngModel)]="gender" >
+        <label for="divers">d</label>
+      </div>
+    <label>* Straße:</label>
+    <input type="text" [(ngModel)]="street"><br>
+    <label>* Hausnummer:</label>
+    <input type="text" [(ngModel)]="housenumber"><br>
+    <label>* Postleitzahl</label>
+    <input type="text" [(ngModel)]="postalcode"><br>
+    <label>* Wohnort:</label>
+    <input type="text" [(ngModel)]="city"><br>
+  </div>
+  <div id="mid">
+    <label>* Geburtstag:</label>
+    <input type="date" [(ngModel)]="birthday"><br>
+    <label>* Benutzername:</label>
+    <input type="text" [(ngModel)]="username"><br>
+    <label>* Email- Adresse:</label>
+    <input type="text" [(ngModel)]="email"><br>
+    <label>* Email- Adresse bestätigen:</label>
+    <input type="text" [(ngModel)]="emailConfirm"><br>
+    <label>* Passwort:</label>
+    <input type="password" [(ngModel)]="password"><br>
+    <label>* Passwort bestätigen:</label>
+    <input type="password" [(ngModel)]="passwordConfirm"><br>
+    <label>Profilbild:</label>
+    <input type="image"><br>
+  </div>
+  <div id="right">
+    <div id="nutzung">
+      <input type="checkbox" required>
+      <p>
+        Ich stimme hiermit den Nutzungsbedingungen von Food Coordinator zu.
+      </p>
+    </div>
+    <div id="daten">
+      <input type="checkbox" required>
+      <p>
+        Teile meine Registrierungsdaten für Marketing-Zwecke mit den Spotify Content Providers. Bitte beachte, dass Deine Daten wie in unserer Datenschutzerklärung beschrieben, weitergeleitet werden.
+      </p>
+    </div>
+    <p id="daten">
+      Wenn du mehr darüber erfahren möchtest, wie Food Coordinator personenbezogene Daten erhebt, verwendet, weitergibt und schützt, lies bitte die Datenschutzerklärung von Food Coordinator.
+    </p>
+    <button id="subReg" mat-raised-button (click)="regUser()">Registrieren</button>
+    <p id="goLog">Du hast bereits ein Konto? <a routerLink="/login" id="log">Anmelden</a></p>
+  </div>
+</div>
