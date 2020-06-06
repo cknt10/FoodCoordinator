@@ -291,6 +291,7 @@ class PremiumUser extends RegUser{
 
       parent::_clearUser();
 
+      $this->_conn = null;
       $this->_premiumId = null;
       $this->_premium = null;
       $this->_gifts = null;
