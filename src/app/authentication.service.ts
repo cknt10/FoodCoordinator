@@ -29,7 +29,7 @@ export class AuthenticationService {
       (error) => {
         console.log('Dat mit der Entfaltung klappt noch nich so gut');
       };
-    console.log('bis hierher klappts');
+
 
     return this.UserData;
   }
