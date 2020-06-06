@@ -21,13 +21,13 @@ export class SearchComponent implements OnInit {
       this.zutaten.push(this.zutat);
       this.zutat ="";
     }
-    else{
+    else {
       window.alert("Bitte füge eine Zutat hinzu!");
     }
   }
 
   search(){
-
+    window.alert("Hier gibts noch nichts, geh weiter!");
   }
 
 }
