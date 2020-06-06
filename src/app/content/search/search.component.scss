@@ -9,6 +9,11 @@
   flex-wrap: wrap;
 }
 
+.searching{
+  display: flex;
+
+}
+
 #zutaten{
   height: auto;
   background-color: yellow;
@@ -19,12 +24,22 @@ input {
   background: #FFFFFF;
 }
 
-button {
+#find {
   background: #FCA100;
+  color: black;
   width: 7em;
+  border-radius: 25px;
+  border: none;
+  margin: 1% 0 1% 0;
 }
 
-input, button{
+#add{
+  font-size: 2em;
+  background: rgba(89, 81, 85, 0.8);
+  color: #FFA300;
+}
+
+input{
 border-radius: 25px;
 border: none;
 margin: 1% 0 1% 0;
