@@ -10,6 +10,7 @@ include_once '../sql/coni.php';
 include_once '../../classes/recipe.php';
 include_once '../../classes/rating.php';
 include_once '../../classes/ingredient.php';
+include_once '../../classes/nutrient.php';
 
 //instantiate database and product object
 $database = new Connection();
@@ -50,6 +51,8 @@ function search($keywords, $conn){
                             keywords.KW_ID, 
                             food.F_ID, 
                             food.F_Descr, 
+                            ingredient.Amount AS IngredientAmount,
+                            ingredient.Unit AS IngredientUnit,
                             keywords.KW_Name, 
                             BananaAmount, 
                             Comment, 
@@ -58,7 +61,8 @@ function search($keywords, $conn){
                             FavDate, 
                             FavGroup, 
                             foodHasNutrients.N_ID, 
-                            nutrients.N_Descr, 
+                            nutrients.N_Descr,
+                            nutrients.N_Unit,  
                             foodHasNutrients.N_Amount
                     FROM recipe r 
                       LEFT join recipeHasKeywords
@@ -106,12 +110,22 @@ function search($keywords, $conn){
 $searchResults = search($testData, $db);
 $num = $searchResults->rowCount();
 $_lastID = -1;
+$_lastIngredientId = -1;
+$_lastNutrientId = -1;
+$_index = -1;
+$_ingredientindex = -1;
 
 if($num > 0){
-//   //Analyze search results
+  //Analyze search results
   $searchArray=array();
   $searchArray["recipe"]=array();
-
+  $_ingredient = new Ingredient();
+  
+  //initiate variable
+  // $_recipe;
+  // $_rating;
+  // $_ingredient;
+  // $_nutrient;
 
   // retrieve our table contents
   // fetch() is faster than fetchAll()
@@ -121,12 +135,14 @@ if($num > 0){
     // this will make $row['name'] to
     // just $name only
     extract($row);
-
+    $_changesingredient = false;
 
     //remember last recipe Id for push
     if($_lastID != $R_ID){
       //unique recipe id
       $_lastID = $R_ID;
+      $_index++;
+      $_ingredientindex++;
 
       //instantiate classes
       $_recipe = new Recipe();
@@ -141,32 +157,100 @@ if($num > 0){
       $_recipe->setLastChange($LastChange);
       $_recipe->setDifficulty($Difficulty);
       $_recipe->setCertified($certified);
-      $_recipe->setKeywords(array($KW_Name));
-      $_recipe->setIngredients("TODO");
+      $_recipe->addKeyword($KW_Name);
       $_recipe->setServings($servings);
-      $_recipe->setType("TODO");
       $_recipe->setCreatedUser($U_ID);
       
       $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
       $_recipe->addRating($_rating->getObjectAsArray());
 
-      // $_item["ingredient"] = array(
-        
+      $_ingredient = new Ingredient();
+      $_ingredient->setId($F_ID);
+      $_ingredient->setDescription($F_Descr);
+      $_ingredient->setAmount($IngredientAmount);
+      $_ingredient->setUnit($IngredientUnit);
+      $_lastIngredientId = $F_ID;
 
-      // );
-      // $_item["ingredient"]["nutrient"] = array(
+      $_nutrient = new Nutrient();
+      $_nutrient->setId($N_ID);
+      $_nutrient->setDescription($N_Descr);
+      $_nutrient->setUnit($N_Unit);
+      $_nutrient->setAmount($N_Amount);
+      $_lastNutrientId = $N_ID;
 
-      // );
-      $_item = $_recipe->getObjectAsArray();
+      $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+      $_recipe->addIngredient($_ingredient->getObjectAsArray());
+
+      $_item = $_recipe->getObjectAsArray(); 
       array_push($searchArray["recipe"], $_item);
     }else{
       //same recipe id therefore extend properties
 
+      //Extend object
+      $_recipe->addKeyword($KW_Name);
 
+      $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
+      $_recipe->addRating($_rating->getObjectAsArray());
 
+      //Check if new Ingredient
+      if($_lastIngredientId != $F_ID || $_ingredientindex == -1){
+        $_lastIngredientId = $F_ID;
+        $_ingredientindex++;
+        $_changesingredient = true;
+
+        $_ingredient = new Ingredient();
+        $_ingredient->setId($F_ID);
+        $_ingredient->setDescription($F_Descr);
+        $_ingredient->setAmount($IngredientAmount);
+        $_ingredient->setUnit($IngredientUnit);
+
+        //new Nutrient
+
+        $_lastNutrientId = $N_ID;
+
+        $_nutrient = new Nutrient();
+        $_nutrient->setId($N_ID);
+        $_nutrient->setDescription($N_Descr);
+        $_nutrient->setUnit($N_Unit);
+        $_nutrient->setAmount($N_Amount);
+
+        //Add nutrient to ingredient
+        $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+
+        //Add ingredient to recipe
+        $_recipe->addIngredient($_ingredient->getObjectAsArray());
+      }else{
+        //TODO extend ingredient and filter NULL
+        $_changesingredient = false;
+        //Same ingredient check new nutrient
+        if($_lastNutrientId != $N_ID){
+          $_lastNutrientId = $N_ID;
+          $_changesingredient = true;
+
+          $_nutrient = new Nutrient();
+          $_nutrient->setId($N_ID);
+          $_nutrient->setDescription($N_Descr);
+          $_nutrient->setUnit($N_Unit);
+          $_nutrient->setAmount($N_Amount);
+
+          //Update object
+          $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+        }
+      }
+
+      //Update ingredient in recipe if needed
+      if($_changesingredient && $_ingredientindex != -1){
+        $_update = $_recipe->getIngredients();
+        $_update[$_ingredientindex] = $_ingredient->getObjectAsArray();
+        $_recipe->setIngredients($_update);
+      }
+      //Update object
+      $searchArray["recipe"][$_index] = $_recipe->getObjectAsArray(); 
+      
     }
 
-
+    
+    
 
 
   }

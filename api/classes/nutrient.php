@@ -1,25 +1,37 @@
 <?php
 
 class Nutrient{
+    /**
+     * @var PDO
+     */
+    private $_conn;
 
     /**
      * @var int
      */
-    private $id;
+    private $_id;
     /**
      * @var string
      */
-    private $description;
+    private $_description;
     /**
      * @var string
      */
-    private $unit;
+    private $_unit;
     /**
      * @var float
      */
-    private $amount;
+    private $_amount;
    
-   
+    /**
+     * creates connection in class to database
+     * 
+     * @param $conn PDO
+     */
+    public function connection($conn)
+    {
+        $this->_conn = $conn;
+    }
 
     /**
      * Get the value of id
@@ -28,7 +40,7 @@ class Nutrient{
      */ 
     public function getId()
     {
-        return $this->id;
+        return $this->_id;
     }
 
     /**
@@ -40,7 +52,7 @@ class Nutrient{
      */ 
     public function setId($id)
     {
-        $this->id = $id;
+        $this->_id = $id;
 
         return $this;
     }
@@ -52,7 +64,7 @@ class Nutrient{
      */ 
     public function getDescription()
     {
-        return $this->description;
+        return $this->_description;
     }
 
     /**
@@ -64,7 +76,7 @@ class Nutrient{
      */ 
     public function setDescription($description)
     {
-        $this->description = $description;
+        $this->_description = $description;
 
         return $this;
     }
@@ -76,7 +88,7 @@ class Nutrient{
      */ 
     public function getUnit()
     {
-        return $this->unit;
+        return $this->_unit;
     }
 
     /**
@@ -88,7 +100,7 @@ class Nutrient{
      */ 
     public function setUnit($unit)
     {
-        $this->unit = $unit;
+        $this->_unit = $unit;
 
         return $this;
     }
@@ -100,7 +112,7 @@ class Nutrient{
      */ 
     public function getAmount()
     {
-        return $this->amount;
+        return $this->_amount;
     }
 
     /**
@@ -112,9 +124,25 @@ class Nutrient{
      */ 
     public function setAmount($amount)
     {
-        $this->amount = $amount;
+        $this->_amount = $amount;
 
         return $this;
+    }
+
+    /**
+     * Get this Object as Array for JSON import
+     * 
+     * @return array of this Class
+     */
+    public function getObjectAsArray()
+    {
+        return array(
+            "id" => $this->_id,
+            "description" => $this->_description,
+            "amount" => $this->_amount,
+            "unit" => $this->_unit,
+        );
+
     }
 }
 

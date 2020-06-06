@@ -1,5 +1,6 @@
 * {
   font-family: "Century Gothic", sans-serif;
+  font-size: 1em;
 }
 
 html, body{
@@ -10,6 +11,8 @@ html, body{
 }
 body{
   background-image: url('images/Hintergrundbild.png');
+  background-position: center center;
+  background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
 }

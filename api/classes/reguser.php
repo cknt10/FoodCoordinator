@@ -678,51 +678,54 @@ class RegUser{
     }
 
     /**
-     *
+     *Clear the User
      */
-    public function clearUser($mail, $username, $password, $firstname, $name, $gender, $street, $birthday, $c_id)
+    public function clearUser()
     {
-        # TODO Dustin: Alle Attribute aus diesem Objekt auf null setzen
-
-        // Update user attributes to NULL
-        $sql = "UPDATE user
-                SET Mail=NULL, Username=NULL, Password=NULL, FirstName=NULL, Name=NULL, Gender=NULL, Street=NULL, Birthday=NULL, C_ID=NULL
-                WHERE U_ID='$this->_id'";
-
-        // prepare query statement
-        $stmt= $this->_conn->prepare($sql);
-                // sanitize
-                $mail=htmlspecialchars(strip_tags($mail));
-                $username=htmlspecialchars(strip_tags($username));
-                $password=htmlspecialchars(strip_tags($password));
-                $firstname=htmlspecialchars(strip_tags($firstname));
-                $name=htmlspecialchars(strip_tags($name));
-                $gender=htmlspecialchars(strip_tags($gender));
-                $street=htmlspecialchars(strip_tags($street));
-                // bind values
-                $stmt->bindParam(NULL, $mail);
-                $stmt->bindParam(NULL, $username);
-                $stmt->bindParam(NULL, $passwort_hash);
-                $stmt->bindParam(NULL, $firstname);
-                $stmt->bindParam(NULL, $name);
-                $stmt->bindParam(NULL, $gender);
-                $stmt->bindParam(NULL, $street);
-                $stmt->bindParam(NULL, $birthday);
-                $stmt->bindParam(NULL, $c_id);
-        // execute query
-        $stmt->execute();
-
-        if ($db->query($sql) === TRUE){
-          echo "Clear erfolgreich";
-          $db = null;
-        }
-        else {
-          echo "Clear fehlgeschlagen";
-        }
+      $this->_conn = null;
+      $this->_cityId = null;
+      $this->_id = null;
+      $this->_username = null;
+      $this->_email = null;
+      $this->_firstname = null;
+      $this->_name = null;
+      $this->_password = null;
+      $this->_gender = null;
+      $this->_street = null;
+      $this->_birthday = null;
+      $this->_postcode = null;
+      $this->_location = null;
+      $this->_orders = null;
+      $this->_recipes = null;
+      $this->_loggedin = null;
     }
 
+    /**
+     * Get this Object as Array for JSON import
+     *
+     * @return array of this Class
+     */
+    public function getObjectAsArray()
+    {
+        //TODO Dustin: Alle Attribute aus diesem Objekt außer _conn und _loggedin als assoziatives Array zurückgeben
+        // Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
 
+        return array(
+          "cityId" => $this->_cityId,
+          "id" => $this->_id,
+          "username" => $this->_username,
+          "name" => $this->_name,
+          "password" => $this->_password,
+          "gender" => $this->_gender,
+          "street" => $this->_street,
+          "birthday" => $this->_birthday,
+          "postcode" => $this->_postcode,
+          "location" => $this->_location,
+          "orders" => $this->_orders,
+          "recipes" => $this->_recipes,
+        );
 
+    }
 }
 
 ?>

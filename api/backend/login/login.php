@@ -34,7 +34,7 @@ if($num>0){
     $resultArr=array();
     $_wrongPassword = "";
     
-  
+    $resultArr["eure Daten"] = $request;
     $resultArr["message"] = "";
     $resultArr["user"] =array(
         'id' => $_user->getId(), 
@@ -54,7 +54,7 @@ if($num>0){
     $_wrongPassword = $_user->getPassword();
 
     //Check for Premium
-    $resulresultArrt_arr["user"]['isPremium'] = $_user->isPremium($resultArr["user"]['id'], "") ? true : false;
+    $resultArr["user"]['isPremium'] = $_user->isPremium($resultArr["user"]['id'], "") ? true : false;
 
 
 
