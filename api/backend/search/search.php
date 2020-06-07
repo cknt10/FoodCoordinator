@@ -226,7 +226,7 @@ if($num > 0){
             $_nutrient->setAmount($N_Amount);
 
             //Add nutrient to ingredient
-            $_ingredient = $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+            $_ingredient->addNutrient($_nutrient->getObjectAsArray());
           }
 
           //Add ingredient to recipe
