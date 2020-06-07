@@ -121,6 +121,7 @@ $_ingredientindex = -1;
 if($num > 0){
   //Analyze search results
   $searchArray=array();
+  $searchArray["message"]="";
   $searchArray["recipe"]=array();
   
 
@@ -272,8 +273,26 @@ if($num > 0){
 
   }
 
-
-  echo json_encode($searchArray);
+  if(!empty($searchArray["recipe"])){
+    // set response code 200
+    http_response_code(200);
+    echo json_encode($searchArray);
+  }else{
+    // set response code - 404 Not found
+    http_response_code(404);
+  
+    // tell the user no result found
+    $searchArray["message"] = "No recipe found.";
+    echo json_encode($searchArray);
+  }
+  
+}else{
+   // set response code - 500
+   http_response_code(500);
+  
+   // tell the user no result found
+   $searchArray["message"] = "Internal Server Error";
+   echo json_encode($searchArray);
 }
 
 
