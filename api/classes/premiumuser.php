@@ -36,7 +36,7 @@ class PremiumUser extends RegUser{
     private $_payed;
 
     /**
-     * @var date 
+     * @var date
      */
     private $_startDate;
 
@@ -50,7 +50,7 @@ class PremiumUser extends RegUser{
      * Get $premiumId
      *
      * @return  int
-     */ 
+     */
     public function getPremiumId()
     {
         return $this->_premiumId;
@@ -62,7 +62,7 @@ class PremiumUser extends RegUser{
      * @param  int  $premiumId  $premiumId
      *
      * @return  self
-     */ 
+     */
     public function setPremiumId($premiumId)
     {
         $this->_premiumId = $premiumId;
@@ -74,7 +74,7 @@ class PremiumUser extends RegUser{
      * Get $premium
      *
      * @return  array
-     */ 
+     */
     public function getPremium()
     {
         return $this->_premium;
@@ -86,7 +86,7 @@ class PremiumUser extends RegUser{
      * @param  array  $premium  $premium
      *
      * @return  self
-     */ 
+     */
     public function setPremium($premium)
     {
         $this->_premium = $premium;
@@ -98,7 +98,7 @@ class PremiumUser extends RegUser{
      * Get $gifts
      *
      * @return  array
-     */ 
+     */
     public function getGifts()
     {
         return $this->_gifts;
@@ -110,7 +110,7 @@ class PremiumUser extends RegUser{
      * @param  array  $gifts  $gifts
      *
      * @return  self
-     */ 
+     */
     public function setGifts($gifts)
     {
         $this->_gifts = $gifts;
@@ -122,7 +122,7 @@ class PremiumUser extends RegUser{
      * Get $favourites
      *
      * @return  array
-     */ 
+     */
     public function getFavourites()
     {
         return $this->_favourites;
@@ -132,7 +132,7 @@ class PremiumUser extends RegUser{
      * Get $payed Check if this User payed his Premium
      *
      * @return  bool
-     */ 
+     */
     public function getPayed()
     {
         return $this->_payed;
@@ -144,7 +144,7 @@ class PremiumUser extends RegUser{
      * @param  bool  $payed  $payed Check if this User payed his Premium
      *
      * @return  self
-     */ 
+     */
     public function setPayed($payed)
     {
         $this->_payed = $payed;
@@ -156,7 +156,7 @@ class PremiumUser extends RegUser{
      * Get the value of startDate
      *
      * @return  date
-     */ 
+     */
     public function getStartDate()
     {
         return $this->_startDate;
@@ -168,7 +168,7 @@ class PremiumUser extends RegUser{
      * @param  date  $startDate
      *
      * @return  self
-     */ 
+     */
     public function setStartDate($startDate)
     {
         $this->_startDate = $startDate;
@@ -179,7 +179,7 @@ class PremiumUser extends RegUser{
     /**
      * @param int $id
      * @param date $timestamp
-     * 
+     *
      * @return Gift
      */
     public function getGift($id, $timestamp)
@@ -192,7 +192,7 @@ class PremiumUser extends RegUser{
 
     /**
      * Add Favourite to Array
-     * 
+     *
      * @param Favourite $favourite
      */
     public function addFavourite(Favourite $favourite)
@@ -202,9 +202,9 @@ class PremiumUser extends RegUser{
 
     /**
      * Remove Favourite from Array
-     * 
+     *
      * @param Favourite $favourite
-     * 
+     *
      * @return array of Favourites
      */
     public function removeFavourite($favourite)
@@ -218,10 +218,10 @@ class PremiumUser extends RegUser{
 
     /**
      * Return if an user is still Premium
-     * 
+     *
      * @param date $timestamp
-     * 
-     * @return bool 
+     *
+     * @return bool
      */
     public function isPremium($userid, $timestamp)
     {
@@ -261,7 +261,7 @@ class PremiumUser extends RegUser{
                 // just $name only
                 extract($row);
 
-                
+
 
                 //Split date from db
                 $_date = explode(' ', $UserStaringDate);
@@ -275,10 +275,10 @@ class PremiumUser extends RegUser{
                     $result = true;
                     $this->_premiumId = $PU_ID;
                     $this->_startDate = $_date[0];
-                }                
+                }
             }
         }
-    
+
         return $result;
     }
 
@@ -288,18 +288,41 @@ class PremiumUser extends RegUser{
     public function clearUser()
     {
         //TODO Dustin: Alle Attribute aus diesem Objekt und aus dem Elternobjekt auf null setzten
+
+      parent::_clearUser();
+
+      $this->_conn = null;
+      $this->_premiumId = null;
+      $this->_premium = null;
+      $this->_gifts = null;
+      $this->_favourites = null;
+      $this->_payed = null;
+      $this->_startDate = null;
+
     }
 
 
     /**
      * Get this Object as Array for JSON import
-     * 
+     *
      * @return array of this Class
      */
     public function getObjectAsArray()
     {
         //TODO Dustin: Alle Attribute aus diesem Objekt und dem Elternobjekt außer _conn und _loggedin als assoziatives Array zurückgeben
         //Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
+
+      parent::_getObjectAsArray();
+
+      return array(
+        "premiumId" => $this->_premiumId,
+        "premium" => $this->_premium,
+        "gifts" => $this->_gifts,
+        "favourites" => $this->_favourites,
+        "payed" => $this->_payed,
+        "startDate" => $this->_startDate,
+        );
+
     }
 
 }

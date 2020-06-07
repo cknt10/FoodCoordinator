@@ -702,13 +702,29 @@ class RegUser{
 
     /**
      * Get this Object as Array for JSON import
-     * 
+     *
      * @return array of this Class
      */
     public function getObjectAsArray()
     {
         //TODO Dustin: Alle Attribute aus diesem Objekt außer _conn und _loggedin als assoziatives Array zurückgeben
         // Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
+
+        return array(
+          "cityId" => $this->_cityId,
+          "id" => $this->_id,
+          "username" => $this->_username,
+          "name" => $this->_name,
+          "password" => $this->_password,
+          "gender" => $this->_gender,
+          "street" => $this->_street,
+          "birthday" => $this->_birthday,
+          "postcode" => $this->_postcode,
+          "location" => $this->_location,
+          "orders" => $this->_orders,
+          "recipes" => $this->_recipes,
+        );
+
     }
 }
 

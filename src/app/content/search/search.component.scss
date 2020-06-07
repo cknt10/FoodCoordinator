@@ -1,21 +1,54 @@
-.content {
+.searcharea {
   display: flex;
   justify-content: center;
   align-items: center;
   height: auto;
-  margin: 0;
+  margin-top: 20%;
   padding: 0;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 
-#ergebnis{
+.searching{
+  display: flex;
+
+}
+
+#zutaten{
   height: auto;
   background-color: yellow;
 }
 input {
-  width: 20%;
+  width: 25em;
   height: auto;
+  background: #FFFFFF;
 }
 
-button {
-  margin-left: 3%;
+#find {
+  background: #FCA100;
+  color: black;
+  width: 7em;
+  border-radius: 25px;
+  border: none;
+  margin: 1% 0 1% 0;
+}
+
+#add{
+  font-size: 2em;
+  background: rgba(89, 81, 85, 0.8);
+  color: #FFA300;
+}
+
+input{
+border-radius: 25px;
+border: none;
+margin: 1% 0 1% 0;
+height: 2em;
+}
+
+span{
+  margin: 1em;
+  padding: 0 0.5em;
+  background-color: white;
+  border-radius: 25px;
 }
