@@ -24,18 +24,25 @@ button{
 }
 #headline {
   align-items: center;
-  margin: 0 15%;
+  margin: 0 10%;
   color: white;
+  min-width: 20em;
 }
 #vorteile{
   align-items: center;
-  margin: 0 25%;
-  padding: 0 10% 0 10%;
+  margin: 0 20%;
+  width: 20em;
+  min-width: 14em;
   color: black;
   background-color: #FCA100;
 }
 #login{
-  padding-right: 5%;
+  padding-right: 1em;
   background-color: transparent;
   border-left: solid white;
+}
+
+#home{
+  width: 8em;
+  min-width: 8em;
 }

@@ -1,12 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import { from } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -41,6 +40,7 @@ import { SearchComponent } from './content/search/search.component';
     MatButtonModule,
     MatIconModule,
     RouterModule.forRoot([
+      { path: '',   redirectTo: '/home', pathMatch: 'full' },
       { path: 'home', component: SearchComponent },
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from '../../authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -7,25 +8,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  username: string;
-  password: string;
+  username: String;
+  password: String;
 
-  constructor() { }
+  constructor(
+    private authenticationService: AuthenticationService
+    ) { }
 
   ngOnInit(): void {
+
   }
 
-  loginUser(){
-    if (this.username == "test" && this.password == "test"){
-      window.alert ("Sie sind nun eingeloggt!");
-      this.username = "";
-      this.password = "";
-    }
-    else{
-      window.alert ("Falsche Login Daten, bitte versuchen Sie es erneut!");
-      this.username = "";
-      this.password = "";
-    }
-  }
+///////////////////////////////////////////////////////////http request to get user and password///////////////////////////////////////////////////////////////////
+ async loginUser(){
+
+    console.log('start logging...');
+
+//add parameter username and password
+
+   console.log((await this.authenticationService.setUserData()).getFirstname());
+   }
+
+
 
 }

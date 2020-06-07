@@ -55,7 +55,7 @@ class Recipe{
     /**
      * @var string[]
      */
-    private $_keywords;
+    private $_keywords  = array();
     /**
      * @var Ingredient[]
      */
@@ -64,10 +64,6 @@ class Recipe{
      * @var float
      */
     private $_servings;
-    /**
-     * @var string
-     */
-    private $_type;
     /**
      * @var string
      */
@@ -437,30 +433,6 @@ class Recipe{
     }
 
     /**
-     * Get the value of type
-     *
-     * @return  string
-     */ 
-    public function getType()
-    {
-        return $this->_type;
-    }
-
-    /**
-     * Set the value of type
-     *
-     * @param  string  $type
-     *
-     * @return  self
-     */ 
-    public function setType($type)
-    {
-        $this->_type = $type;
-
-        return $this;
-    }
-
-    /**
      * Get the value of createdUser
      *
      * @return  string
@@ -521,14 +493,19 @@ class Recipe{
     }
 
     /**
-     * Add a new Keyword to the Array
+     * Add a new keyword to the array distinct
      * 
      * @param string $name
      * 
      * @return array
      */
     public function addKeyword($name){
-        $this->_keywords.push($name);
+        if(count($this->_keywords) > 0){
+            if(in_array($name, $this->_keywords)){
+                return $this->_keywords;
+            }
+        }
+        array_push($this->_keywords, $name);
 
         return $this->_keywords;
     }
@@ -551,13 +528,24 @@ class Recipe{
     }
 
     /**
-     * Add an Ingredient to the Recipe
+     * Add an ingredient to the recipe distinct
      * 
      * @param Ingredient $ingredient
      * 
      */
     public function addIngredient($ingredient){
-        $this->_ingredients.push($ingredient);
+        $unique = true;
+        if(count($this->_ingredients) > 0){
+            for($i = 0; $i < count($this->_ingredients); $i++){
+                if($this->_ingredients[$i]["id"] == $ingredient["id"] && $ingredient["id"] != null){
+                    $unique = false;
+                }
+            }
+        }
+        
+        if($unique){
+            array_push($this->_ingredients, $ingredient);
+        }
     }
 
     /**
@@ -568,30 +556,32 @@ class Recipe{
      * @return Ingredient[]
      */
     public function removeIngredient($ingredient){
-        $key= array_search($ingredient, $this->_ingredients);
-        if ($key !== false) {
-            unset($this->_ingredients[$key]);
-        };
+        $this->_ingredients = array_diff($this->_ingredients, $ingredient);
 
         return $this->_ingredients;
     }
 
-        /**
-     * Add an Ingredient to the Recipe
+    /**
+     * Add an rating to the recipe distinct
      * 
-     * @param Ingredient $ingredient
+     * @param Rating $ingredient
      * 
      */
     public function addRating($rating){
+        if(count($this->_ratings) > 0){
+            if(in_array($rating, $this->_ratings)){
+                return $this->_ratings;
+            }
+        }
         array_push($this->_ratings, $rating);
     }
 
     /**
      * Remove Ingredient from the Recipe
      * 
-     * @param Ingredient $ingredient
+     * @param Rating $ingredient
      * 
-     * @return Ingredient[]
+     * @return Rating[]
      */
     public function removeRating($rating){
         //TODO 
@@ -621,11 +611,10 @@ class Recipe{
             "certified" => $this->_certified,
             "lastChangeDate" => $this->_lastChange,
             "userId" => $this->_createdUser,
-            "keywords" => $this->_keywords,
+            "keywords" => empty($this->_keywords) ? null : $this->_keywords,
             "rating" => $this->_rating,
-            "ratings" => $this->_ratings,
-            "ingredients" => $this->_ingredients,
-            "type" => $this->_type
+            "ratings" => empty($this->_ratings) ? null : $this->_ratings,
+            "ingredients" =>  empty($this->_ingredients) ? null : $this->_ingredients,
           );
     }
 
