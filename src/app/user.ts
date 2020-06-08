@@ -61,5 +61,19 @@ getIsPremum(){
   return this.isPremium;
 }
 
+cleanUser(){
+  this.id = null;
+  this.username = "";
+  this.email = "";
+  this.firstname = "";
+  this.name = "";
+  this.birthday = "";
+  this.gender = "";
+  this.street = "";
+  this.postalCode = null;
+  this.city = "";
+  this.isPremium = false;
+}
+
 }
 
