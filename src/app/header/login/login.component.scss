@@ -1,28 +1,22 @@
-/*.containerLogin{
-  float: left;
-  width: 40%;
-  height: auto;
-  margin: 15% 30% 10% 30%;
-  background-color: white;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
-}*/
-
 *{
   text-align: center;
 }
 
-.containerLogin{
-  flex-direction: column;
+.container{
+  display: flex;
+  margin-top: 15%;
   justify-content: center;
   align-items: center;
-  height: auto;
-  background-color: white;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
 }
 
-.containerLogin, #closeContainer, #login, #goReg{
+.containerLogin{
   display: flex;
-  flex-grow: 1;
+  height: auto;
+  flex-direction: column;
+  flex-wrap: wrap;
+  flex: 1;
+  background-color: white;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
 }
 
 input{
@@ -37,7 +31,8 @@ a{
   text-decoration: none;
   color: #FCA100;
 }
-#login{
+.login{
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -64,6 +59,8 @@ a{
 
 }
 
-#closeContainer{
+.closeContainer{
+  display: flex;
   justify-content: flex-end;
 }
+
