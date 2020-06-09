@@ -312,17 +312,16 @@ class PremiumUser extends RegUser{
         //TODO Dustin: Alle Attribute aus diesem Objekt und dem Elternobjekt außer _conn und _loggedin als assoziatives Array zurückgeben
         //Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
 
-      parent::_getObjectAsArray();
-
-      return array(
-        "premiumId" => $this->_premiumId,
-        "premium" => $this->_premium,
-        "gifts" => $this->_gifts,
-        "favourites" => $this->_favourites,
-        "payed" => $this->_payed,
-        "startDate" => $this->_startDate,
-        );
-
+        $arrayReg = array (parent::_getObjectAsArray());
+        $arrayPrime = array(
+                "premiumId" => $this->_premiumId,
+                "premium" => empty ($this->_premium) ? null : $this->_premium,
+                "gifts" => empty ($this->_gifts) ? null : $this->_gifts,
+                "favourites" => empty ($this->_favourites) ? null : $this->_favourites,
+                "payed" => $this->_payed,
+                "startDate" => $this->_startDate,
+                );
+        return array_merge ($arrayReg , $arrayPrime);
     }
 
 }

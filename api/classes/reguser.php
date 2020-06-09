@@ -721,8 +721,8 @@ class RegUser{
           "birthday" => $this->_birthday,
           "postcode" => $this->_postcode,
           "location" => $this->_location,
-          "orders" => $this->_orders,
-          "recipes" => $this->_recipes,
+          "orders" => empty($this->_orders) ? null : $this->orders,
+          "recipes" => empty($this->_recipes) ? null : $this->recipes,
         );
 
     }

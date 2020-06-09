@@ -12,7 +12,6 @@
 }
 
 .containerLogin{
-  display: inline-flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -21,7 +20,7 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.5);
 }
 
-#closeContainer, #login, #goReg{
+.containerLogin, #closeContainer, #login, #goReg{
   display: flex;
   flex-grow: 1;
 }
@@ -40,7 +39,8 @@ a{
 }
 #login{
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  align-items: center;
   margin: 1% 5% 0 5%;
   border-bottom: solid #FCA100;
 }
@@ -61,9 +61,9 @@ a{
   background-color: transparent;
   color: #686868;
   box-shadow: none;
+
 }
 
 #closeContainer{
   justify-content: flex-end;
-
 }
