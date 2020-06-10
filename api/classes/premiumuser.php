@@ -8,42 +8,42 @@ class PremiumUser extends RegUser{
     /**
      * @var POD
      */
-    private $_conn;
+    private $conn;
 
     /**
      * @var int $premiumId
      */
-    private $_premiumId;
+    private $premiumId;
 
     /**
      * @var array $premium
      */
-    private $_premium;
+    private $premium;
 
     /**
      * @var array $gifts
      */
-    private $_gifts;
+    private $gifts;
 
     /**
      * @var array $favourites
      */
-    private $_favourites;
+    private $favourites;
 
     /**
      * @var bool $payed Check if this User payed his Premium
      */
-    private $_payed;
+    private $payed;
 
     /**
      * @var date
      */
-    private $_startDate;
+    private $startDate;
 
     // constructor with $db as database connection
-    public function __construct($db){
-        parent::__construct($db);
-        $this->_conn = $db;
+    public function __construct($_db){
+        parent::__construct($_db);
+        $this->conn = $_db;
     }
 
     /**
@@ -53,7 +53,7 @@ class PremiumUser extends RegUser{
      */
     public function getPremiumId()
     {
-        return $this->_premiumId;
+        return $this->premiumId;
     }
 
     /**
@@ -63,9 +63,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */
-    public function setPremiumId($premiumId)
+    public function setPremiumId($_premiumId)
     {
-        $this->_premiumId = $premiumId;
+        $this->premiumId = $_premiumId;
 
         return $this;
     }
@@ -77,7 +77,7 @@ class PremiumUser extends RegUser{
      */
     public function getPremium()
     {
-        return $this->_premium;
+        return $this->premium;
     }
 
     /**
@@ -87,9 +87,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */
-    public function setPremium($premium)
+    public function setPremium($_premium)
     {
-        $this->_premium = $premium;
+        $this->premium = $_premium;
 
         return $this;
     }
@@ -101,19 +101,19 @@ class PremiumUser extends RegUser{
      */
     public function getGifts()
     {
-        return $this->_gifts;
+        return $this->gifts;
     }
 
     /**
      * Set $gifts
      *
-     * @param  array  $gifts  $gifts
+     * @param  array  $_gifts 
      *
      * @return  self
      */
-    public function setGifts($gifts)
+    public function setGifts($_gifts)
     {
-        $this->_gifts = $gifts;
+        $this->gifts = $_gifts;
 
         return $this;
     }
@@ -125,7 +125,7 @@ class PremiumUser extends RegUser{
      */
     public function getFavourites()
     {
-        return $this->_favourites;
+        return $this->favourites;
     }
 
     /**
@@ -135,7 +135,7 @@ class PremiumUser extends RegUser{
      */
     public function getPayed()
     {
-        return $this->_payed;
+        return $this->payed;
     }
 
     /**
@@ -145,9 +145,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */
-    public function setPayed($payed)
+    public function setPayed($_payed)
     {
-        $this->_payed = $payed;
+        $this->payed = $_payed;
 
         return $this;
     }
@@ -159,7 +159,7 @@ class PremiumUser extends RegUser{
      */
     public function getStartDate()
     {
-        return $this->_startDate;
+        return $this->startDate;
     }
 
     /**
@@ -169,9 +169,9 @@ class PremiumUser extends RegUser{
      *
      * @return  self
      */
-    public function setStartDate($startDate)
+    public function setStartDate($_startDate)
     {
-        $this->_startDate = $startDate;
+        $this->startDate = $_startDate;
 
         return $this;
     }
@@ -182,12 +182,12 @@ class PremiumUser extends RegUser{
      *
      * @return Gift
      */
-    public function getGift($id, $timestamp)
+    public function getGift($_id, $_timestamp)
     {
-        $gift = $this->_gifts[$id];
+        $_gift = $this->gifts[$_id];
         //TODO:......
 
-        return $gift;
+        return $_gift;
     }
 
     /**
@@ -195,9 +195,22 @@ class PremiumUser extends RegUser{
      *
      * @param Favourite $favourite
      */
-    public function addFavourite(Favourite $favourite)
+    public function addFavourite($_favourite)
     {
-        $this->_favourites.push($favourite);
+
+        //TODO: Overthink it again
+        $_unique = true;
+        if(count($this->ingrfavouritesedients) > 0){
+            for($_i = 0; $_i < count($this->favourites); $_i++){
+                if($this->favourites[$_i]["name"] == $_favourite["name"] && $_favourite["name"] != null){
+                    $_unique = false;
+                }
+            }
+        }
+        
+        if($_unique){
+            $this->favourites.push($_favourite);
+        }
     }
 
     /**
@@ -209,11 +222,7 @@ class PremiumUser extends RegUser{
      */
     public function removeFavourite($favourite)
     {
-        $key= array_search($favourite, $this->_favourites);
-        if ($key !== false) {
-            unset($this->_favourites[$key]);
-        };
-        return $this->_favourites;
+        //TODO:
     }
 
     /**
@@ -223,13 +232,13 @@ class PremiumUser extends RegUser{
      *
      * @return bool
      */
-    public function isPremium($userid, $timestamp)
+    public function isPremium($_userid, $_timestamp)
     {
-        $result = false;
+        $_result = false;
         $_date = "";
 
         // select all query
-        $query = "SELECT pu.PU_ID, pu.Premium_ID, pu.U_ID, pu.PM_ID, pu.StartingDate as UserStaringDate, p.StartingDate as PremiumStartingDate, p.Premium_Descr, p.Price, p.Duration
+        $_query = "SELECT pu.PU_ID, pu.Premium_ID, pu.U_ID, pu.PM_ID, pu.StartingDate as UserStaringDate, p.StartingDate as PremiumStartingDate, p.Premium_Descr, p.Price, p.Duration
         from premiumUser as pu
         Inner Join premium as p
         ON pu.Premium_ID = p.Premium_ID
@@ -238,28 +247,28 @@ class PremiumUser extends RegUser{
 
 
         // prepare query statement
-        $stmt = $this->_conn->prepare($query);
+        $_stmt = $this->conn->prepare($_query);
 
         // bind values
-        $stmt->bindParam(":U_ID", $userid);
+        $_stmt->bindParam(":U_ID", $_userid);
 
 
         // execute query
-        $stmt->execute();
+        $_stmt->execute();
 
 
-        $_num = $stmt->rowCount();
+        $_num = $_stmt->rowCount();
 
         //If entry exists then Error
         if($_num !== 0) {
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
                 // extract row
                 // this will make $row['name'] to
                 // just $name only
-                extract($row);
+                extract($_row);
 
 
 
@@ -267,19 +276,19 @@ class PremiumUser extends RegUser{
                 $_date = explode(' ', $UserStaringDate);
 
                 //Check if he is still Premium
-                $date1 = new DateTime($_date[0]);
-                $date1->add(new DateInterval('P'. strval($Duration) .'D'));
-                $date2 = new DateTime($timestamp);
+                $_date1 = new DateTime($_date[0]);
+                $_date1->add(new DateInterval('P'. strval($Duration) .'D'));
+                $_date2 = new DateTime($_timestamp);
 
-                if($date1 > $date2){
-                    $result = true;
-                    $this->_premiumId = $PU_ID;
-                    $this->_startDate = $_date[0];
+                if($_date1 > $_date2){
+                    $_result = true;
+                    $this->premiumId = $PU_ID;
+                    $this->startDate = $_date[0];
                 }
             }
         }
 
-        return $result;
+        return $_result;
     }
 
     /**
@@ -287,17 +296,15 @@ class PremiumUser extends RegUser{
      */
     public function clearUser()
     {
-        //TODO Dustin: Alle Attribute aus diesem Objekt und aus dem Elternobjekt auf null setzten
+      parent::clearUser();
 
-      parent::_clearUser();
-
-      $this->_conn = null;
-      $this->_premiumId = null;
-      $this->_premium = null;
-      $this->_gifts = null;
-      $this->_favourites = null;
-      $this->_payed = null;
-      $this->_startDate = null;
+      $this->conn = null;
+      $this->premiumId = null;
+      $this->premium = null;
+      $this->gifts = null;
+      $this->favourites = null;
+      $this->payed = null;
+      $this->startDate = null;
 
     }
 
@@ -309,17 +316,14 @@ class PremiumUser extends RegUser{
      */
     public function getObjectAsArray()
     {
-        //TODO Dustin: Alle Attribute aus diesem Objekt und dem Elternobjekt außer _conn und _loggedin als assoziatives Array zurückgeben
-        //Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
-
-        $arrayReg = array (parent::_getObjectAsArray());
+        $arrayReg = array (parent::getObjectAsArray());
         $arrayPrime = array(
-                "premiumId" => $this->_premiumId,
-                "premium" => empty ($this->_premium) ? null : $this->_premium,
-                "gifts" => empty ($this->_gifts) ? null : $this->_gifts,
-                "favourites" => empty ($this->_favourites) ? null : $this->_favourites,
-                "payed" => $this->_payed,
-                "startDate" => $this->_startDate,
+                "premiumId" => $this->premiumId,
+                "premium" => empty ($this->premium) ? null : $this->premium,
+                "gifts" => empty ($this->gifts) ? null : $this->gifts,
+                "favourites" => empty ($this->favourites) ? null : $this->favourites,
+                "payed" => $this->payed,
+                "startDate" => $this->startDate,
                 );
         return array_merge ($arrayReg , $arrayPrime);
     }
