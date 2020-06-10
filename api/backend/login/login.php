@@ -22,45 +22,45 @@ if(isset($postdata) && !empty($postdata))
   echo $request . '\n';
 }
 // initialize object
-$_user = new PremiumUser($db);
-$_user->setUsername("test");
+$user = new PremiumUser($db);
+$user->setUsername("test");
 $passwort = "123456";
 // query products
-$num = $_user->login("test", "");
+$num = $user->login("test", "");
   
 // check if more than 0 record found
 if($num>0){
     //user array
     $resultArr=array();
-    $_wrongPassword = "";
+    $wrongPassword = "";
     
     $resultArr["eure Daten"] = $request;
     $resultArr["message"] = "";
     $resultArr["user"] =array(
-        'id' => $_user->getId(), 
-        'username' => $_user->getUsername(),
-        'email' => $_user->getEmail(), 
-        'firstname' => $_user->getFirstname(), 
-        'name' => $_user->getName(), 
-        'birthday' => $_user->getBirthday(),
-        'gender' => $_user->getGender(), 
-        'street' => $_user->getStreet(),
-        'postalCode' => $_user->getPostcode(),
-        'city' => $_user->getLocation(),
+        'id' => $user->getId(), 
+        'username' => $user->getUsername(),
+        'email' => $user->getEmail(), 
+        'firstname' => $user->getFirstname(), 
+        'name' => $user->getName(), 
+        'birthday' => $user->getBirthday(),
+        'gender' => $user->getGender(), 
+        'street' => $user->getStreet(),
+        'postalCode' => $user->getPostcode(),
+        'city' => $user->getLocation(),
         'isPremium' => ''
     );
 
 
-    $_wrongPassword = $_user->getPassword();
+    $wrongPassword = $user->getPassword();
 
     //Check for Premium
-    $resultArr["user"]['isPremium'] = $_user->isPremium($resultArr["user"]['id'], "") ? true : false;
+    $resultArr["user"]['isPremium'] = $user->isPremium($resultArr["user"]['id'], "") ? true : false;
 
 
 
     //Check Password
     //TODO
-    if (password_verify($passwort, $_wrongPassword)) {
+    if (password_verify($passwort, $wrongPassword)) {
         $_SESSION['userid'] = $resultArr["user"]['id'];
 
         // set response code - 200 OK

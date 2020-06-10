@@ -32,10 +32,10 @@ if(isset($postdata) && !empty($postdata))
 }
 
 
-function search($keywords, $conn){
+function search($_keywords, $_conn){
 
   //Basic Recipe Search
- $query = 'SELECT * FROM (
+ $_query = 'SELECT * FROM (
                     SELECT r.R_ID, 
                             r.Title, 
                             r.picture, 
@@ -87,35 +87,35 @@ function search($keywords, $conn){
                   OR F_Descr LIKE :F_Descr';
 
     // prepare query statement
-    $stmt = $conn->prepare($query);
+    $_stmt = $_conn->prepare($_query);
 
     //sanitize
-    $keywords=htmlspecialchars(strip_tags($keywords));
-    $keywords = "%{$keywords}%";
+    $_keywords=htmlspecialchars(strip_tags($_keywords));
+    $_keywords = "%{$_keywords}%";
 
     //bind
-    $stmt->bindParam(":KW_Name", $keywords);
-    $stmt->bindParam(":F_Descr", $keywords);
+    $_stmt->bindParam(":KW_Name", $_keywords);
+    $_stmt->bindParam(":F_Descr", $_keywords);
 
 
     // execute query
-    $stmt->execute();
+    $_stmt->execute();
 
 
 
-    return $stmt;
+    return $_stmt;
 }
 
 //Call Function
 $searchResults = search($testData, $db);
 $num = $searchResults->rowCount();
 //recipe
-$_lastID = -1;
-$_index = -1;
+$lastID = -1;
+$index = -1;
 //ingredient
-$_ingredient = new Ingredient();
-$_lastIngredientId = -1;
-$_ingredientindex = -1;
+$ingredient = new Ingredient();
+$lastIngredientId = -1;
+$ingredientindex = -1;
 
 
 if($num > 0){
@@ -135,123 +135,123 @@ if($num > 0){
     // this will make $row['name'] to
     // just $name only
     extract($row);
-    $_changesingredient = false;
+    $changesingredient = false;
 
     //remember last recipe Id for push
-    if($_lastID != $R_ID){
+    if($lastID != $R_ID){
       //unique recipe id
-      $_lastID = $R_ID;
-      $_index++;
+      $lastID = $R_ID;
+      $index++;
 
       //instantiate classes
-      $_recipe = new Recipe();
+      $recipe = new Recipe();
 
-      $_recipe->setId($R_ID);
-      $_recipe->setTitle($Title);
-      $_recipe->setPicture($picture);
-      $_recipe->setDescription($R_Descr);
-      $_recipe->setInstruction($instruction);
-      $_recipe->setDuration($R_Descr);
-      $_recipe->setCreationDate($creationDate);
-      $_recipe->setLastChange($LastChange);
-      $_recipe->setDifficulty($Difficulty);
-      $_recipe->setCertified($certified);
-      if($KW_Name != null) {$_recipe->addKeyword($KW_Name);}
-      $_recipe->setServings($servings);
-      $_recipe->setCreatedUser($U_ID);
+      $recipe->setId($R_ID);
+      $recipe->setTitle($Title);
+      $recipe->setPicture($picture);
+      $recipe->setDescription($R_Descr);
+      $recipe->setInstruction($instruction);
+      $recipe->setDuration($R_Descr);
+      $recipe->setCreationDate($creationDate);
+      $recipe->setLastChange($LastChange);
+      $recipe->setDifficulty($Difficulty);
+      $recipe->setCertified($certified);
+      if($KW_Name != null) {$recipe->addKeyword($KW_Name);}
+      $recipe->setServings($servings);
+      $recipe->setCreatedUser($U_ID);
       
-      $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
-      if($_rating->getUserId != null && $_rating->getComment != null && $_rating->getRating != null){
-        $_recipe->addRating($_rating->getObjectAsArray());
+      $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
+      if($rating->getUserId != null && $rating->getComment != null && $rating->getRating != null){
+        $recipe->addRating($rating->getObjectAsArray());
       }
       
       if($F_ID != null){
-        $_ingredient = new Ingredient();
-        $_ingredient->setId($F_ID);
-        $_ingredient->setDescription($F_Descr);
-        $_ingredient->setAmount($IngredientAmount);
-        $_ingredient->setUnit($IngredientUnit);
+        $ingredient = new Ingredient();
+        $ingredient->setId($F_ID);
+        $ingredient->setDescription($F_Descr);
+        $ingredient->setAmount($IngredientAmount);
+        $ingredient->setUnit($IngredientUnit);
         
         //Update indexes
-        $_lastIngredientId = $F_ID;
-        $_ingredientindex++;
+        $lastIngredientId = $F_ID;
+        $ingredientindex++;
 
         if($N_ID != null){
-          $_nutrient = new Nutrient();
-          $_nutrient->setId($N_ID);
-          $_nutrient->setDescription($N_Descr);
-          $_nutrient->setUnit($N_Unit);
-          $_nutrient->setAmount($N_Amount);
-          $_lastNutrientId = $N_ID;
+          $nutrient = new Nutrient();
+          $nutrient->setId($N_ID);
+          $nutrient->setDescription($N_Descr);
+          $nutrient->setUnit($N_Unit);
+          $nutrient->setAmount($N_Amount);
+          $lastNutrientId = $N_ID;
     
-          $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+          $ingredient->addNutrient($nutrient->getObjectAsArray());
         }
-        $_recipe->addIngredient($_ingredient->getObjectAsArray());
+        $recipe->addIngredient($ingredient->getObjectAsArray());
       }
     }else{
       //Same recipe id therefore extend properties
 
       //Extend object if not null
-      if($KW_Name != null){$_recipe->addKeyword($KW_Name);}
+      if($KW_Name != null){$recipe->addKeyword($KW_Name);}
 
-      $_rating = new Rating($RatingUserId, $BananaAmount, $Comment);
+      $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
       //Add only not emty Objects
-      if($_rating->getUserId != null && $_rating->getComment != null && $_rating->getRating != null){
-        $_recipe->addRating($_rating->getObjectAsArray());
+      if($rating->getUserId != null && $rating->getComment != null && $rating->getRating != null){
+        $recipe->addRating($rating->getObjectAsArray());
       }
 
       //Only if ingredient exists
       if($F_ID != null){
         //Check if new Ingredient
-        if($_lastIngredientId != $F_ID || $_ingredientindex == -1){
-          $_lastIngredientId = $F_ID;
-          $_ingredientindex++;
-          $_changesingredient = true;
+        if($lastIngredientId != $F_ID || $ingredientindex == -1){
+          $lastIngredientId = $F_ID;
+          $ingredientindex++;
+          $changesingredient = true;
 
           //create new Ingredient
-          $_ingredient = new Ingredient();
-          $_ingredient->setId($F_ID);
-          $_ingredient->setDescription($F_Descr);
-          $_ingredient->setAmount($IngredientAmount);
-          $_ingredient->setUnit($IngredientUnit);
+          $ingredient = new Ingredient();
+          $ingredient->setId($F_ID);
+          $ingredient->setDescription($F_Descr);
+          $ingredient->setAmount($IngredientAmount);
+          $ingredient->setUnit($IngredientUnit);
 
           if($N_ID != null){
             //new Nutrient
-            $_lastNutrientId = $N_ID;
+            $lastNutrientId = $N_ID;
 
-            $_nutrient = new Nutrient();
-            $_nutrient->setId($N_ID);
-            $_nutrient->setDescription($N_Descr);
-            $_nutrient->setUnit($N_Unit);
-            $_nutrient->setAmount($N_Amount);
+            $nutrient = new Nutrient();
+            $nutrient->setId($N_ID);
+            $nutrient->setDescription($N_Descr);
+            $nutrient->setUnit($N_Unit);
+            $nutrient->setAmount($N_Amount);
 
             //Add nutrient to ingredient
-            $_ingredient->addNutrient($_nutrient->getObjectAsArray());
+            $ingredient->addNutrient($nutrient->getObjectAsArray());
           }
 
           //Add ingredient to recipe
-          $_recipe->addIngredient($_ingredient->getObjectAsArray());
+          $recipe->addIngredient($ingredient->getObjectAsArray());
         }else{
           //TODO extend ingredient and filter NULL
-          $_changesingredient = false;
+          $changesingredient = false;
           //Same ingredient check new nutrient
-          if($_lastNutrientId != $N_ID){
+          if($lastNutrientId != $N_ID){
               //remove old ingredient
-              $_recipe->removeIngredient($_ingredient->getObjectAsArray());
+              $recipe->removeIngredient($ingredient->getObjectAsArray());
               
               //update id
-              $_lastNutrientId = $N_ID;
-              $_changesingredient = true;
+              $lastNutrientId = $N_ID;
+              $changesingredient = true;
 
-              $_nutrient = new Nutrient();
-              $_nutrient->setId($N_ID);
-              $_nutrient->setDescription($N_Descr);
-              $_nutrient->setUnit($N_Unit);
-              $_nutrient->setAmount($N_Amount);
+              $nutrient = new Nutrient();
+              $nutrient->setId($N_ID);
+              $nutrient->setDescription($N_Descr);
+              $nutrient->setUnit($N_Unit);
+              $nutrient->setAmount($N_Amount);
 
               //Update object
-              $_ingredient->addNutrient($_nutrient->getObjectAsArray());
-              $_recipe->addIngredient($_ingredient->getObjectAsArray());
+              $ingredient->addNutrient($nutrient->getObjectAsArray());
+              $recipe->addIngredient($ingredient->getObjectAsArray());
           }
 
 
@@ -264,10 +264,10 @@ if($num > 0){
 
     //Update object
     if(empty($searchArray["recipe"])){
-      array_push($searchArray["recipe"], $_recipe->getObjectAsArray());
+      array_push($searchArray["recipe"], $recipe->getObjectAsArray());
     }else{
       //Update recipe
-      $searchArray["recipe"][$_index] = $_recipe->getObjectAsArray(); 
+      $searchArray["recipe"][$index] = $recipe->getObjectAsArray(); 
     }
 
 

@@ -4,33 +4,33 @@ class Nutrient{
     /**
      * @var PDO
      */
-    private $_conn;
+    private $conn;
 
     /**
      * @var int
      */
-    private $_id;
+    private $id;
     /**
      * @var string
      */
-    private $_description;
+    private $description;
     /**
      * @var string
      */
-    private $_unit;
+    private $unit;
     /**
      * @var float
      */
-    private $_amount;
+    private $amount;
    
     /**
      * creates connection in class to database
      * 
      * @param $conn PDO
      */
-    public function connection($conn)
+    public function connection($_conn)
     {
-        $this->_conn = $conn;
+        $this->conn = $conn;
     }
 
     /**
@@ -40,7 +40,7 @@ class Nutrient{
      */ 
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -50,9 +50,9 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId($_id)
     {
-        $this->_id = $id;
+        $this->id = $_id;
 
         return $this;
     }
@@ -64,7 +64,7 @@ class Nutrient{
      */ 
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
 
     /**
@@ -74,9 +74,9 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setDescription($description)
+    public function setDescription($_description)
     {
-        $this->_description = $description;
+        $this->description = $_description;
 
         return $this;
     }
@@ -88,7 +88,7 @@ class Nutrient{
      */ 
     public function getUnit()
     {
-        return $this->_unit;
+        return $this->unit;
     }
 
     /**
@@ -98,9 +98,9 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setUnit($unit)
+    public function setUnit($_unit)
     {
-        $this->_unit = $unit;
+        $this->unit = $_unit;
 
         return $this;
     }
@@ -112,7 +112,7 @@ class Nutrient{
      */ 
     public function getAmount()
     {
-        return $this->_amount;
+        return $this->amount;
     }
 
     /**
@@ -122,9 +122,9 @@ class Nutrient{
      *
      * @return  self
      */ 
-    public function setAmount($amount)
+    public function setAmount($_amount)
     {
-        $this->_amount = $amount;
+        $this->amount = $_amount;
 
         return $this;
     }
@@ -137,10 +137,10 @@ class Nutrient{
     public function getObjectAsArray()
     {
         return array(
-            "id" => $this->_id,
-            "description" => $this->_description,
-            "amount" => $this->_amount,
-            "unit" => $this->_unit,
+            "id" => $this->id,
+            "description" => $this->description,
+            "amount" => $this->amount,
+            "unit" => $this->unit,
         );
 
     }

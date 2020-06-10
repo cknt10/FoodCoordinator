@@ -7,71 +7,71 @@ class Recipe{
     /**
      * @var PDO
      */
-    private $_conn;
+    private $conn;
     /**
      * @var int
      */
-    private $_id;
+    private $id;
     /**
      * @var string
      */
-    private $_title;
+    private $title;
     /**
      * @var string
      */
-    private $_picture;
+    private $picture;
     /**
      * @var string
      */
-    private $_description;
+    private $description;
     /**
      * @var string
      */
-    private $_instruction;
+    private $instruction;
     /**
      * @var Period
      */
-    private $_duration;
+    private $duration;
     /**
      * @var date
      */
-    private $_creationDate;
+    private $creationDate;
     /**
      * @var date
      */
-    private $_lastChange;
+    private $lastChange;
     /**
      * @var string
      */
-    private $_difficulty;
+    private $difficulty;
     /**
      * @var float
      */
-    private $_rating;
+    private $rating;
     /**
      * @var bool
      */
-    private $_certified;
+    private $certified;
     /**
      * @var string[]
      */
-    private $_keywords  = array();
+    private $keywords  = array();
     /**
      * @var Ingredient[]
      */
-    private $_ingredients = array();
+    private $ingredients = array();
     /**
      * @var float
      */
-    private $_servings;
+    private $servings;
     /**
      * @var string
      */
-    private $_createdUser;
+    private $createdUser;
     /**
      * @var Rating[]
      */
-    private $_ratings = array();
+    private $ratings = array();
 
 
     /**
@@ -86,9 +86,9 @@ class Recipe{
      * 
      * @param $conn PDO
      */
-    public function connection($conn)
+    public function connection($_conn)
     {
-        $this->_conn = $conn;
+        $this->conn = $_conn;
     }
     
 
@@ -99,7 +99,7 @@ class Recipe{
      */ 
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -109,9 +109,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId($_id)
     {
-        $this->_id = $id;
+        $this->id = $_id;
 
         return $this;
     }
@@ -123,7 +123,7 @@ class Recipe{
      */ 
     public function getTitle()
     {
-        return $this->_title;
+        return $this->title;
     }
 
     /**
@@ -133,9 +133,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setTitle($title)
+    public function setTitle($_title)
     {
-        $this->_title = $title;
+        $this->title = $_title;
 
         return $this;
     }
@@ -147,7 +147,7 @@ class Recipe{
      */ 
     public function getPicture()
     {
-        return $this->_picture;
+        return $this->picture;
     }
 
     /**
@@ -157,9 +157,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setPicture($picture)
+    public function setPicture($_picture)
     {
-        $this->_picture = $picture;
+        $this->picture = $_picture;
 
         return $this;
     }
@@ -171,7 +171,7 @@ class Recipe{
      */ 
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
 
     /**
@@ -181,9 +181,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setDescription($description)
+    public function setDescription($_description)
     {
-        $this->_description = $description;
+        $this->description = $_description;
 
         return $this;
     }
@@ -195,7 +195,7 @@ class Recipe{
      */ 
     public function getInstruction()
     {
-        return $this->_instruction;
+        return $this->instruction;
     }
 
     /**
@@ -205,9 +205,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setInstruction($instruction)
+    public function setInstruction($_instruction)
     {
-        $this->_instruction = $instruction;
+        $this->instruction = $_instruction;
 
         return $this;
     }
@@ -219,7 +219,7 @@ class Recipe{
      */ 
     public function getDuration()
     {
-        return $this->_duration;
+        return $this->duration;
     }
 
     /**
@@ -229,9 +229,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setDuration($duration)
+    public function setDuration($_duration)
     {
-        $this->_duration = $duration;
+        $this->duration = $_duration;
 
         return $this;
     }
@@ -243,7 +243,7 @@ class Recipe{
      */ 
     public function getCreationDate()
     {
-        return $this->_creationDate;
+        return $this->creationDate;
     }
 
     /**
@@ -253,9 +253,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setCreationDate($creationDate)
+    public function setCreationDate($_creationDate)
     {
-        $this->_creationDate = $creationDate;
+        $this->creationDate = $_creationDate;
 
         return $this;
     }
@@ -267,7 +267,7 @@ class Recipe{
      */ 
     public function getLastChange()
     {
-        return $this->_lastChange;
+        return $this->lastChange;
     }
 
     /**
@@ -277,9 +277,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setLastChange($lastChange)
+    public function setLastChange($_lastChange)
     {
-        $this->_lastChange = $lastChange;
+        $this->lastChange = $_lastChange;
 
         return $this;
     }
@@ -291,7 +291,7 @@ class Recipe{
      */ 
     public function getDifficulty()
     {
-        return $this->_difficulty;
+        return $this->difficulty;
     }
 
     /**
@@ -301,9 +301,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setDifficulty($difficulty)
+    public function setDifficulty($_difficulty)
     {
-        $this->_difficulty = $difficulty;
+        $this->difficulty = $_difficulty;
 
         return $this;
     }
@@ -315,7 +315,7 @@ class Recipe{
      */ 
     public function getRating()
     {
-        return $this->_rating;
+        return $this->rating;
     }
 
     /**
@@ -325,9 +325,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setRating($rating)
+    public function setRating($_rating)
     {
-        $this->_rating = $rating;
+        $this->rating = $_rating;
 
         return $this;
     }
@@ -339,7 +339,7 @@ class Recipe{
      */ 
     public function getCertified()
     {
-        return $this->_certified;
+        return $this->certified;
     }
 
     /**
@@ -349,9 +349,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setCertified($certified)
+    public function setCertified($_certified)
     {
-        $this->_certified = $certified;
+        $this->certified = $_certified;
 
         return $this;
     }
@@ -363,7 +363,7 @@ class Recipe{
      */ 
     public function getKeywords()
     {
-        return $this->_keywords;
+        return $this->keywords;
     }
 
     /**
@@ -373,9 +373,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setKeywords($keywords)
+    public function setKeywords($_keywords)
     {
-        $this->_keywords = $keywords;
+        $this->keywords = $_keywords;
 
         return $this;
     }
@@ -389,7 +389,7 @@ class Recipe{
      */ 
     public function getIngredients()
     {
-        return $this->_ingredients;
+        return $this->ingredients;
     }
 
     /**
@@ -399,9 +399,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setIngredients($ingredients)
+    public function setIngredients($_ingredients)
     {
-        $this->_ingredients = $ingredients;
+        $this->ingredients = $_ingredients;
 
         return $this;
     }
@@ -415,7 +415,7 @@ class Recipe{
      */ 
     public function getServings()
     {
-        return $this->_servings;
+        return $this->servings;
     }
 
     /**
@@ -425,9 +425,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setServings($servings)
+    public function setServings($_servings)
     {
-        $this->_servings = $servings;
+        $this->servings = $_servings;
 
         return $this;
     }
@@ -439,7 +439,7 @@ class Recipe{
      */ 
     public function getCreatedUser()
     {
-        return $this->_createdUser;
+        return $this->createdUser;
     }
 
     /**
@@ -449,9 +449,9 @@ class Recipe{
      *
      * @return  self
      */ 
-    public function setCreatedUser($createdUser)
+    public function setCreatedUser($_createdUser)
     {
-        $this->_createdUser = $createdUser;
+        $this->createdUser = $_createdUser;
 
         return $this;
     }
@@ -463,7 +463,7 @@ class Recipe{
      */ 
     public function getRatings()
     {
-        return $this->_ratings;
+        return $this->ratings;
     }
 
     /**
@@ -474,20 +474,20 @@ class Recipe{
      * 
      * @return self
      */
-    public function changeRecipe($recipe, $timestamp){
+    public function changeRecipe($_recipe, $_timestamp){
         
-        $this->_title = $recipe->getTitle();
-        $this->_picture = $recipe->getPicture();
-        $this->_description = $recipe->getDescription();
-        $this->_instruction = $recipe->getInstruction();
-        $this->_duration = $recipe->getDuration();
-        $this->_lastChange = $timestamp;
-        $this->_difficulty = $recipe->getDifficulty();
-        $this->_rating = $recipe->getRating();
-        $this->_keywords = $recipe->getKeywords();
-        $this->_ingredients = $recipe->getIngredients();
-        $this->_servings = $recipe->getServings();
-        $this->_type = $recipe->getType();
+        $this->title = $_recipe->getTitle();
+        $this->picture = $_recipe->getPicture();
+        $this->description = $_recipe->getDescription();
+        $this->instruction = $_recipe->getInstruction();
+        $this->duration = $_recipe->getDuration();
+        $this->lastChange = $_timestamp;
+        $this->difficulty = $_recipe->getDifficulty();
+        $this->rating = $_recipe->getRating();
+        $this->keywords = $_recipe->getKeywords();
+        $this->ingredients = $_recipe->getIngredients();
+        $this->servings = $_recipe->getServings();
+        $this->type = $_recipe->getType();
 
         return $this;
     }
@@ -499,15 +499,15 @@ class Recipe{
      * 
      * @return array
      */
-    public function addKeyword($name){
-        if(count($this->_keywords) > 0){
-            if(in_array($name, $this->_keywords)){
-                return $this->_keywords;
+    public function addKeyword($_name){
+        if(count($this->keywords) > 0){
+            if(inarray($_name, $this->keywords)){
+                return $this->keywords;
             }
         }
-        array_push($this->_keywords, $name);
+        array_push($this->keywords, $_name);
 
-        return $this->_keywords;
+        return $this->keywords;
     }
 
     /**
@@ -517,14 +517,14 @@ class Recipe{
      * 
      * @return string[]
      */
-    public function removeKeyword($name){
+    public function removeKeyword($_name){
 
-        $key= array_search($name, $this->_keywords);
-        if ($key !== false) {
-            unset($this->_keywords[$key]);
+        $_key= array_search($_name, $this->keywords);
+        if ($_key !== false) {
+            unset($this->keywords[$_key]);
         };
 
-        return $this->_keywords;
+        return $this->keywords;
     }
 
     /**
@@ -533,18 +533,18 @@ class Recipe{
      * @param Ingredient $ingredient
      * 
      */
-    public function addIngredient($ingredient){
-        $unique = true;
-        if(count($this->_ingredients) > 0){
-            for($i = 0; $i < count($this->_ingredients); $i++){
-                if($this->_ingredients[$i]["id"] == $ingredient["id"] && $ingredient["id"] != null){
-                    $unique = false;
+    public function addIngredient($_ingredient){
+        $_unique = true;
+        if(count($this->ingredients) > 0){
+            for($_i = 0; $_i < count($this->ingredients); $_i++){
+                if($this->ingredients[$_i]["id"] == $_ingredient["id"] && $_ingredient["id"] != null){
+                    $_unique = false;
                 }
             }
         }
         
-        if($unique){
-            array_push($this->_ingredients, $ingredient);
+        if($_unique){
+            array_push($this->ingredients, $_ingredient);
         }
     }
 
@@ -555,10 +555,10 @@ class Recipe{
      * 
      * @return Ingredient[]
      */
-    public function removeIngredient($ingredient){
-        $this->_ingredients = array_diff($this->_ingredients, $ingredient);
+    public function removeIngredient($_ingredient){
+        $this->ingredients = array_diff($this->ingredients, $_ingredient);
 
-        return $this->_ingredients;
+        return $this->ingredients;
     }
 
     /**
@@ -567,13 +567,13 @@ class Recipe{
      * @param Rating $ingredient
      * 
      */
-    public function addRating($rating){
-        if(count($this->_ratings) > 0){
-            if(in_array($rating, $this->_ratings)){
-                return $this->_ratings;
+    public function addRating($_rating){
+        if(count($this->ratings) > 0){
+            if(in_array($_rating, $this->ratings)){
+                return $this->ratings;
             }
         }
-        array_push($this->_ratings, $rating);
+        array_push($this->ratings, $_rating);
     }
 
     /**
@@ -583,7 +583,7 @@ class Recipe{
      * 
      * @return Rating[]
      */
-    public function removeRating($rating){
+    public function removeRating($_rating){
         //TODO 
     }
 
@@ -599,22 +599,22 @@ class Recipe{
         //order keywords 
         //calculate ratins for this recipe
         return array(
-            "id" => $this->_id,
-            "title" => $this->_title,
-            "picture" => $this->_picture,
-            "servings" => $this->_servings,
-            "description" => $this->_description,
-            "instruction" => $this->_instruction,
-            "createionDate" => $this->_creationDate,
-            "duration" => $this->_duration,
-            "difficulty" => $this->_difficulty,
-            "certified" => $this->_certified,
-            "lastChangeDate" => $this->_lastChange,
-            "userId" => $this->_createdUser,
-            "keywords" => empty($this->_keywords) ? null : $this->_keywords,
-            "rating" => $this->_rating,
-            "ratings" => empty($this->_ratings) ? null : $this->_ratings,
-            "ingredients" =>  empty($this->_ingredients) ? null : $this->_ingredients,
+            "id" => $this->id,
+            "title" => $this->title,
+            "picture" => $this->picture,
+            "servings" => $this->servings,
+            "description" => $this->description,
+            "instruction" => $this->instruction,
+            "createionDate" => $this->creationDate,
+            "duration" => $this->duration,
+            "difficulty" => $this->difficulty,
+            "certified" => $this->certified,
+            "lastChangeDate" => $this->lastChange,
+            "userId" => $this->createdUser,
+            "keywords" => empty($this->keywords) ? null : $this->keywords,
+            "rating" => $this->rating,
+            "ratings" => empty($this->ratings) ? null : $this->ratings,
+            "ingredients" =>  empty($this->ingredients) ? null : $this->ingredients,
           );
     }
 
