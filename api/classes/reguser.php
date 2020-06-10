@@ -557,6 +557,54 @@ class RegUser{
     }
 
     /**
+     * Get all Locations to this Postalcode
+     * 
+     * @param int $_postcode 
+     * 
+     * @return array with alle Locations to this postalcode or null if empty
+     */
+    public function fetchLocations($_postcode){
+        $_resutl = array();
+        $_query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
+
+        // prepare query statement
+        $_stmt = $this->_conn->prepare($_query);
+
+        // sanitize
+        $_postcode=htmlspecialchars(strip_tags($_postcode));
+
+        // bind values
+        $_stmt->bindParam(":PostalCode", $_postcode);
+
+        // execute query
+        $_stmt->execute();
+        
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+                array_push($_result, array(
+
+                    "cityId" => $C_ID,
+                    "city" => $City,
+                    "postcode" => $PostalCode,
+                ));
+                
+            }
+        }
+        return empty($_result) ? null : $result;
+    }
+
+    /**
      * Insert a Location to Database
      * @param string $mail
      * @param string $username
@@ -619,6 +667,8 @@ class RegUser{
 
         return $result;
     }
+
+
 
     /**
      * @param string $username

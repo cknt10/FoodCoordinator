@@ -1,172 +1,77 @@
 <?php
 
-interface PaymentMeans
+class PaymentMeans
 {
-
-    public function getName();
-
-}
-
-class Paypal implements PaymentMeans{
-
     /**
-     * @var string $name
+     * @var int 
      */
-    private string $name = "Paypal";
+    private $id;
 
     /**
-     * @var string $email
+     * @var string
      */
-    private string $email;
-    
-
-
+    private $description;
 
     /**
-     * Get $name
+     * Get the value of id
      *
-     * @return  string
+     * @return  int
      */ 
-    public function getName()
+    public function getId()
     {
-        return $this->name;
-    }
-   
-
-    /**
-     * Get $email
-     *
-     * @return  string
-     */ 
-    public function getEmail()
-    {
-        return $this->email;
+        return $this->id;
     }
 
     /**
-     * Set $email
+     * Set the value of id
      *
-     * @param  string  $email  $email
+     * @param  int  $id
      *
      * @return  self
      */ 
-    public function setEmail(string $email)
+    public function setId($_id)
     {
-        $this->email = $email;
+        $this->id = $_id;
 
         return $this;
     }
 
-}
-
-
-
-class Creditcard implements PaymentMeans{
-
     /**
-     * @var string $name
-     */
-    private string $name = "Creditcard";
-
-    /**
-     * @var int $knumber
-     */
-    private int $knumber;
-    
-    /**
-     * @var date $validity
-     */
-    private date $validity;
-
-    /**
-     * @var int $cvc
-     */
-    private int $cvc;
-
-
-    /**
-     * Get $name
+     * Get the value of description
      *
      * @return  string
      */ 
-    public function getName()
+    public function getDescription()
     {
-        return $this->name;
-    }    
-
-    /**
-     * Get $knumber
-     *
-     * @return  int
-     */ 
-    public function getKnumber()
-    {
-            return $this->knumber;
+        return $this->description;
     }
 
     /**
-     * Set $knumber
+     * Set the value of description
      *
-     * @param  int  $knumber  $knumber
+     * @param  string  $description
      *
      * @return  self
      */ 
-    public function setKnumber(int $knumber)
+    public function setDescription($_description)
     {
-            $this->knumber = $knumber;
+        $this->description = $_description;
 
-            return $this;
+        return $this;
     }
 
     /**
-     * Get $validity
-     *
-     * @return  date
-     */ 
-    public function getValidity()
+     * Get this Object as Array for JSON import
+     * 
+     * @return array of this Class
+     */
+    public function getObjectAsArray()
     {
-            return $this->validity;
-    }
-
-    /**
-     * Set $validity
-     *
-     * @param  date  $validity  $validity
-     *
-     * @return  self
-     */ 
-    public function setValidity(date $validity)
-    {
-            $this->validity = $validity;
-
-            return $this;
-    }
-
-    /**
-     * Get $cvc
-     *
-     * @return  int
-     */ 
-    public function getCvc()
-    {
-            return $this->cvc;
-    }
-
-    /**
-     * Set $cvc
-     *
-     * @param  int  $cvc  $cvc
-     *
-     * @return  self
-     */ 
-    public function setCvc(int $cvc)
-    {
-            $this->cvc = $cvc;
-
-            return $this;
+        return array(
+            "id" => $this->id,
+            "description" => $this->description, 
+          );
     }
 }
-
-
 
 ?>

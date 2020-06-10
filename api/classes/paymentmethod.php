@@ -6,7 +6,7 @@ class PaymentMethod{
     /**
      * @var PDO
      */
-    private $_conn;
+    private $conn;
     /**
      * @var int $id
      */
@@ -29,9 +29,9 @@ class PaymentMethod{
      * 
      * @param $conn PDO
      */
-    public function connection($conn)
+    public function connection($_conn)
     {
-        $this->_conn = $conn;
+        $this->conn = $_conn;
     }
 
     /**
@@ -51,9 +51,9 @@ class PaymentMethod{
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId($_id)
     {
-        $this->id = $id;
+        $this->id = $_id;
 
         return $this;
     }
@@ -75,9 +75,9 @@ class PaymentMethod{
      *
      * @return  self
      */ 
-    public function setDescription($description)
+    public function setDescription($_description)
     {
-        $this->description = $description;
+        $this->description = $_description;
 
         return $this;
     }
@@ -99,26 +99,64 @@ class PaymentMethod{
      *
      * @return  self
      */ 
-    public function setPaymentMeans($paymentMeans)
+    public function setPaymentMeans($_paymentMeans)
     {
-        $this->paymentMeans = $paymentMeans;
+        $this->paymentMeans = $_paymentMeans;
 
         return $this;
+    }
+
+    /**
+     * Get Paments from Database
+     * 
+     * 
+     */
+    public function fetchPayment()
+    {
+        $_query = "SELECT * FROM paymentMethod";
+        $_paymentMeans = new PaymentMeans();
+        $_result = array();
+
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
+
+        // execute query
+        $_stmt->execute();
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+
+                $_paymentMeans->setId($PM_ID);
+                $_paymentMeans->setDescription($PM_Descr);
+                array_push($_result, $_paymentMeans->getObjectAsArray());
+            }
+        }
+
+        return empty($_result) ? null : $_result;
     }
 
 
     /**
      * Change youre Payment
      * 
-     * 
+     * @param int $_id
+     * @param string $_description
      */
-    public function changePayment($name)
+    public function changePayment($_id, $_description)
     {
-        if($name == "Paypal"){
-            $this->paymentMeans = new Paypal();
-        }else{
-            $this->paymentMeans = new Creditcard();
-        }
+        $this->paymentMeans->setId($_id);
+        $this->paymentMeans->setDescription($_description);
+
+        return $this->paymentMeans;
     }
 
     /**
