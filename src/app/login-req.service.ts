@@ -42,12 +42,14 @@ export class LoginReqService {
     console.log(username);
     console.log(password);
 
-    
-    let headers = new Headers();
+
+    let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
+    headers.append('Access-Control-Allow-Origin', 'http://xcsd.ddns.net/');
 
     let params = new HttpParams().set("username",username).set("password", password); //Create new HttpParams
 
+    console.log(headers);
     console.log(params);
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/login/login.php';
@@ -56,11 +58,11 @@ export class LoginReqService {
 
     console.log('request finished');
 
-    return this.http.get<User>(requestLink, { params: params }).pipe(catchError(this.handleError)).toPromise();
-    
+    return this.http.post<User>(requestLink, {headers: headers, params: params }).pipe(catchError(this.handleError)).toPromise();
+
   }
 
-  
+
 
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';

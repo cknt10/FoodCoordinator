@@ -12,7 +12,7 @@ export class AuthenticationService {
   public UserData: User;
 
   constructor(
-    private reqService: LoginReqService, 
+    private reqService: LoginReqService,
     private http: HttpClient
   ) {}
 
@@ -46,10 +46,12 @@ export class AuthenticationService {
     return this.UserData;
   }
 
- 
+
   async setUserData(username: string, password: string): Promise<User> {
     await this.reqService.postServerLoginData(username,password).then((data: User) => {
       this.UserData = new User(data['user']);
+
+      console.log(data['eure Daten']);
 
       console.log(this.UserData);
     }),
