@@ -6,27 +6,27 @@ class Ingredient{
     /**
      * @var PDO
      */
-    private $_conn;
+    private $conn;
     /**
      * @var int
      */
-    private $_id;
+    private $id;
     /**
      * @var int
      */
-    private $_amount;
+    private $amount;
     /**
      * @var string
      */
-    private $_unit;
+    private $unit;
     /**
      * @var string
      */
-    private $_description;
+    private $description;
     /**
      * @var array
      */
-    private $_nutrients = array();
+    private $nutrients = array();
     
 
     /**
@@ -42,9 +42,9 @@ class Ingredient{
      * 
      * @param $conn PDO
      */
-    public function connection($conn)
+    public function connection($_conn)
     {
-        $this->_conn = $conn;
+        $this->conn = $_conn;
     }
     
 
@@ -55,7 +55,7 @@ class Ingredient{
      */ 
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
@@ -65,9 +65,9 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setId($id)
+    public function setId($_id)
     {
-        $this->_id = $id;
+        $this->id = $_id;
 
         return $this;
     }
@@ -79,7 +79,7 @@ class Ingredient{
      */ 
     public function getAmount()
     {
-        return $this->_amount;
+        return $this->amount;
     }
 
     /**
@@ -89,9 +89,9 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setAmount($amount)
+    public function setAmount($_amount)
     {
-        $this->_amount = $amount;
+        $this->amount = $_amount;
 
         return $this;
     }
@@ -103,7 +103,7 @@ class Ingredient{
      */ 
     public function getUnit()
     {
-        return $this->_unit;
+        return $this->unit;
     }
 
     /**
@@ -113,9 +113,9 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setUnit($unit)
+    public function setUnit($_unit)
     {
-        $this->_unit = $unit;
+        $this->unit = $_unit;
 
         return $this;
     }
@@ -127,7 +127,7 @@ class Ingredient{
      */ 
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
 
     /**
@@ -137,9 +137,9 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setDescription($description)
+    public function setDescription($_description)
     {
-        $this->_description = $description;
+        $this->description = $_description;
 
         return $this;
     }
@@ -151,7 +151,7 @@ class Ingredient{
      */ 
     public function getNutrients()
     {
-        return $this->_nutrients;
+        return $this->nutrients;
     }
 
     /**
@@ -161,7 +161,7 @@ class Ingredient{
      */ 
     public function getAlc()
     {
-        return $this->_alc;
+        return $this->alc;
     }
 
     /**
@@ -171,9 +171,9 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setAlc($alc)
+    public function setAlc($_alc)
     {
-        $this->_alc = $alc;
+        $this->alc = $_alc;
 
         return $this;
     }
@@ -185,7 +185,7 @@ class Ingredient{
      */ 
     public function getType()
     {
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -195,9 +195,9 @@ class Ingredient{
      *
      * @return  self
      */ 
-    public function setType($type)
+    public function setType($_type)
     {
-        $this->_type = $type;
+        $this->type = $_type;
 
         return $this;
     }
@@ -209,18 +209,18 @@ class Ingredient{
      * 
      * @return self
      */
-    public function addNutrient($nutrient){
-        $unique = true;
-        if(count($this->_nutrients) > 0){
-            for($i = 0; $i < count($this->_nutrients); $i++){
-                if($this->_nutrients[$i]["id"] == $nutrient["id"] && $nutrient["id"] != null){
-                    $unique = false;
+    public function addNutrient($_nutrient){
+        $_unique = true;
+        if(count($this->nutrients) > 0){
+            for($_i = 0; $_i < count($this->nutrients); $_i++){
+                if($this->nutrients[$_i]["id"] == $nutrient["id"] && $nutrient["id"] != null){
+                    $_unique = false;
                 }
             }
         }
         
-        if($unique){
-            array_push($this->_nutrients, $nutrient);
+        if($_unique){
+            array_push($this->nutrients, $_nutrient);
         }
 
         return $this;
@@ -234,8 +234,8 @@ class Ingredient{
      * 
      * @return self
      */
-    public function changeNutrients($name, $value){
-        $this->_nutrients[$name] = $value;
+    public function changeNutrients($_name, $_value){
+        $this->nutrients[$_name] = $_value;
         return $this;
     }
 
@@ -246,12 +246,12 @@ class Ingredient{
      * 
      * @return self
      */
-    public function removeNutrion($name){
-        $_nutrient = $this->_nutrients[$name];
+    public function removeNutrion($_name){
+        $_nutrient = $this->nutrients[$_name];
 
-        $key= array_search($_nutrient, $this->_nutrients);
+        $_key= array_search($_nutrient, $this->nutrients);
         if ($key !== false) {
-            unset($this->_nutrients[$key]);
+            unset($this->nutrients[$_key]);
         };
 
         return $this->nutrients;
@@ -265,11 +265,11 @@ class Ingredient{
     public function getObjectAsArray()
     {
         return array(
-            "id" => $this->_id,
-            "amount" => $this->_amount,
-            "unit" => $this->_unit,
-            "description" => $this->_description,
-            "nutrients" => empty($this->_nutrients) ? null : $this->_nutrients, 
+            "id" => $this->id,
+            "amount" => $this->amount,
+            "unit" => $this->unit,
+            "description" => $this->description,
+            "nutrients" => empty($this->nutrients) ? null : $this->nutrients, 
           );
     }
 

@@ -10,7 +10,7 @@ include_once '../../classes/reguser.php';
 // instantiate database and product object
 $database = new Connection();
 $db = $database->connection();
-$_user = new RegUser($db);
+$user = new RegUser($db);
 
 
 $error = false;
@@ -18,46 +18,46 @@ $mailError = false;
 $result = array();
 $insertResult = "";
 
-// $_username = trim($_POST['username']);
-// $_email = trim($_POST['mail']);
-// $_password = trim($_POST['passwort']);
+// $username = trim($_POST['username']);
+// $email = trim($_POST['mail']);
+// $password = trim($_POST['passwort']);
 // $passwort2 = $_POST['passwort2'];
-// $_firstName = trim($_POST['vorname']);
-// $_name = trim($_POST['nachname']);
-// $_gender = trim($_POST['gender']);
-// $_street = trim($_POST['street']) . ' ' . trim($_POST['streetnumber']);
-// $_birthday = trim($_POST['birthday']);
+// $firstName = trim($_POST['vorname']);
+// $name = trim($_POST['nachname']);
+// $gender = trim($_POST['gender']);
+// $street = trim($_POST['street']) . ' ' . trim($_POST['streetnumber']);
+// $birthday = trim($_POST['birthday']);
 
-// $_city = trim($_POST['aaaa']); //SQL Statement
-// $_zip = trim($_POST['aaaa']); //SQL Statement
+// $city = trim($_POST['aaaa']); //SQL Statement
+// $zip = trim($_POST['aaaa']); //SQL Statement
 
 
-$_username = "test";
-$_email = "test@mail.com";
-$_password = "123456";
+$username = "test";
+$email = "test@mail.com";
+$password = "123456";
 $passwort2 = "123456";
-$_firstName = "testfirstname";
-$_name = "testname";
-$_gender = "m";
-$_street = "test street 3";
-$_birthday = "1990-10-19";
+$firstName = "testfirstname";
+$name = "testname";
+$gender = "m";
+$street = "test street 3";
+$birthday = "1990-10-19";
 
-$_city = "Frankfurt am Main"; //SQL Statement
-$_zip = 60639; //SQL Statement
+$city = "Frankfurt am Main"; //SQL Statement
+$zip = 60639; //SQL Statement
 
 
-if(empty($_firstName) || empty($_name) || empty($_username)) {
+if(empty($firstName) || empty($name) || empty($username)) {
     $error = true;
 }
 
-if(!filter_var($_email, FILTER_VALIDATE_EMAIL)) {
+if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $error = true;
 } 	
-if(strlen($_password) == 0) {
+if(strlen($password) == 0) {
 
     $error = true;
 }
-if($_password != $passwort2) {
+if($password != $passwort2) {
     $error = true;
 }
 
@@ -65,7 +65,7 @@ if($_password != $passwort2) {
 
 //Check Email exist
 if(!$error) { 
-    $error = $_user->checkUserExist($_email, $_username); 
+    $error = $user->checkUserExist($email, $username); 
     if($error){$mailError = true;}
 }
 
@@ -74,11 +74,11 @@ if(!$error) {
 //Check location exist. If not create Location and set ID into Object
 if(!$error) { 
     
-    //$error = $_user->checkLocation($_zip);
+    //$error = $user->checkLocation($zip);
 
-    if(!$_user->checkLocation($_zip, $_city)){
+    if(!$user->checkLocation($zip, $city)){
         //Create City Entry
-        $_user->createLocation($_zip, $_city);
+        $user->createLocation($zip, $city);
     }
 }
 
@@ -87,28 +87,28 @@ if(!$error) {
 //If still no errors, register can be create
 if(!$error) {	
     //Fill object with missing informations
-    $_user->setUsername($_username);
-    $_user->setEmail($_email);
-    $_user->setPassword($_password);
-    $_user->setFirstname($_firstName);
-    $_user->setName($_name);
-    $_user->setGender($_gender);
-    $_user->setStreet($_street);
-    $_user->setBirthday($_birthday);
-    $_user->setLocation($_city);
-    $_user->setPostcode($_zip);
+    $user->setUsername($username);
+    $user->setEmail($email);
+    $user->setPassword($password);
+    $user->setFirstname($firstName);
+    $user->setName($name);
+    $user->setGender($gender);
+    $user->setStreet($street);
+    $user->setBirthday($birthday);
+    $user->setLocation($city);
+    $user->setPostcode($zip);
 
     //Call Insert
-    $insertResult = $_user->createUser( 
-        $_email, 
-        $_username, 
-        $_password, 
-        $_firstName,
-        $_name, 
-        $_gender, 
-        $_street,
-        $_birthday,
-        $_user->getCityId());
+    $insertResult = $user->createUser( 
+        $email, 
+        $username, 
+        $password, 
+        $firstName,
+        $name, 
+        $gender, 
+        $street,
+        $birthday,
+        $user->getCityId());
 }
 
 if($insertResult !== "201"){
@@ -119,17 +119,17 @@ if($insertResult !== "201"){
 if(!$error){
 
     $result["user"] =array(
-        'id' => $_user->getId(), 
-        'username' => $_user->getUsername(),
-        'email' => $_user->getEmail(), 
-        'firstname' => $_user->getFirstname(), 
-        'name' => $_user->getName(), 
-        'birthday' => $_user->getBirthday(),
-        'gender' => $_user->getGender(), 
-        'street' => $_user->getStreet(),
-        'cityId' => $_user->getCityId(),
-        'postcode' => $_user->getPostcode(),
-        'city' => $_user->getLocation(),
+        'id' => $user->getId(), 
+        'username' => $user->getUsername(),
+        'email' => $user->getEmail(), 
+        'firstname' => $user->getFirstname(), 
+        'name' => $user->getName(), 
+        'birthday' => $user->getBirthday(),
+        'gender' => $user->getGender(), 
+        'street' => $user->getStreet(),
+        'cityId' => $user->getCityId(),
+        'postcode' => $user->getPostcode(),
+        'city' => $user->getLocation(),
     );
 
     // set response code - 201 OK
