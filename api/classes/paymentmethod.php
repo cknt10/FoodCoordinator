@@ -1,26 +1,38 @@
 <?php
-require_once('paymentmeans.php');
+include_once 'paymentmeans.php';
+
 
 class PaymentMethod{
-
+    /**
+     * @var PDO
+     */
+    private $_conn;
     /**
      * @var int $id
      */
-    private int $id;
+    private $id;
 
     /**
      * @var string $description
      */
-    private string $description;
+    private $description;
 
     /**
      * @var PaymentMeans $paymentMeans
      */
-    private PaymentMeans $paymentMeans;
+    private $paymentMeans;
 
     
 
-
+    /**
+     * creates connection in class to database
+     * 
+     * @param $conn PDO
+     */
+    public function connection($conn)
+    {
+        $this->_conn = $conn;
+    }
 
     /**
      * Get $id
@@ -39,7 +51,7 @@ class PaymentMethod{
      *
      * @return  self
      */ 
-    public function setId(int $id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -63,7 +75,7 @@ class PaymentMethod{
      *
      * @return  self
      */ 
-    public function setDescription(string $description)
+    public function setDescription($description)
     {
         $this->description = $description;
 
@@ -87,7 +99,7 @@ class PaymentMethod{
      *
      * @return  self
      */ 
-    public function setPaymentMeans(PaymentMeans $paymentMeans)
+    public function setPaymentMeans($paymentMeans)
     {
         $this->paymentMeans = $paymentMeans;
 
@@ -100,9 +112,29 @@ class PaymentMethod{
      * 
      * 
      */
-    public function changePayment(string $name)
+    public function changePayment($name)
     {
-        # code...
+        if($name == "Paypal"){
+            $this->paymentMeans = new Paypal();
+        }else{
+            $this->paymentMeans = new Creditcard();
+        }
+    }
+
+    /**
+     * Get this Object as Array for JSON import
+     * 
+     * @return array of this Class
+     */
+    public function getObjectAsArray()
+    {
+        return array(
+            // "id" => $this->_id,
+            // "amount" => $this->_amount,
+            // "unit" => $this->_unit,
+            // "description" => $this->_description,
+            // "nutrients" => empty($this->_nutrients) ? null : $this->_nutrients, 
+          );
     }
 }
 

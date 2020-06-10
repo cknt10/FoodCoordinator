@@ -1,6 +1,6 @@
 <?php 
 // required headers
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Origin: http://xcsd.ddns.net/");
 header("Content-Type: application/json; charset=UTF-8");
   
 // include database and object files
@@ -18,13 +18,15 @@ $postdata = file_get_contents("php://input");
 if(isset($postdata) && !empty($postdata))
 {
   // Extract the data.
-  $request = json_decode($postdata);
-  echo $request . '\n';
+    $request = json_decode($postdata);
+  //echo $request . '\n';
+}else{ 
+    $request = "Daten leer";
 }
 // initialize object
 $_user = new PremiumUser($db);
 $_user->setUsername("test");
-$passwort = "123456";
+$passwort = '123456';
 // query products
 $num = $_user->login("test", "");
   

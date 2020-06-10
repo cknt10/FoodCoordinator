@@ -4,7 +4,6 @@ interface PaymentMeans
 {
 
     public function getName();
-    public function setName(string $name);
 
 }
 
@@ -13,7 +12,7 @@ class Paypal implements PaymentMeans{
     /**
      * @var string $name
      */
-    private string $name;
+    private string $name = "Paypal";
 
     /**
      * @var string $email
@@ -32,22 +31,7 @@ class Paypal implements PaymentMeans{
     {
         return $this->name;
     }
-
-    /**
-     * Set $name
-     *
-     * @param  string  $name  $name
-     *
-     * @return  self
-     */ 
-    public function setName(string $name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    
+   
 
     /**
      * Get $email
@@ -82,7 +66,7 @@ class Creditcard implements PaymentMeans{
     /**
      * @var string $name
      */
-    private string $name;
+    private string $name = "Creditcard";
 
     /**
      * @var int $knumber
@@ -108,23 +92,7 @@ class Creditcard implements PaymentMeans{
     public function getName()
     {
         return $this->name;
-    }
-
-    /**
-     * Set $name
-     *
-     * @param  string  $name  $name
-     *
-     * @return  self
-     */ 
-    public function setName(string $name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    
+    }    
 
     /**
      * Get $knumber
