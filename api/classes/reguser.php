@@ -9,115 +9,115 @@ class RegUser{
     /**
      * @var POD
      */
-    private $_conn;
+    private $conn;
 
     /**
      * @var int
      */
-    private $_cityId;
+    private $cityId;
 
     /**
      * @var int
      */
-    private $_id;
+    private $id;
 
     /**
      * @var string
      */
-    private $_username;
+    private $username;
     /**
      * @var string
      */
-    private $_email;
+    private $email;
     /**
      * @var string
      */
-    private $_firstname;
+    private $firstname;
     /**
      * @var string
      */
-    private $_name;
+    private $name;
     /**
      * @var string
      */
-    private $_password;
+    private $password;
     /**
      * @var string
      */
-    private $_gender;
+    private $gender;
     /**
      * @var string
      */
-    private $_street;
+    private $street;
     /**
      * @var date
      */
-    private $_birthday;
+    private $birthday;
     /**
      * @var int
      */
-    private $_postcode;
+    private $postcode;
     /**
      * @var string Homelocation / ORT
      */
-    private $_location;
+    private $location;
     /**
      * @var array Array of type Orders
      */
-    private $_orders;
+    private $orders;
     /**
      * @var array Array of type Recipe
      */
-    private $_recipes;
+    private $recipes;
     /**
      * @var bool
      */
-    private $_loggedin;
+    private $loggedin;
 
 
 
 
     // constructor with $db as database connection
-    public function __construct($db){
-        $this->_conn = $db;
+    public function __construct($_db){
+        $this->conn = $_db;
     }
 
     /**
-     * Get the value of _id
+     * Get the value of id
      *
      * @return  int
      */
     public function getId()
     {
-        return $this->_id;
+        return $this->id;
     }
 
     /**
-     * Set the value of _id
+     * Set the value of id
      *
-     * @param  int  $_id
+     * @param  int  $id
      *
      * @return  self
      */
     public function setId($_id)
     {
-        $this->_id = $_id;
+        $this->id = $_id;
 
         return $this;
     }
 
     /**
-     * Get the value of _cityId
+     * Get the value of cityId
      *
      * @return  int
      */
     public function getCityId()
     {
-        return $this->_cityId;
+        return $this->cityId;
     }
 
     /**
-     * Set the value of _cityId
+     * Set the value of cityId
      *
      * @param  int  $_cityId
      *
@@ -125,7 +125,7 @@ class RegUser{
      */
     public function setCityId($_cityId)
     {
-        $this->_cityId = $_cityId;
+        $this->cityId = $_cityId;
 
         return $this;
     }
@@ -136,15 +136,15 @@ class RegUser{
 
      public function getUsername()
      {
-         return $this->_username;
+         return $this->username;
      }
 
     /**
      * @param string Username
      */
-    public function setUsername($name)
+    public function setUsername($_name)
     {
-       $this->_username = $name;
+       $this->username = $_name;
     }
 
     /**
@@ -152,32 +152,32 @@ class RegUser{
     */
    public function getEmail()
    {
-      return $this->_email;
+      return $this->email;
    }
    /**
     * @param string Username
     */
-   public function setEmail($name)
+   public function setEmail($_name)
    {
-      $this->_email = $name;
+      $this->email = $_name;
    }
 
        /**
-     * Get the value of _firstname
+     * Get the value of firstname
      */
     public function getFirstname()
     {
-        return $this->_firstname;
+        return $this->firstname;
     }
 
     /**
-     * Set the value of _firstname
+     * Set the value of firstname
      *
      * @return  self
      */
     public function setFirstname($_firstname)
     {
-        $this->_firstname = $_firstname;
+        $this->firstname = $_firstname;
 
         return $this;
     }
@@ -185,17 +185,17 @@ class RegUser{
 
 
     /**
-     * Get the value of _name
+     * Get the value of name
      *
      * @return  string
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
-     * Set the value of _name
+     * Set the value of name
      *
      * @param  string  $_name
      *
@@ -203,23 +203,23 @@ class RegUser{
      */
     public function setName($_name)
     {
-        $this->_name = $_name;
+        $this->name = $_name;
 
         return $this;
     }
 
     /**
-     * Get the value of _password
+     * Get the value of password
      *
      * @return  string
      */
     public function getPassword()
     {
-        return $this->_password;
+        return $this->password;
     }
 
     /**
-     * Set the value of _password
+     * Set the value of password
      *
      * @param  string  $_password
      *
@@ -227,23 +227,23 @@ class RegUser{
      */
     public function setPassword($_password)
     {
-        $this->_password = $_password;
+        $this->password = $_password;
 
         return $this;
     }
 
     /**
-     * Get the value of _gender
+     * Get the value of gender
      *
      * @return  string
      */
     public function getGender()
     {
-        return $this->_gender;
+        return $this->gender;
     }
 
     /**
-     * Set the value of _gender
+     * Set the value of gender
      *
      * @param  string  $_gender
      *
@@ -251,23 +251,23 @@ class RegUser{
      */
     public function setGender($_gender)
     {
-        $this->_gender = $_gender;
+        $this->gender = $_gender;
 
         return $this;
     }
 
     /**
-     * Get the value of _street
+     * Get the value of street
      *
      * @return  string
      */
     public function getStreet()
     {
-        return $this->_street;
+        return $this->street;
     }
 
     /**
-     * Set the value of _street
+     * Set the value of street
      *
      * @param  string  $_street
      *
@@ -275,23 +275,23 @@ class RegUser{
      */
     public function setStreet($_street)
     {
-        $this->_street = $_street;
+        $this->street = $_street;
 
         return $this;
     }
 
     /**
-     * Get the value of _birthday
+     * Get the value of birthday
      *
      * @return  date
      */
     public function getBirthday()
     {
-        return $this->_birthday;
+        return $this->birthday;
     }
 
     /**
-     * Set the value of _birthday
+     * Set the value of birthday
      *
      * @param  date  $_birthday
      *
@@ -299,23 +299,23 @@ class RegUser{
      */
     public function setBirthday($_birthday)
     {
-        $this->_birthday = $_birthday;
+        $this->birthday = $_birthday;
 
         return $this;
     }
 
     /**
-     * Get the value of _postcode
+     * Get the value of postcode
      *
      * @return  int
      */
     public function getPostcode()
     {
-        return $this->_postcode;
+        return $this->postcode;
     }
 
     /**
-     * Set the value of _postcode
+     * Set the value of postcode
      *
      * @param  int  $_postcode
      *
@@ -323,7 +323,7 @@ class RegUser{
      */
     public function setPostcode($_postcode)
     {
-        $this->_postcode = $_postcode;
+        $this->postcode = $_postcode;
 
         return $this;
     }
@@ -335,7 +335,7 @@ class RegUser{
      */
     public function getLocation()
     {
-        return $this->_location;
+        return $this->location;
     }
 
     /**
@@ -347,7 +347,7 @@ class RegUser{
      */
     public function setLocation($_location)
     {
-        $this->_location = $_location;
+        $this->location = $_location;
 
         return $this;
     }
@@ -359,7 +359,7 @@ class RegUser{
      */
     public function getRecipes()
     {
-        return $this->_recipes;
+        return $this->recipes;
     }
 
     /**
@@ -371,23 +371,23 @@ class RegUser{
      */
     public function setRecipes($_recipes)
     {
-        $this->_recipes = $_recipes;
+        $this->recipes = $_recipes;
 
         return $this;
     }
 
     /**
-     * Get the value of _loggedin
+     * Get the value of loggedin
      *
      * @return  bool
      */
     public function getLoggedin()
     {
-        return $this->_loggedin;
+        return $this->loggedin;
     }
 
     /**
-     * Set the value of _loggedin
+     * Set the value of loggedin
      *
      * @param  bool  $_loggedin
      *
@@ -395,7 +395,7 @@ class RegUser{
      */
     public function setLoggedin($_loggedin)
     {
-        $this->_loggedin = $_loggedin;
+        $this->loggedin = $_loggedin;
 
         return $this;
     }
@@ -411,45 +411,45 @@ class RegUser{
      * Return true if mail exists in DB
      * @return bool
      */
-    public function checkUserExist($name = "", $username = "")
+    public function checkUserExist($_name = "", $_username = "")
     {
         $_result = false;
 
 
         // select all query
-        $query = "SELECT * FROM user WHERE Mail = :Mail OR Username = :Username";
+        $_query = "SELECT * FROM user WHERE Mail = :Mail OR Username = :Username";
 
         // prepare query statement
-        $stmt = $this->_conn->prepare($query);
+        $_stmt = $this->conn->prepare($_query);
 
         // sanitize
-        $name=htmlspecialchars(strip_tags($name));
-        $username=htmlspecialchars(strip_tags($username));
+        $_name=htmlspecialchars(strip_tags($_name));
+        $_username=htmlspecialchars(strip_tags($_username));
 
         // bind values
-        $stmt->bindParam(":Mail", $name);
-        $stmt->bindParam(":Username", $username);
+        $_stmt->bindParam(":Mail", $_name);
+        $_stmt->bindParam(":Username", $_username);
 
 
         // execute query
-        $stmt->execute();
+        $_stmt->execute();
 
-        $_num = $stmt->rowCount();
+        $_num = $_stmt->rowCount();
 
         //If entry exists then Error
         if($_num > 0) {
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
                 // extract row
                 // this will make $row['name'] to
                 // just $name only
-                extract($row);
-                $this->_email = $Mail;
-                $this->_username = $Username;
+                extract($_row);
+                $this->email = $Mail;
+                $this->username = $Username;
                 //Set ID if not exist
-                if($this->_id == null){ $this->_id = $U_ID;}
+                if($this->id == null){ $this->id = $U_ID;}
                 $_result = true;
             }
         }
@@ -464,43 +464,43 @@ class RegUser{
      * Return true if postcode exists in DB
      * @return bool
      */
-    public function checkLocation($postcode, $location, $cityId = null)
+    public function checkLocation($_postcode, $_location, $_cityId = null)
     {
         $_result = false;
-        $query = "";
+        $_query = "";
 
         // select all query
-        if($cityId){
-            $query = "SELECT * FROM cities WHERE C_ID = :C_ID";
+        if($_cityId){
+            $_query = "SELECT * FROM cities WHERE C_ID = :C_ID";
 
             // prepare query statement
-            $stmt = $this->_conn->prepare($query);
+            $_stmt = $this->conn->prepare($_query);
 
             // sanitize
             //$postcode=htmlspecialchars(strip_tags($postcode));
 
             // bind values
-            $stmt->bindParam(":C_ID", $cityId);
+            $_stmt->bindParam(":C_ID", $_cityId);
 
         }else{
-            $query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
+            $_query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
 
             // prepare query statement
-            $stmt = $this->_conn->prepare($query);
+            $_stmt = $this->conn->prepare($_query);
 
             // sanitize
             //$postcode=htmlspecialchars(strip_tags($postcode));
 
             // bind values
-            $stmt->bindParam(":PostalCode", $postcode);
+            $_stmt->bindParam(":PostalCode", $_postcode);
         }
 
 
 
         // execute query
-        $stmt->execute();
+        $_stmt->execute();
 
-        $_num = $stmt->rowCount();
+        $_num = $_stmt->rowCount();
 
 
         //If entry exists then Error
@@ -508,18 +508,18 @@ class RegUser{
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
                 // extract row
                 // this will make $row['name'] to
                 // just $name only
-                extract($row);
-                $this->_postcode = $PostalCode;
+                extract($_row);
+                $this->postcode = $PostalCode;
 
                 //Check for the right location
-                if(strcmp(strtolower($location), strtolower($City))){
+                if(strcmp(strtolower($_location), strtolower($City))){
                     //Fill Objekt with City informations
-                    if($this->_location == null){ $this->_location = $City; }
-                    if($this->_cityId == null){ $this->_cityId = $C_ID; }
+                    if($this->location == null){ $this->location = $City; }
+                    if($this->cityId == null){ $this->cityId = $C_ID; }
                     $_result = true;
                 }
 
@@ -534,26 +534,26 @@ class RegUser{
      * @param int $postcode
      * @param string $location
      */
-    public function createLocation($postcode, $location)
+    public function createLocation($_postcode, $_location)
     {
         // select all query
-        $query = "INSERT INTO cities (City, PostalCode) VALUES (:City, :PostalCode)";
+        $_query = "INSERT INTO cities (City, PostalCode) VALUES (:City, :PostalCode)";
 
         // prepare query statement
-        $stmt = $this->_conn->prepare($query);
+        $_stmt = $this->conn->prepare($_query);
 
         // sanitize
-        $location=htmlspecialchars(strip_tags($location));
+        $_location=htmlspecialchars(strip_tags($_location));
 
         // bind values
-        $stmt->bindParam(":PostalCode", $postcode);
-        $stmt->bindParam(":City", $location);
+        $_stmt->bindParam(":PostalCode", $_postcode);
+        $_stmt->bindParam(":City", $_location);
 
 
         // execute query
-        $stmt->execute();
+        $_stmt->execute();
 
-        $this->checkLocation($postcode);
+        $this->checkLocation($_postcode, $_location);
     }
 
     /**
@@ -587,7 +587,7 @@ class RegUser{
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-            while ($_row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
                 // extract row
                 // this will make $row['name'] to
                 // just $name only
@@ -601,7 +601,7 @@ class RegUser{
                 
             }
         }
-        return empty($_result) ? null : $result;
+        return empty($_result) ? null : $_result;
     }
 
     /**
@@ -619,53 +619,53 @@ class RegUser{
      * @return string
      */
     public function createUser(
-        $mail,
-        $username,
-        $password,
-        $firstname,
-        $name,
-        $gender,
-        $street,
-        $birthday,
-        $c_id
+        $_mail,
+        $_username,
+        $_password,
+        $_firstname,
+        $_name,
+        $_gender,
+        $_street,
+        $_birthday,
+        $_c_id
         )
     {
         $result = "";
         try{
-            $sql = "INSERT INTO user (Mail, Username, Password, FirstName, Name, Gender, Street, Birthday, C_ID) VALUES (:Mail, :Username, :Password, :FirstName, :Name, :Gender, :Street, :Birthday, :C_ID)";
-            $stmt= $this->_conn->prepare($sql);
+            $_sql = "INSERT INTO user (Mail, Username, Password, FirstName, Name, Gender, Street, Birthday, C_ID) VALUES (:Mail, :Username, :Password, :FirstName, :Name, :Gender, :Street, :Birthday, :C_ID)";
+            $_stmt= $this->conn->prepare($_sql);
 
             // sanitize
-            $mail=htmlspecialchars(strip_tags($mail));
-            $username=htmlspecialchars(strip_tags($username));
-            $password=htmlspecialchars(strip_tags($password));
-            $firstname=htmlspecialchars(strip_tags($firstname));
-            $name=htmlspecialchars(strip_tags($name));
-            $gender=htmlspecialchars(strip_tags($gender));
-            $street=htmlspecialchars(strip_tags($street));
+            $_mail=htmlspecialchars(strip_tags($_mail));
+            $_username=htmlspecialchars(strip_tags($_username));
+            $_password=htmlspecialchars(strip_tags($_password));
+            $_firstname=htmlspecialchars(strip_tags($_firstname));
+            $_name=htmlspecialchars(strip_tags($_name));
+            $_gender=htmlspecialchars(strip_tags($_gender));
+            $_street=htmlspecialchars(strip_tags($_street));
 
             //Hash Password
-            $passwort_hash = password_hash($password, PASSWORD_DEFAULT);
+            $_passwort_hash = password_hash($_password, PASSWORD_DEFAULT);
 
             // bind values
-            $stmt->bindParam(":Mail", $mail);
-            $stmt->bindParam(":Username", $username);
-            $stmt->bindParam(":Password", $passwort_hash);
-            $stmt->bindParam(":FirstName", $firstname);
-            $stmt->bindParam(":Name", $name);
-            $stmt->bindParam(":Gender", $gender);
-            $stmt->bindParam(":Street", $street);
-            $stmt->bindParam(":Birthday", $birthday);
-            $stmt->bindParam(":C_ID", $c_id);
+            $_stmt->bindParam(":Mail", $_mail);
+            $_stmt->bindParam(":Username", $_username);
+            $_stmt->bindParam(":Password", $_passwort_hash);
+            $_stmt->bindParam(":FirstName", $_firstname);
+            $_stmt->bindParam(":Name", $_name);
+            $_stmt->bindParam(":Gender", $_gender);
+            $_stmt->bindParam(":Street", $_street);
+            $_stmt->bindParam(":Birthday", $_birthday);
+            $_stmt->bindParam(":C_ID", $_c_id);
 
-            $stmt->execute();
-            $result = "201";
-        }catch(Eception $e){
-            $result = $e-getMessage();
+            $_stmt->execute();
+            $_result = "201";
+        }catch(Eception $_e){
+            $_result = $_e-getMessage();
         }
 
 
-        return $result;
+        return $_result;
     }
 
 
@@ -677,54 +677,54 @@ class RegUser{
      * @return int cout of entries
      */
 
-    public function login($username = "", $mail ="")
+    public function login($_username = "", $_mail ="")
     {
         // select all query
-        $query = "SELECT * FROM user WHERE Username = :Username OR Mail = :Mail";
+        $_query = "SELECT * FROM user WHERE Username = :Username OR Mail = :Mail";
 
         // prepare query statement
-        $stmt = $this->_conn->prepare($query);
+        $_stmt = $this->conn->prepare($_query);
 
         // sanitize
-        $username=htmlspecialchars(strip_tags($username));
-        $mail=htmlspecialchars(strip_tags($mail));
+        $_username=htmlspecialchars(strip_tags($_username));
+        $_mail=htmlspecialchars(strip_tags($_mail));
 
         // bind values
-        $stmt->bindParam(":Username", $username);
-        $stmt->bindParam(":Mail", $mail);
+        $_stmt->bindParam(":Username", $_username);
+        $_stmt->bindParam(":Mail", $_mail);
 
         // execute query
-        $stmt->execute();
+        $_stmt->execute();
 
-        $num = $stmt->rowCount();
+        $_num = $_stmt->rowCount();
 
-        if($num>0){
+        if($_num>0){
 
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
                 // extract row
                 // this will make $row['name'] to
                 // just $name only
-                extract($row);
+                extract($_row);
 
-                $this->_id = $U_ID;
-                $this->_username = $Username;
-                $this->_email = $Mail;
-                $this->_firstname = $FirstName;
-                $this->_name = $Name;
-                $this->_birthday = $Birthday;
-                $this->_gender = $Gender;
-                $this->_street = $Street;
-                $this->_password = $Password;
-                $this->_cityId = $C_ID;
+                $this->id = $U_ID;
+                $this->username = $Username;
+                $this->email = $Mail;
+                $this->firstname = $FirstName;
+                $this->name = $Name;
+                $this->birthday = $Birthday;
+                $this->gender = $Gender;
+                $this->street = $Street;
+                $this->password = $Password;
+                $this->cityId = $C_ID;
             }
 
-            $this->checkLocation("", "", $this->_cityId);
+            $this->checkLocation("", "", $this->cityId);
         }
 
-        return $num;
+        return $_num;
     }
 
     /**
@@ -732,22 +732,22 @@ class RegUser{
      */
     public function clearUser()
     {
-      $this->_conn = null;
-      $this->_cityId = null;
-      $this->_id = null;
-      $this->_username = null;
-      $this->_email = null;
-      $this->_firstname = null;
-      $this->_name = null;
-      $this->_password = null;
-      $this->_gender = null;
-      $this->_street = null;
-      $this->_birthday = null;
-      $this->_postcode = null;
-      $this->_location = null;
-      $this->_orders = null;
-      $this->_recipes = null;
-      $this->_loggedin = null;
+      $this->conn = null;
+      $this->cityId = null;
+      $this->id = null;
+      $this->username = null;
+      $this->email = null;
+      $this->firstname = null;
+      $this->name = null;
+      $this->password = null;
+      $this->gender = null;
+      $this->street = null;
+      $this->birthday = null;
+      $this->postcode = null;
+      $this->location = null;
+      $this->orders = null;
+      $this->recipes = null;
+      $this->loggedin = null;
     }
 
     /**
@@ -761,18 +761,18 @@ class RegUser{
         // Beispiele kannst du unter der ingredient.php oder nutrient.php finden der Aufbau ist.
 
         return array(
-          "cityId" => $this->_cityId,
-          "id" => $this->_id,
-          "username" => $this->_username,
-          "name" => $this->_name,
-          "password" => $this->_password,
-          "gender" => $this->_gender,
-          "street" => $this->_street,
-          "birthday" => $this->_birthday,
-          "postcode" => $this->_postcode,
-          "location" => $this->_location,
-          "orders" => empty($this->_orders) ? null : $this->_orders,
-          "recipes" => empty($this->_recipes) ? null : $this->_recipes,
+          "cityId" => $this->cityId,
+          "id" => $this->id,
+          "username" => $this->username,
+          "name" => $this->name,
+          "password" => $this->password,
+          "gender" => $this->gender,
+          "street" => $this->street,
+          "birthday" => $this->birthday,
+          "postcode" => $this->postcode,
+          "location" => $this->location,
+          "orders" => empty($this->orders) ? null : $this->orders,
+          "recipes" => empty($this->recipes) ? null : $this->recipes,
         );
 
     }
