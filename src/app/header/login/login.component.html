@@ -1,13 +1,15 @@
+  <div class="container">
   <div class="containerLogin">
-    <div id="closeContainer">
+    <div class="closeContainer">
     <button id="close" mat-mini-fab><mat-icon>close</mat-icon></button>
   </div>
-    <div id="login">
+    <div class="login">
       <input type="text" placeholder="Benutzername oder Email" name="username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Benutzername oder Email'" [(ngModel)]="username" required>
       <input type="password" placeholder="Passwort" name="password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Passwort'" [(ngModel)]="password" required>
-      <button id="subLogin" mat-raised-button (click)="loginUser()">Login</button>
+      <button id="subLogin" mat-raised-button (click)="loginUser()">Anmelden</button>
     </div>
     <div id="goReg">
       <p>Du hast noch kein Konto?<a routerLink="/reg" id="reg">Werde Mitglied</a></p>
     </div>
   </div>
+</div>
