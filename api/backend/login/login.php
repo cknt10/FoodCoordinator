@@ -1,6 +1,7 @@
 <?php 
 // required headers
-header("Access-Control-Allow-Origin: http://xcsd.ddns.net/");
+//header("Access-Control-Allow-Origin: http://xcsd.ddns.net/");
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
   
 // include database and object files
@@ -12,23 +13,12 @@ include_once '../../classes/premiumuser.php';
 $database = new Connection();
 $db = $database->connection();
 
-// Get the posted data.
-$postdata = file_get_contents("php://input");
-
-if(isset($postdata) && !empty($postdata))
-{
-  // Extract the data.
-    $request = json_decode($postdata);
-  //echo $request . '\n';
-}else{ 
-    $request = "Daten leer";
-}
 // initialize object
 $user = new PremiumUser($db);
-$user->setUsername("test");
-$passwort = "123456";
+$user->setUsername($_GET['username']);
+$passwort = $_GET['password'];
 // query products
-$num = $user->login("test", "");
+$num = $user->login($_GET['username'], "");
   
 // check if more than 0 record found
 if($num>0){
@@ -36,7 +26,6 @@ if($num>0){
     $resultArr=array();
     $wrongPassword = "";
     
-    $resultArr["eure Daten"] = $request;
     $resultArr["message"] = "";
     $resultArr["user"] =array(
         'id' => $user->getId(), 
