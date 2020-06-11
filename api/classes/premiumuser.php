@@ -41,9 +41,19 @@ class PremiumUser extends RegUser{
     private $startDate;
 
     // constructor with $db as database connection
-    public function __construct($_db){
-        parent::__construct($_db);
-        $this->conn = $_db;
+    public function __construct(){
+
+    }
+
+    /**
+     * creates connection in class to database
+     * 
+     * @param $conn PDO
+     */
+    public function connection($_conn)
+    {
+        parent::connection($_conn);
+        $this->conn = $_conn;
     }
 
     /**

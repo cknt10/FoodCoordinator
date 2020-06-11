@@ -15,6 +15,7 @@ $db = $database->connection();
 
 // initialize object
 $user = new PremiumUser($db);
+$user->connection($db);
 $user->setUsername($_GET['username']);
 $passwort = $_GET['password'];
 // query products

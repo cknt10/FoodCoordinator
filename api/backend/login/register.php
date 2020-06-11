@@ -10,8 +10,8 @@ include_once '../../classes/reguser.php';
 // instantiate database and product object
 $database = new Connection();
 $db = $database->connection();
-$user = new RegUser($db);
-
+$user = new RegUser();
+$user->connection($db);
 
 $error = false;
 $mailError = false;
