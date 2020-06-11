@@ -1,61 +1,72 @@
 <?php
 
 class Order{
-
+    /**
+     * @var POD
+     */
+    private $conn;
     /**
      * @var int
      */
-    private int $ordernumber;
+    private $ordernumber;
     /**
      * @var int
      */
-    private int $amount;
+    private $amount;
     /**
      * @var bool
      */
-    private bool $gift;
+    private $gift;
     /**
      * @var string
      */
-    private string $status;
+    private $status;
     /**
      * @var string
      */
-    private string $recipient;
+    private $recipient;
     /**
      * @var string
      */
-    private string $street;
+    private $street;
     /**
      * @var int
      */
-    private int $postcode;
+    private $postcode;
     /**
      * @var string
      */
-    private string $location;
+    private $location;
     /**
      * @var array
      */
-    private array $cookbook;
+    private $cookbook;
     /**
      * @var PaymentMethod
      */
-    private PaymentMethod $payment;
+    private $payment;
     /**
      * @var float
      */
-    private float $unitPrice;
+    private $unitPrice;
     /**
      * @var date
      */
-    private date $timestamp;
+    private $timestamp;
     
 
 
 
 
-
+    /**
+     * creates connection in class to database
+     * 
+     * @param $conn PDO
+     */
+    public function connection($_conn)
+    {
+        $this->conn = $_conn;
+    }
 
 
     /**
@@ -382,9 +393,65 @@ class Order{
         # code...
     }
 
-    public function createOrder()
+    /**
+     * Insert an order into db
+     * 
+     * @param int $_userId
+     * @param int $_cbId Cookbook Id
+     * @param string $_cbTitle Cookbook Title
+     * @param string $_dedication 
+     * @param bool $_giftstatus is this a gift?
+     * @param int $_amount amount of Cookbooks to deliver
+     * @param string $_orderStatus
+     * @param date $_timestamp order date
+     * @param string $_recipient alternate person to deliver
+     * @param string $_street deliver adress
+     * @param int $_cityId id of the City in the database
+     * @param int $_pmId id of the payment method 
+     * 
+     * @return string
+     */
+    public function createOrder($_userId, $_cbId, $_cbTitle, $_dedication, $_giftstatus, $_amount, $_orderStatus, $_timestamp, $_recipient, $_street, $_cityId, $_pmId)
     {
+       $_result = "";
+       if($_userId == null || $_cbId == null || $_cbTitle == null || $_dedication == null || 
+       $_giftstatus == null || $_amount == null || $_orderStatus == null || $_timestamp == null || 
+       $_recipient== null || $_street == null || $_cityId == null || $_pmId == null)
+       { return "403";}
+
+       try{
+            $_query = "INSERT INTO cBorder (U_ID, CB_ID, BookTitle, Dedication, GiftStatus, Amount, OrderStatus, Timestamp, Recipient, Street, C_ID, PM_ID) VALUES (:U_ID, :CB_ID, :BookTitle, :Dedication, :GiftStatus, :Amount, :OrderStatus, :Timestamp, :Recipient, :Street, :C_ID, :PM_ID)";
+            $_stmt= $this->conn->prepare($_query);
+
+            // sanitize
+            $_cbTitle=htmlspecialchars(strip_tags($_cbTitle));
+            $_dedication=htmlspecialchars(strip_tags($_dedication));
+            $_orderStatus=htmlspecialchars(strip_tags($_orderStatus));
+            $_recipient=htmlspecialchars(strip_tags($_recipient));
+            $_street=htmlspecialchars(strip_tags($_street));
+            $_giftstatus = $_giftstatus == true ? 1 : 0;
+
+            // bind values
+            $_stmt->bindParam(":U_ID", $_userId);
+            $_stmt->bindParam(":CB_ID", $_cbId);
+            $_stmt->bindParam(":BookTitle", $_cbTitle);
+            $_stmt->bindParam(":Dedication", $_dedication);
+            $_stmt->bindParam(":GiftStatus", $_giftstatus);
+            $_stmt->bindParam(":Amount", $_amount);
+            $_stmt->bindParam(":OrderStatus", $_orderStatus);
+            $_stmt->bindParam(":Timestamp", $_timestamp);
+            $_stmt->bindParam(":Recipient", $_recipient);
+            $_stmt->bindParam(":Street", $_street);
+            $_stmt->bindParam(":C_ID", $_cityId);
+            $_stmt->bindParam(":PM_ID", $_pmId);
+
+            $_stmt->execute();
+            $_result = "200";
+       }catch(Eception $_e){
+        $_result = $_e-getMessage();
+       }
        
+       return $_result;
     }
 
 }
