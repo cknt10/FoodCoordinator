@@ -1,5 +1,6 @@
 <?php 
 // required headers
+//header("Access-Control-Allow-Origin: http://xcsd.ddns.net/");
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
   
@@ -12,55 +13,50 @@ include_once '../../classes/premiumuser.php';
 $database = new Connection();
 $db = $database->connection();
 
-// Get the posted data.
-$postdata = file_get_contents("php://input");
-
-if(isset($postdata) && !empty($postdata))
-{
-  // Extract the data.
-  $request = json_decode($postdata);
-  echo $request . '\n';
-}
 // initialize object
-$_user = new PremiumUser($db);
-$_user->setUsername("test");
-$passwort = "123456";
+$user = new PremiumUser();
+$user->connection($db);
+$user->setUsername($_GET['username']);
+$passwort = $_GET['password'];
+
+// $user->setUsername("test");
+// $passwort = "123456";
 // query products
-$num = $_user->login("test", "");
-  
+//$num = $user->login($_GET['username'], "");
+$num = $user->login("test", "");
+
 // check if more than 0 record found
 if($num>0){
     //user array
     $resultArr=array();
-    $_wrongPassword = "";
+    $wrongPassword = "";
     
-    $resultArr["eure Daten"] = $request;
     $resultArr["message"] = "";
     $resultArr["user"] =array(
-        'id' => $_user->getId(), 
-        'username' => $_user->getUsername(),
-        'email' => $_user->getEmail(), 
-        'firstname' => $_user->getFirstname(), 
-        'name' => $_user->getName(), 
-        'birthday' => $_user->getBirthday(),
-        'gender' => $_user->getGender(), 
-        'street' => $_user->getStreet(),
-        'postalCode' => $_user->getPostcode(),
-        'city' => $_user->getLocation(),
+        'id' => $user->getId(), 
+        'username' => $user->getUsername(),
+        'email' => $user->getEmail(), 
+        'firstname' => $user->getFirstname(), 
+        'name' => $user->getName(), 
+        'birthday' => $user->getBirthday(),
+        'gender' => $user->getGender(), 
+        'street' => $user->getStreet(),
+        'postalCode' => $user->getPostcode(),
+        'city' => $user->getLocation(),
         'isPremium' => ''
     );
 
 
-    $_wrongPassword = $_user->getPassword();
+    $wrongPassword = $user->getPassword();
 
     //Check for Premium
-    $resultArr["user"]['isPremium'] = $_user->isPremium($resultArr["user"]['id'], "") ? true : false;
+    $resultArr["user"]['isPremium'] = $user->isPremium($resultArr["user"]['id'], "") ? true : false;
 
 
 
     //Check Password
     //TODO
-    if (password_verify($passwort, $_wrongPassword)) {
+    if (password_verify($passwort, $wrongPassword)) {
         $_SESSION['userid'] = $resultArr["user"]['id'];
 
         // set response code - 200 OK

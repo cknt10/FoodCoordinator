@@ -4,22 +4,22 @@ class Rating{
     /**
      * @var PDO
      */
-    private $_conn;
+    private $conn;
 
     /**
      * @var int
      */
-    private $_userId;
+    private $userId;
     
     /**
      * @var float
      */
-    private $_rating;
+    private $rating;
 
     /**
      * @var string
      */
-    private $_comment;
+    private $comment;
     
     /**
      * Standardconstrustor
@@ -28,10 +28,10 @@ class Rating{
      * @param $rating
      * @param $comment
      */
-    public function __construct($userId = 0, $rating = 0, $comment = ""){
-        $this->_userId = $userId;
-        $this->_rating = $rating;
-        $this->_comment = $comment;
+    public function __construct($_userId = 0, $_rating = 0, $_comment = ""){
+        $this->userId = $_userId;
+        $this->rating = $_rating;
+        $this->comment = $_comment;
     }
 
     /**
@@ -39,9 +39,9 @@ class Rating{
      * 
      * @param $conn PDO
      */
-    public function connection($conn)
+    public function connection($_conn)
     {
-        $this->_conn = $conn;
+        $this->conn = $_conn;
     }
 
     /**
@@ -51,7 +51,7 @@ class Rating{
      */ 
     public function getRating()
     {
-        return $this->_rating;
+        return $this->rating;
     }
 
     /**
@@ -61,9 +61,9 @@ class Rating{
      *
      * @return  self
      */ 
-    public function setRating($rating)
+    public function setRating($_rating)
     {
-        $this->_rating = $rating;
+        $this->rating = $_rating;
 
         return $this;
     }
@@ -75,7 +75,7 @@ class Rating{
      */ 
     public function getComment()
     {
-        return $this->_comment;
+        return $this->comment;
     }
 
     /**
@@ -85,9 +85,9 @@ class Rating{
      *
      * @return  self
      */ 
-    public function setComment($comment)
+    public function setComment($_comment)
     {
-        $this->_comment = $comment;
+        $this->comment = $_comment;
 
         return $this;
     }
@@ -99,7 +99,7 @@ class Rating{
      */ 
     public function getUserId()
     {
-        return $this->_userId;
+        return $this->userId;
     }
 
     /**
@@ -109,9 +109,9 @@ class Rating{
      *
      * @return  self
      */ 
-    public function setUserId($userId)
+    public function setUserId($_userId)
     {
-        $this->_userId = $userId;
+        $this->userId = $_userId;
 
         return $this;
     }
@@ -124,9 +124,9 @@ class Rating{
     public function getObjectAsArray()
     {
         return array(
-            'userId' => $this->_userId,
-            'rating' => $this->_rating,
-            'comment' => $this->_comment,
+            'userId' => $this->userId,
+            'rating' => $this->rating,
+            'comment' => $this->comment,
         );
     }
 }
