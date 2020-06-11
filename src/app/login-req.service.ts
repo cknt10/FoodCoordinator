@@ -45,7 +45,7 @@ export class LoginReqService {
 
     let headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
-    headers.append('Access-Control-Allow-Origin', 'http://xcsd.ddns.net/');
+    headers.append('Access-Control-Allow-Origin', '*');
 
     let params = new HttpParams().set("username",username).set("password", password); //Create new HttpParams
 
@@ -58,7 +58,7 @@ export class LoginReqService {
 
     console.log('request finished');
 
-    return this.http.post<User>(requestLink, {headers: headers, params: params }).pipe(catchError(this.handleError)).toPromise();
+    return this.http.get<User>(requestLink, { params: params }).pipe(catchError(this.handleError)).toPromise();
 
   }
 

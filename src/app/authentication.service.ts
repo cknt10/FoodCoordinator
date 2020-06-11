@@ -46,12 +46,12 @@ export class AuthenticationService {
     return this.UserData;
   }
 
-
   async setUserData(username: string, password: string): Promise<User> {
     await this.reqService.postServerLoginData(username,password).then((data: User) => {
       this.UserData = new User(data['user']);
 
-      console.log(data['eure Daten']);
+
+      console.log('hallo ' , data['eure Daten']);
 
       console.log(this.UserData);
     }),
