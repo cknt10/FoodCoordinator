@@ -22,38 +22,35 @@ export class RegComponent implements OnInit {
   emailConfirm: string;
   password: string;
   passwordConfirm: string;
-  image: File;
 
   usernameLogin: string;
   passwordLogin: string;
 
   constructor(
     private router: Router,
-    private registrationService: AuthenticationService) { }
+    private authentication: AuthenticationService
+    ) { }
 
   ngOnInit(): void {
   }
 
-  regUser(){
-    if(
-      this.firstname != null &&
-      this.name != null &&
-      this.gender != null &&
-      this.street != null &&
-      this.housenumber != null &&
-      this.postalcode != null &&
-      this.city != null &&
-      this.username != null &&
-      this.password != null &&
-      this.email != null &&
-      this.email == this.emailConfirm &&
-      this.password == this.passwordConfirm){
-      window.alert ("Registrierung erfolgreich! Sie werden weitergeleitet");
-      setTimeout(()=> { this.router.navigate(['login']) }, 2000);
-    }
-    else{
-      window.alert ("Registrierung fehlgeschlagen. Bitte prüfe deine Eingaben!");
-    }
+  async regUser(){
+
+    console.log((await this.authentication.readUserData(
+      this.username,
+      this.password,
+      this.firstname,
+      this.name,
+      this.gender,
+      this.street,
+      this.housenumber.toString(),
+      this.postalcode.toString(),
+      this.city.toString(),
+      this.birthday.toString(),
+      this.email
+      )).getFirstname());
+
+
   }
 
 }
