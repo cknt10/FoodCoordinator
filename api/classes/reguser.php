@@ -520,13 +520,13 @@ class RegUser{
                 // this will make $row['name'] to
                 // just $name only
                 extract($_row);
-                $this->postcode = $PostalCode;
 
                 //Check for the right location
-                if(strcmp(strtolower($_location), strtolower($City))){
+                if(strcmp(strtolower($_location), strtolower($City)) == 0){
                     //Fill Objekt with City informations
-                    if($this->location == null){ $this->location = $City; }
-                    if($this->cityId == null){ $this->cityId = $C_ID; }
+                    $this->postcode = $PostalCode;
+                    $this->location = $City;
+                    $this->cityId = $C_ID;
                     $_result = true;
                 }
 
@@ -553,8 +553,8 @@ class RegUser{
         $_location=htmlspecialchars(strip_tags($_location));
 
         // bind values
-        $_stmt->bindParam(":PostalCode", $_postcode);
         $_stmt->bindParam(":City", $_location);
+        $_stmt->bindParam(":PostalCode", $_postcode);
 
 
         // execute query
@@ -609,6 +609,64 @@ class RegUser{
             }
         }
         return empty($_result) ? null : $_result;
+    }
+
+
+        /**
+     * @param string $username
+     * @param string $mail
+     *
+     * @return int cout of entries
+     */
+
+    public function login($_username = "", $_mail ="")
+    {
+        // select all query
+        $_query = "SELECT * FROM user WHERE Username = :Username OR Mail = :Mail";
+
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
+
+        // sanitize
+        $_username=htmlspecialchars(strip_tags($_username));
+        $_mail=htmlspecialchars(strip_tags($_mail));
+
+        // bind values
+        $_stmt->bindParam(":Username", $_username);
+        $_stmt->bindParam(":Mail", $_mail);
+
+        // execute query
+        $_stmt->execute();
+
+        $_num = $_stmt->rowCount();
+
+        if($_num>0){
+
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+
+                $this->id = $U_ID;
+                $this->username = $Username;
+                $this->email = $Mail;
+                $this->firstname = $FirstName;
+                $this->name = $Name;
+                $this->birthday = $Birthday;
+                $this->gender = $Gender;
+                $this->street = $Street;
+                $this->password = $Password;
+                $this->cityId = $C_ID;
+            }
+
+            $this->checkLocation("", "", $this->cityId);
+        }
+
+        return $_num;
     }
 
     /**
@@ -671,67 +729,8 @@ class RegUser{
             $_result = $_e-getMessage();
         }
 
-
+        $this->login($_username);
         return $_result;
-    }
-
-
-
-    /**
-     * @param string $username
-     * @param string $mail
-     *
-     * @return int cout of entries
-     */
-
-    public function login($_username = "", $_mail ="")
-    {
-        // select all query
-        $_query = "SELECT * FROM user WHERE Username = :Username OR Mail = :Mail";
-
-        // prepare query statement
-        $_stmt = $this->conn->prepare($_query);
-
-        // sanitize
-        $_username=htmlspecialchars(strip_tags($_username));
-        $_mail=htmlspecialchars(strip_tags($_mail));
-
-        // bind values
-        $_stmt->bindParam(":Username", $_username);
-        $_stmt->bindParam(":Mail", $_mail);
-
-        // execute query
-        $_stmt->execute();
-
-        $_num = $_stmt->rowCount();
-
-        if($_num>0){
-
-            // retrieve our table contents
-            // fetch() is faster than fetchAll()
-            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
-                // extract row
-                // this will make $row['name'] to
-                // just $name only
-                extract($_row);
-
-                $this->id = $U_ID;
-                $this->username = $Username;
-                $this->email = $Mail;
-                $this->firstname = $FirstName;
-                $this->name = $Name;
-                $this->birthday = $Birthday;
-                $this->gender = $Gender;
-                $this->street = $Street;
-                $this->password = $Password;
-                $this->cityId = $C_ID;
-            }
-
-            $this->checkLocation("", "", $this->cityId);
-        }
-
-        return $_num;
     }
 
     /**

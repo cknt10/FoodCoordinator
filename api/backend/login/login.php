@@ -14,13 +14,17 @@ $database = new Connection();
 $db = $database->connection();
 
 // initialize object
-$user = new PremiumUser($db);
+$user = new PremiumUser();
 $user->connection($db);
 $user->setUsername($_GET['username']);
 $passwort = $_GET['password'];
+
+// $user->setUsername("test");
+// $passwort = "123456";
 // query products
-$num = $user->login($_GET['username'], "");
-  
+//$num = $user->login($_GET['username'], "");
+$num = $user->login("test", "");
+
 // check if more than 0 record found
 if($num>0){
     //user array

@@ -18,32 +18,30 @@ $mailError = false;
 $result = array();
 $insertResult = "";
 
-// $username = trim($_POST['username']);
-// $email = trim($_POST['mail']);
-// $password = trim($_POST['passwort']);
-// $passwort2 = $_POST['passwort2'];
-// $firstName = trim($_POST['vorname']);
-// $name = trim($_POST['nachname']);
-// $gender = trim($_POST['gender']);
-// $street = trim($_POST['street']) . ' ' . trim($_POST['streetnumber']);
-// $birthday = trim($_POST['birthday']);
+$username = trim($_GET['username']);
+$email = trim($_GET['email']);
+$password = trim($_GET['password']);
+$firstName = trim($_GET['firstname']);
+$name = trim($_GET['name']);
+$gender = trim($_GET['gender']);
+$street = trim($_GET['street']) . ' ' . trim($_GET['houseNumber']);
+$birthday = trim($_GET['birthday']);
 
-// $city = trim($_POST['aaaa']); //SQL Statement
-// $zip = trim($_POST['aaaa']); //SQL Statement
+$city = trim($_GET['city']); //SQL Statement
+$zip = trim($_GET['postcode']); //SQL Statement
 
 
-$username = "test";
-$email = "test@mail.com";
-$password = "123456";
-$passwort2 = "123456";
-$firstName = "testfirstname";
-$name = "testname";
-$gender = "m";
-$street = "test street 3";
-$birthday = "1990-10-19";
+// $username = "test2";
+// $email = "test2@mail.com";
+// $password = "123456";
+// $firstName = "testfirstname";
+// $name = "testname";
+// $gender = "m";
+// $street = "test street 3";
+// $birthday = "1990-10-19";
 
-$city = "Frankfurt am Main"; //SQL Statement
-$zip = 60639; //SQL Statement
+// $city = "Frankfurt am Main"; //SQL Statement
+// $zip = 60639; //SQL Statement
 
 
 if(empty($firstName) || empty($name) || empty($username)) {
@@ -57,10 +55,6 @@ if(strlen($password) == 0) {
 
     $error = true;
 }
-if($password != $passwort2) {
-    $error = true;
-}
-
 
 
 //Check Email exist

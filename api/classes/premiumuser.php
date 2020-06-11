@@ -326,7 +326,7 @@ class PremiumUser extends RegUser{
      */
     public function getObjectAsArray()
     {
-        $arrayReg = array (parent::getObjectAsArray());
+        $arrayReg = parent::getObjectAsArray();
         $arrayPrime = array(
                 "premiumId" => $this->premiumId,
                 "premium" => empty ($this->premium) ? null : $this->premium,
