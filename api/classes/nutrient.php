@@ -30,7 +30,7 @@ class Nutrient{
      */
     public function connection($_conn)
     {
-        $this->conn = $conn;
+        $this->conn = $_conn;
     }
 
     /**

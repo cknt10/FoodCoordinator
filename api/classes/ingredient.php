@@ -213,7 +213,7 @@ class Ingredient{
         $_unique = true;
         if(count($this->nutrients) > 0){
             for($_i = 0; $_i < count($this->nutrients); $_i++){
-                if($this->nutrients[$_i]["id"] == $nutrient["id"] && $nutrient["id"] != null){
+                if($this->nutrients[$_i]["id"] == $_nutrient["id"] && $_nutrient["id"] != null){
                     $_unique = false;
                 }
             }
@@ -250,7 +250,7 @@ class Ingredient{
         $_nutrient = $this->nutrients[$_name];
 
         $_key= array_search($_nutrient, $this->nutrients);
-        if ($key !== false) {
+        if ($_key !== false) {
             unset($this->nutrients[$_key]);
         };
 

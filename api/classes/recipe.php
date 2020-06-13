@@ -500,12 +500,18 @@ class Recipe{
      * @return array
      */
     public function addKeyword($_name){
+        $_unique = true;
         if(count($this->keywords) > 0){
-            if(inarray($_name, $this->keywords)){
-                return $this->keywords;
+            for($_i = 0; $_i < count($this->keywords); $_i++){
+                if($this->keywords[$_i] == $_name && $_name != null){
+                    $_unique = false;
+                }
             }
         }
-        array_push($this->keywords, $_name);
+        
+        if($_unique){
+            array_push($this->keywords, $_name);
+        }
 
         return $this->keywords;
     }
@@ -585,6 +591,15 @@ class Recipe{
      */
     public function removeRating($_rating){
         //TODO 
+    }
+
+    /**
+     * Calculate and set rating from all ratings
+     */
+    public function calculateRating()
+    {
+        //TODO Dustin: Berechne anhand ratings in diesem Objekt das rating und setze es.
+
     }
 
     /**
