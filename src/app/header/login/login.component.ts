@@ -8,12 +8,12 @@ import { AuthenticationService } from '../../authentication.service';
 })
 export class LoginComponent implements OnInit {
 
-  username: String;
-  password: String;
+  username: string;
+  password: string;
 
-  constructor(private authenticationService: AuthenticationService) {
-
-  }
+  constructor(
+    private authenticationService: AuthenticationService
+    ) { }
 
   ngOnInit(): void {
 
@@ -26,7 +26,8 @@ export class LoginComponent implements OnInit {
 
 //add parameter username and password
 
-   console.log((await this.authenticationService.setUserData()).getFirstname());
+   console.log((await this.authenticationService.setUserData(this.username, this.password)).getFirstname());
+   //return user?
    }
 
 

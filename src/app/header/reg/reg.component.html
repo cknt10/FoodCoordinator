@@ -9,11 +9,11 @@
     <input type="text" [(ngModel)]="name"><br>
     <label>Geschlecht:</label>
       <div id="geschlechter">
-      <input type="radio" value="male" name="gender" [(ngModel)]="gender" >
+      <input type="radio" value="m" name="gender" [(ngModel)]="gender" >
         <label for="male">m</label>
-      <input type="radio" value="female" name="gender" [(ngModel)]="gender" >
+      <input type="radio" value="f" name="gender" [(ngModel)]="gender" >
         <label for="female">w</label>
-      <input type="radio" value="divers" name="gender" [(ngModel)]="gender" >
+      <input type="radio" value="d" name="gender" [(ngModel)]="gender" >
         <label for="divers">d</label>
       </div>
     <label>* Straße:</label>
@@ -39,7 +39,7 @@
     <label>* Passwort bestätigen:</label>
     <input type="password" [(ngModel)]="passwordConfirm"><br>
     <label>Profilbild:</label>
-    <input type="image"><br>
+    <input type="file"><br>
   </div>
   <div id="right">
     <div id="nutzung">

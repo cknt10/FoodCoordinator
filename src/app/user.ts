@@ -5,12 +5,14 @@ export class User {
   email: String;
   firstname: String;
   name: String;
-  birthday: String;
+  birthday: Date;
   gender: String;
   street: String;
-  postalCode: number;
+  houseNumber: number;
+  postcode: number;
   city: String;
   isPremium: boolean;
+  picture: String;
 
 constructor(user: User){
   this.id = user.id;
@@ -21,15 +23,15 @@ constructor(user: User){
   this.birthday = user.birthday;
   this.gender = user.gender;
   this.street = user.street;
-  this.postalCode = user.postalCode;
+  this.postcode = user.postcode;
   this.city = user.city;
   this.isPremium = user.isPremium;
+  this.picture = user.picture;
 }
 
 getId(){
   return this.id;
 }
-
 getUsername(){
   return this.username;
 }
@@ -52,7 +54,7 @@ getStreet(){
   return this.street;
 }
 getPostalcode(){
-  return this.postalCode;
+  return this.postcode;
 }
 getCity(){
   return this.city;
@@ -60,6 +62,27 @@ getCity(){
 getIsPremum(){
   return this.isPremium;
 }
-
+getPicture(){
+  return this.picture;
+}
+getHouseNumber(){
+  return this.houseNumber;
 }
 
+//////////////////////////////////////clean User Object//////////////////////////////////
+cleanUser(){
+  this.id = null;
+  this.username = "";
+  this.email = "";
+  this.firstname = "";
+  this.name = "";
+  this.birthday = null;
+  this.houseNumber = null;
+  this.gender = "";
+  this.street = "";
+  this.postcode = null;
+  this.city = "";
+  this.isPremium = false;
+}
+
+}
