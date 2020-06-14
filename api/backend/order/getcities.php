@@ -7,9 +7,14 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../sql/coni.php';
 include_once '../../classes/reguser.php';
 
+$database = new Connection();
+$db = $database->connection();
+
+
 $postcode = "";
 
 $user = new RegUser();
+$user->connection($db);
 $result = array();
 $result["message"] = "";
 $result["cities"] = array();

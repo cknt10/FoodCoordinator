@@ -7,8 +7,13 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../sql/coni.php';
 include_once '../../classes/paymentmethod.php';
 
+// instantiate database and product object
+$database = new Connection();
+$db = $database->connection();
+
 
 $payment = new PaymentMethod();
+$payment->connection($db);
 $result = array();
 $result["message"] = "";
 $result["payments"] = array();
