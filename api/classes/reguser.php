@@ -575,7 +575,7 @@ class RegUser{
         $_query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
 
         // prepare query statement
-        $_stmt = $this->_conn->prepare($_query);
+        $_stmt = $this->conn->prepare($_query);
 
         // sanitize
         $_postcode=htmlspecialchars(strip_tags($_postcode));
