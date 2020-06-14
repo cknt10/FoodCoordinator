@@ -578,7 +578,7 @@ class RegUser{
         $_stmt = $this->conn->prepare($_query);
 
         // sanitize
-        $_postcode=htmlspecialchars(strip_tags($_postcode));
+        //$_postcode=htmlspecialchars(strip_tags($_postcode));
 
         // bind values
         $_stmt->bindParam(":PostalCode", $_postcode);
@@ -600,7 +600,6 @@ class RegUser{
                 // just $name only
                 extract($_row);
                 array_push($_result, array(
-
                     "cityId" => $C_ID,
                     "city" => $City,
                     "postcode" => $PostalCode,

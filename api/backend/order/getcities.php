@@ -11,7 +11,7 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$postcode = "";
+$postcode = "35510";
 
 $user = new RegUser();
 $user->connection($db);
@@ -38,6 +38,13 @@ if($postcode != ""){
     }
 
 
+}else{
+        // set response code - 404 Not found
+        http_response_code(403);
+
+        // tell the user no result found
+        $result["message"] = "City not exits";
+        echo json_encode($result);
 }
 
 
