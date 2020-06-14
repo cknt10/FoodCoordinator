@@ -571,7 +571,7 @@ class RegUser{
      * @return array with alle Locations to this postalcode or null if empty
      */
     public function fetchLocations($_postcode){
-        $_resutl = array();
+        $_result = array();
         $_query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
 
         // prepare query statement
