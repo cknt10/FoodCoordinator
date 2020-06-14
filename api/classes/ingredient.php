@@ -264,7 +264,7 @@ class Ingredient{
      */
     public function fetchIngredients()
     {
-        $_resutl = array();
+        $_result = array();
         $_query = "SELECT * FROM food";
 
         // prepare query statement

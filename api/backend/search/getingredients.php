@@ -20,26 +20,26 @@ $result = array();
 $result["message"] = "";
 $result["ingredients"] = array();
 
-if($postcode != ""){
-    $result["ingredients"] = $ingredient->fetchIngredients();
-    
-    if($result["ingredients"] != null){
-        // set response code - 200 OK
-        http_response_code(200);
 
-        // show result data in json format
-        echo json_encode($result);
-    }else{
-        // set response code - 404 Not found
-        http_response_code(403);
+$result["ingredients"] = $ingredient->fetchIngredients();
 
-        // tell the user no result found
-        $result["message"] = "Ingredients not exits";
-        echo json_encode($result);
-    }
+if($result["ingredients"] != null){
+    // set response code - 200 OK
+    http_response_code(200);
 
+    // show result data in json format
+    echo json_encode($result);
+}else{
+    // set response code - 404 Not found
+    http_response_code(403);
 
+    // tell the user no result found
+    $result["message"] = "Ingredients not exits";
+    echo json_encode($result);
 }
+
+
+
 
 
 

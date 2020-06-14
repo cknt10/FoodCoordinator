@@ -609,7 +609,7 @@ class Recipe{
      */
     public function fetchKeywords()
     {
-        $_resutl = array();
+        $_result = array();
         $_query = "SELECT * FROM keywords";
 
         // prepare query statement
