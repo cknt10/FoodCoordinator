@@ -603,6 +603,45 @@ class Recipe{
     }
 
     /**
+     * Get load all keywords
+     * 
+     * @return array 
+     */
+    public function fetchKeywords()
+    {
+        $_resutl = array();
+        $_query = "SELECT * FROM keywords";
+
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
+
+        // execute query
+        $_stmt->execute();
+        
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+                array_push($_result, array(
+                    "id" => $KW_ID,
+                    "name" => $KW_NAME,
+                ));
+                
+            }
+        }
+        return empty($_result) ? null : $_result;
+    }
+
+    /**
      * Get this Object as Array for JSON import
      * 
      * @return array
