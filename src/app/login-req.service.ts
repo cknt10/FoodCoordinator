@@ -24,16 +24,10 @@ export class LoginReqService {
     console.log(username);
     console.log(password);
 
-
-    let headers = new HttpHeaders();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Access-Control-Allow-Origin', '*');
-
     let params = new HttpParams()
     .set("username",username)
     .set("password", password); //Create new HttpParams
 
-    console.log(headers);
     console.log(params);
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/login/login.php';
@@ -96,11 +90,6 @@ export class LoginReqService {
     ): Promise<User> {
 
     console.log('Server request with username and password');
-
-/*Create new HttpParams*/
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Access-Control-Allow-Origin', '*');
 
     let params = new HttpParams()
     .set("username",username)

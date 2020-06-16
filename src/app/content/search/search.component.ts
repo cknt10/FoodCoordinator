@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validator } from '@angular/forms';
+import { SearchReqService } from '../../search-req.service';
+import { Recipe } from 'src/app/recipe';
 
 @Component({
   selector: 'app-search',
@@ -8,26 +10,44 @@ import { FormBuilder, Validator } from '@angular/forms';
 })
 export class SearchComponent implements OnInit {
 
-  zutat: string;
-  zutaten = [];
+  ingredient: string;
+  ingredients: string[];
+  recipe: Recipe;
+  keywords: string;
 
-  constructor() { }
+  constructor(
+    private searchReqService: SearchReqService
+  ) { }
 
-  ngOnInit(): void {
+  ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
+  ngOnInit() {
+  this.searchReqService.fetchSearchKeywords();
+
   }
 
+
   addIngredient(){
-    if (this.zutat){
-      this.zutaten.push(this.zutat);
-      this.zutat ="";
+   if (this.ingredient){
+      this.ingredients.push(this.ingredient);
+      this.ingredient ="";
     }
     else {
       window.alert("Bitte füge eine Zutat hinzu!");
     }
   }
 
-  search(){
-    window.alert("Hier gibts noch nichts, geh weiter!");
+  async search(){
+    console.log(await this.searchReqService.getUserResults(this.ingredients));
+  }
+
+  suggestions(){
+    this.searchReqService.filterKeywords();
+    
+   
+    
+    
+    
+    
   }
 
 }
