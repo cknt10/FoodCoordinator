@@ -11,7 +11,7 @@ import { Recipe } from 'src/app/recipe';
 export class SearchComponent implements OnInit {
 
   ingredient: string;
-  ingredients: string[];
+  ingredients: string[] = [];
   recipe: Recipe;
   keywords: string;
 
@@ -28,6 +28,7 @@ export class SearchComponent implements OnInit {
 
   addIngredient(){
    if (this.ingredient){
+     console.log(this.ingredient);
       this.ingredients.push(this.ingredient);
       this.ingredient ="";
     }
