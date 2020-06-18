@@ -12,27 +12,26 @@ include_once '../../classes/rating.php';
 include_once '../../classes/ingredient.php';
 include_once '../../classes/nutrient.php';
 
+$db = null;
 //instantiate database and product object
 $database = new Connection();
 $db = $database->connection();
 
 
+// $recipe = null;
+// $ingredient = null;
+// $nutrient = null;
+// $rating = null;
+// $searchArray = null;
 
 
-
-$testData = array("Erdbeere", "Banane");
-// Get the posted data.
-$postdata = file_get_contents("php://input");
-
-if(isset($postdata) && !empty($postdata))
-{
-  // Extract the data.
-  $request = json_decode($postdata);
-  echo $request . '\n';
-}
+//$testData = array("Erdbeere", "Walnuss");
+$testData = explode("|", $_GET['keys']);
 
 
 function search($_keywords, $_conn){
+  $_query = null;
+  $_stmt = null;
 
   //Basic Recipe Search
  $_query = 'SELECT * FROM (
@@ -83,31 +82,48 @@ function search($_keywords, $_conn){
                         ON r.R_ID = favourites.R_ID
                           ORDER BY R_ID, food.F_ID
                               ) as tab1
-                  WHERE KW_NAME LIKE :KW_Name
-                  OR F_Descr LIKE :F_Descr';
+                      WHERE';
 
+                  //Creates or statements
+
+                  $_sqlKeywords = 'KW_NAME LIKE :KW_Name0 OR F_Descr LIKE :F_Descr0';
+                  if(count($_keywords) > 1){
+                    for($_i = 1; $_i < count($_keywords); $_i++){
+                      $_sqlKeywords = $_sqlKeywords . ' OR KW_NAME LIKE :KW_Name'.strval($_i).' OR F_Descr LIKE :F_Descr'.strval($_i);
+                    }
+                  }
+
+                  // WHERE KW_NAME LIKE :KW_Name
+                  // OR F_Descr LIKE :F_Descr';
+               $_sql = $_query . ' ' . $_sqlKeywords;
     // prepare query statement
-    $_stmt = $_conn->prepare($_query);
+    $_stmt = $_conn->prepare($_sql);
 
-    //sanitize
-    $_keywords=htmlspecialchars(strip_tags($_keywords));
-    $_keywords = "%{$_keywords}%";
+       //sanitize
+    //$_keywords=htmlspecialchars(strip_tags($_keywords));
+    //$_keywords = "%{$_keywords}%";
 
-    //bind
-    $_stmt->bindParam(":KW_Name", $_keywords);
-    $_stmt->bindParam(":F_Descr", $_keywords);
+    for($_i = 0; $_i < count($_keywords); $_i++){
+      //sanitize
+      $_keywords[$_i]=htmlspecialchars(strip_tags($_keywords[$_i]));
+      $_keywords[$_i] = '%'. $_keywords[$_i] . '%';
+      //bind
+      $_stmt->bindParam(":KW_Name".strval($_i), $_keywords[$_i]);
+      $_stmt->bindParam(":F_Descr".strval($_i), $_keywords[$_i]);  
+    }
+
 
 
     // execute query
     $_stmt->execute();
-
-
 
     return $_stmt;
 }
 
 //Call Function
 $searchResults = search($testData, $db);
+
+
 $num = $searchResults->rowCount();
 //recipe
 $lastID = -1;
