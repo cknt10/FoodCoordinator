@@ -121,7 +121,7 @@ export class AuthenticationService {
         console.log(this.UserData);
 
     }),
-
+    //comment
     (error => {
       console.log('Auslesen gescheitert');
       return this.handleError(error);
