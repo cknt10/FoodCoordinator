@@ -16,18 +16,25 @@ import { catchError } from 'rxjs/operators';
 })
 export class SearchReqService {
   private searchedKeywords: SearchParameter[];
-
   private serverIngredients: SearchParameter[];
   private serverKeywords: SearchParameter[];
+  private filteredKeywords: string[] = [];
 
-  private recipe: Recipe;
+  private errorValue: string;
 
-  constructor(
-    private http: HttpClient,
-    private loginReqService: LoginReqService
-  ) {}
+  constructor(private http: HttpClient) {}
 
-  /////////////////////////////////methode to filter duplicate Keywords///////////////////////////
+  /////////////////////////////////method to get keywords///////////////////////////
+  getFilteredKeywords(): string[] {
+    return this.filteredKeywords;
+  }
+
+  /////////////////////////////////method to display error message to user///////////////////////////
+  getErrorMessageUser(): string {
+    return this.errorValue;
+  }
+
+  /////////////////////////////////method to filter duplicate keywords///////////////////////////
   filterKeywords(): string[] {
     let filtered: string[] = [];
 
@@ -38,15 +45,14 @@ export class SearchReqService {
     for (let value of this.serverKeywords) {
       filtered.push(value.name);
     }
-    console.log(filtered);
     filtered = filtered.filter(
       (value, index) => filtered.indexOf(value) === index
     );
-    console.log(filtered);
+    this.filteredKeywords = filtered;
     return filtered;
   }
 
-  /////////////////////////////////methode to fetch Keywords as proposition///////////////////////////
+  /////////////////////////////////method to fetch keywords as proposition///////////////////////////
   async fetchSearchKeywords(): Promise<SearchParameter[]> {
     await Promise.all([
       this.getServerIngredients(),
@@ -56,11 +62,13 @@ export class SearchReqService {
         this.serverKeywords
       );
     });
+
+    this.filterKeywords();
     console.log(this.searchedKeywords);
     return this.searchedKeywords;
   }
 
-  /////////////////////////////////methode to get ingredients as proposition///////////////////////////
+  /////////////////////////////////method to get ingredients as proposition///////////////////////////
   async getServerIngredients(): Promise<SearchParameter[]> {
     await this.fetchServerSearchPropositionForIngredients().then((data) => {
       this.serverIngredients = data['ingredients'];
@@ -68,7 +76,7 @@ export class SearchReqService {
     return this.serverIngredients;
   }
 
-  /////////////////////////////////methode to get keywords as proposition///////////////////////////
+  /////////////////////////////////method to get keywords as proposition///////////////////////////
   async getServerKeywords(): Promise<SearchParameter[]> {
     await this.fetchServerSearchPropositionForKeywords().then((data) => {
       this.serverKeywords = data['keywords'];
@@ -76,7 +84,7 @@ export class SearchReqService {
     return this.serverKeywords;
   }
 
-  /////////////////////////////////Http-Request methode to get ingredients as proposition///////////////////////////
+  /////////////////////////////////Http-Request method to get ingredients as proposition///////////////////////////
   async fetchServerSearchPropositionForIngredients() {
     const requestLink =
       'http://xcsd.ddns.net/api/backend/search/getingredients.php';
@@ -87,7 +95,7 @@ export class SearchReqService {
       .toPromise();
   }
 
-  /////////////////////////////////Http-Request methode to get keywords as proposition///////////////////////////
+  /////////////////////////////////Http-Request method to get keywords as proposition///////////////////////////
   async fetchServerSearchPropositionForKeywords(): Promise<string> {
     const requestLink =
       'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
@@ -98,20 +106,18 @@ export class SearchReqService {
       .toPromise();
   }
 
-  /////////////////////////////////Http-Request methode to send Keywords and get results of the search//////////////////////////
+  /////////////////////////////////Http-Request method to send keywords and get results of the search//////////////////////////
   async getUserResults(userSearchInputs: string[]): Promise<Recipe> {
-    console.log('Server request with keywords');
+    console.log('server request with keywords');
 
     console.log(userSearchInputs);
 
-    let params = new HttpParams();
-    userSearchInputs.forEach((userSearchInput) => {
-      params = params.append('', userSearchInput);
-    });
+    let params = new HttpParams().set('keys', userSearchInputs.join('|'));
 
     console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/search/search.php';
+    const requestLink =
+      'http://xcsd.ddns.net/api/backend/search/search.php';
 
     console.log('request finished');
 
@@ -121,18 +127,28 @@ export class SearchReqService {
       .toPromise();
   }
 
-  /*at the first needed because another solution isn't pushed on master*/
+  /////////////////////////////////analyze kind of error//////////////////////////
   handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
+    let errorMessage = 'Unbekannter Fehler!';
     if (error.error instanceof ErrorEvent) {
       // Client-side errors
       errorMessage = `Error: ${error.error.message}`;
     } else {
       // Server-side errors
+      if (error.status == 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+      }
+      if (error.status == 403) {
+        this.errorValue = `Keine Suchbegriffe eingegeben.`;
+      }
+      if (error.status == 404) {
+        this.errorValue = `Leider haben wir noch keine Rezepte zu diesem Suchbegriff.`;
+      }
+      if (error.status == 500) {
+        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+      }
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    //window.alert(errorMessage);
     return throwError(errorMessage);
   }
-
 }

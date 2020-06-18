@@ -12,9 +12,8 @@ export class Recipe {
   lastChangeDate: Date;
   userId: number;
   keywords: string;
-  rating: number;
   ratings: number;
-  ingredients: string;
+  ingredients: string[];
 
   constructor(recipe: Recipe) {
     this.id = recipe.id;
@@ -30,7 +29,6 @@ export class Recipe {
     this.lastChangeDate = recipe.lastChangeDate;
     this.userId = recipe.userId;
     this.keywords = recipe.keywords;
-    this.rating = recipe.rating;
     this.ratings = recipe.ratings;
     this.ingredients = recipe.ingredients;
   }
@@ -85,10 +83,6 @@ export class Recipe {
 
   getKeywords() {
     return this.keywords;
-  }
-
-  getRating() {
-    return this.rating;
   }
 
   getRatings() {
@@ -151,10 +145,6 @@ export class Recipe {
     return this.keywords;
   }
 
-  setRating(rating: number) {
-    return this.rating;
-  }
-
   setRatings(ratings: number) {
     return this.ratings;
   }
@@ -177,8 +167,7 @@ export class Recipe {
     this.lastChangeDate = null;
     this.userId = null;
     this.keywords = '';
-    this.rating = null;
     this.ratings = null;
-    this.ingredients = '';
+    this.ingredients = null;
   }
 }

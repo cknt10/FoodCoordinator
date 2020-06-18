@@ -22,13 +22,11 @@ export class SearchComponent implements OnInit {
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
   ngOnInit() {
   this.searchReqService.fetchSearchKeywords();
-
   }
 
-
+  ////////////////////////add ingredient to array///////////////////////////////////////////
   addIngredient(){
    if (this.ingredient){
-     console.log(this.ingredient);
       this.ingredients.push(this.ingredient);
       this.ingredient ="";
     }
@@ -37,18 +35,17 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search(){
+    if(this.ingredient != null){
+    this.addIngredient();
+    }
     console.log(await this.searchReqService.getUserResults(this.ingredients));
   }
 
+  ////////////////////////suggestions for search///////////////////////////////////////////
   suggestions(){
-    this.searchReqService.filterKeywords();
-    
-   
-    
-    
-    
-    
+    console.log(this.searchReqService.getFilteredKeywords());  
   }
 
 }
