@@ -161,7 +161,7 @@ if($num > 0){
       $recipe->setCreatedUser($U_ID);
       
       $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
-      if($rating->getUserId != null && $rating->getComment != null && $rating->getRating != null){
+      if($rating->getUserId() != null && $rating->getComment()!= null && $rating->getRating() != null){
         $recipe->addRating($rating->getObjectAsArray());
       }
       
@@ -197,7 +197,7 @@ if($num > 0){
 
       $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
       //Add only not emty Objects
-      if($rating->getUserId != null && $rating->getComment != null && $rating->getRating != null){
+      if($rating->getUserId() != null && $rating->getComment() != null && $rating->getRating() != null){
         $recipe->addRating($rating->getObjectAsArray());
       }
 
