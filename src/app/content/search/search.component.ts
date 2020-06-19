@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validator } from '@angular/forms';
+import { FormBuilder, Validator, FormControl} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
@@ -12,8 +13,10 @@ export class SearchComponent implements OnInit {
 
   ingredient: string;
   ingredients: string[] = [];
+  options: string[] = [];
   recipe: Recipe;
   keywords: string;
+  myControl = new FormControl('');
 
   constructor(
     private searchReqService: SearchReqService
@@ -45,7 +48,8 @@ export class SearchComponent implements OnInit {
 
   ////////////////////////suggestions for search///////////////////////////////////////////
   suggestions(){
-    console.log(this.searchReqService.getFilteredKeywords());  
+    this.options=this.searchReqService.getFilteredKeywords();
+    console.log(this.searchReqService.getFilteredKeywords());
   }
 
 }
