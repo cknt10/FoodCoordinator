@@ -2,27 +2,39 @@
 
 class Format{
     /**
+     * @var PDO
+     */
+    private $conn;
+    /**
      * @var int
      */
-    private int $id;
+    private $id;
 
     /**
      * @var string
      */
-    private string $format;
+    private $format;
 
     /**
      * @var int
      */
-    private int $pageNumber;
+    private $pageNumber;
 
     /**
      * @var string
      */
-    private string $designTitle;
+    private $designTitle;
 
     
-
+    /**
+     * creates connection in class to database
+     * 
+     * @param $conn PDO
+     */
+    public function connection($_conn)
+    {
+        $this->conn = $_conn;
+    }
 
     /**
      * Get the value of id
@@ -41,9 +53,9 @@ class Format{
      *
      * @return  self
      */ 
-    public function setId(int $id)
+    public function setId($_id)
     {
-        $this->id = $id;
+        $this->id = $_id;
 
         return $this;
     }
@@ -65,9 +77,9 @@ class Format{
      *
      * @return  self
      */ 
-    public function setFormat(string $format)
+    public function setFormat($_format)
     {
-        $this->format = $format;
+        $this->format = $_format;
 
         return $this;
     }
@@ -89,9 +101,9 @@ class Format{
      *
      * @return  self
      */ 
-    public function setPageNumber(int $pageNumber)
+    public function setPageNumber($_pageNumber)
     {
-        $this->pageNumber = $pageNumber;
+        $this->pageNumber = $_pageNumber;
 
         return $this;
     }
@@ -113,11 +125,26 @@ class Format{
      *
      * @return  self
      */ 
-    public function setDesignTitle(string $designTitle)
+    public function setDesignTitle($_designTitle)
     {
-        $this->designTitle = $designTitle;
+        $this->designTitle = $_designTitle;
 
         return $this;
+    }
+
+    /**
+     * Get load all formats
+     * 
+     * @return array 
+     */
+    public function fetchFormats()
+    {
+        $_result = array();
+
+        //TODO Dustin: Hole alle Formate aus der Datenbank und gebe diese als assoziatives array zurück. Ein beispielt wie dies gemacht wird findest du in 
+        //classes/recipe.php in der Funktion fetchKeywords
+
+        return empty($_result) ? null : $_result;
     }
 }
 

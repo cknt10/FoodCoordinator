@@ -188,7 +188,8 @@ if($num > 0){
         }
         $recipe->addIngredient($ingredient->getObjectAsArray());
       }
-    }else{
+    }
+    else{
       //Same recipe id therefore extend properties
 
       //Extend object if not null

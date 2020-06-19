@@ -213,7 +213,7 @@ class Ingredient{
         $_unique = true;
         if(count($this->nutrients) > 0){
             for($_i = 0; $_i < count($this->nutrients); $_i++){
-                if($this->nutrients[$_i]["id"] == $nutrient["id"] && $nutrient["id"] != null){
+                if($this->nutrients[$_i]["id"] == $_nutrient["id"] && $_nutrient["id"] != null){
                     $_unique = false;
                 }
             }
@@ -250,11 +250,50 @@ class Ingredient{
         $_nutrient = $this->nutrients[$_name];
 
         $_key= array_search($_nutrient, $this->nutrients);
-        if ($key !== false) {
+        if ($_key !== false) {
             unset($this->nutrients[$_key]);
         };
 
         return $this->nutrients;
+    }
+
+    /**
+     * Get load all Ingredients
+     * 
+     * @return array 
+     */
+    public function fetchIngredients()
+    {
+        $_result = array();
+        $_query = "SELECT * FROM food";
+
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
+
+        // execute query
+        $_stmt->execute();
+        
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+                array_push($_result, array(
+                    "id" => $F_ID,
+                    "description" => $F_Descr,
+                ));
+                
+            }
+        }
+        return empty($_result) ? null : $_result;
     }
 
     /**

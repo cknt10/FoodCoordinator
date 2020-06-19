@@ -5,23 +5,25 @@ header("Content-Type: application/json; charset=UTF-8");
   
 // include database and object files
 include_once '../sql/coni.php';
-include_once '../../classes/paymentmethod.php';
+include_once '../../classes/ingredient.php';
 
 // instantiate database and product object
 $database = new Connection();
 $db = $database->connection();
 
+$postcode = "";
 
-$payment = new PaymentMethod();
-$payment->connection($db);
+$ingredient = new Ingredient();
+$ingredient->connection($db);
+
 $result = array();
 $result["message"] = "";
-$result["payments"] = array();
+$result["ingredients"] = array();
 
 
-$result["payments"] = $payment->fetchPayment();
+$result["ingredients"] = $ingredient->fetchIngredients();
 
-if($result["payments"] != null){
+if($result["ingredients"] != null){
     // set response code - 200 OK
     http_response_code(200);
 
@@ -31,10 +33,12 @@ if($result["payments"] != null){
     // set response code - 404 Not found
     http_response_code(403);
 
-    // tell the payment no result found
-    $result["message"] = "Payments not exits";
+    // tell the user no result found
+    $result["message"] = "Ingredients not exits";
     echo json_encode($result);
 }
+
+
 
 
 

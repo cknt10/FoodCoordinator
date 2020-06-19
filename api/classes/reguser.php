@@ -571,14 +571,14 @@ class RegUser{
      * @return array with alle Locations to this postalcode or null if empty
      */
     public function fetchLocations($_postcode){
-        $_resutl = array();
+        $_result = array();
         $_query = "SELECT * FROM cities WHERE PostalCode = :PostalCode";
 
         // prepare query statement
-        $_stmt = $this->_conn->prepare($_query);
+        $_stmt = $this->conn->prepare($_query);
 
         // sanitize
-        $_postcode=htmlspecialchars(strip_tags($_postcode));
+        //$_postcode=htmlspecialchars(strip_tags($_postcode));
 
         // bind values
         $_stmt->bindParam(":PostalCode", $_postcode);
@@ -600,7 +600,6 @@ class RegUser{
                 // just $name only
                 extract($_row);
                 array_push($_result, array(
-
                     "cityId" => $C_ID,
                     "city" => $City,
                     "postcode" => $PostalCode,
