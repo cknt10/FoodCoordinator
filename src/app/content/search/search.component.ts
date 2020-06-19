@@ -26,6 +26,11 @@ export class SearchComponent implements OnInit {
     }
   }
 
+
+  removeIngredient(){
+    //TO-DO: remove an ingredient from array
+  }
+
   search(){
     window.alert("Hier gibts noch nichts, geh weiter!");
   }
