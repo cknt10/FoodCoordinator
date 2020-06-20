@@ -1,10 +1,10 @@
 <div class="searcharea">
   <div class="searching">
-    <input type="text" placeholder="Gib einen Suchbegriff ein" name="search" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Gib einen Suchbegriff ein'" [(ngModel)]="zutat">
+    <input (keyup)="suggestions()" type="text" placeholder="Gib einen Suchbegriff ein" name="search" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Gib einen Suchbegriff ein'" [(ngModel)]="ingredient">
     <button id="add" mat-mini-fab (click)="addIngredient()">+</button>
   </div>
   <div id="search">
-    <span *ngFor="let zutat of zutaten"> {{ zutat }} </span>
+    <span *ngFor="let ingredient of ingredients"> {{ ingredient }} </span>
   </div>
   <button id="find" mat-raised-button (click)="search()">let's go</button>
 </div>
