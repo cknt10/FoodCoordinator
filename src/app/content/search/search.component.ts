@@ -40,8 +40,6 @@ export class SearchComponent implements OnInit {
     //TO-DO: remove an ingredient from array
   }
 
-  search(){
-    window.alert("Hier gibts noch nichts, geh weiter!");
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search(){
     if(this.ingredient != null){
