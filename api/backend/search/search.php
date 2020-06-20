@@ -137,7 +137,7 @@ if(count($testData) > 0 && $testData[0] != ""){
   if($num > 0){
     //Analyze search results
     $searchArray=array();
-    $searchArray["message"]=$testData;
+    $searchArray["message"]="";
     $searchArray["recipe"]=array();
     
 
