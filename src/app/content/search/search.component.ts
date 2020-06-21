@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validator, FormControl} from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, Validator, FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
@@ -10,13 +9,13 @@ import { Recipe } from 'src/app/recipe';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-
+  neu: string;
+  input: string;
   ingredient: string;
   ingredients: string[] = [];
   options: string[] = [];
   recipe: Recipe;
-  keywords: string;
-  myControl = new FormControl('');
+  drop = new FormControl();
 
   constructor(
     private searchReqService: SearchReqService
@@ -38,6 +37,11 @@ export class SearchComponent implements OnInit {
     }
   }
 
+
+  removeIngredient(){
+    //TO-DO: remove an ingredient from array
+  }
+
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search(){
     if(this.ingredient != null){
@@ -48,8 +52,15 @@ export class SearchComponent implements OnInit {
 
   ////////////////////////suggestions for search///////////////////////////////////////////
   suggestions(){
-    this.options=this.searchReqService.getFilteredKeywords();
-    console.log(this.searchReqService.getFilteredKeywords());
+    let all = this.searchReqService.getFilteredKeywords(), i, j;
+    this.input = this.ingredient;
+    //does the users input match with our keywords
+    for (i = 0; i < all.length; i++) {
+      if (all[i].match(this.input)) {
+            this.options.push(all[i]);
+          }
   }
+    //console.log(this.searchReqService.getFilteredKeywords());
+  };
 
 }
