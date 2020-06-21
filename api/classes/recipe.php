@@ -534,6 +534,44 @@ class Recipe{
     }
 
     /**
+     * Saves keywords to this recipe
+     * 
+     * @param int $_id recipe id
+     * @param array $_keywords
+     * 
+     * @return string 
+     */
+    public function createKeywords($_id, $_keywords)
+    {
+        //first entry
+        $_result = "";
+
+        try{
+            $_sql='INSERT INTO recipeHasKeywords (R_ID, KW_ID) VALUES (:R_ID0, :KW_ID0)';
+
+            for($_i = 1; $_i < count($_keywords); $_i++){
+                $_sql = $_sql . ', (:R_ID' .strval($_i). ', :KW_ID'.strval($_i).')';
+            }
+    
+            $_stmt= $this->conn->prepare($_sql);
+    
+            //bind params
+            for($_i=0; $_i<count($_keywords); $_i++){
+                $_stmt->bindParam(":R_ID".strval($_i), $_id);
+                $_stmt->bindParam(":KW_ID".strval($_i), $_keywords[$_i]);
+            }   
+
+            $_stmt->execute();
+            $_result = "200";
+        }catch(Eception $_e){
+            $_result = $_e;
+        }
+
+
+        return $_result;
+    }
+
+    /**
      * Add an ingredient to the recipe distinct
      * 
      * @param Ingredient $ingredient
@@ -574,12 +612,22 @@ class Recipe{
      * 
      */
     public function addRating($_rating){
+        $_unique = true;
         if(count($this->ratings) > 0){
-            if(in_array($_rating, $this->ratings)){
-                return $this->ratings;
+            for($_i = 0; $_i < count($this->ratings); $_i++){
+                if($this->ratings[$_i]["userId"] == $_rating["userId"] && 
+                $this->ratings[$_i]["rating"] == $_rating["rating"] && 
+                $this->ratings[$_i]["comment"] == $_rating["comment"] && 
+                $_rating["userId"] != null &&
+                $_rating["rating"] != null){
+                    $_unique = false;
+                }
             }
         }
-        array_push($this->ratings, $_rating);
+        
+        if($_unique){
+            array_push($this->ratings, $_rating);
+        }
     }
 
     /**
@@ -639,6 +687,123 @@ class Recipe{
             }
         }
         return empty($_result) ? null : $_result;
+    }
+
+    /**
+     * Create an recipe in the database
+     * 
+     * @param $_title 
+     * @param $_picture
+     * @param $_servings
+     * @param $_description 
+     * @param $_instruction
+     * @param $_creationDate
+     * @param $_duration
+     * @param $_difficulty 
+     * @param $_certified
+     * @param $_lastChange 
+     * @param $_userId
+     * 
+     * @return self
+     */
+    public function createRecipe($_title, $_picture, $_servings, $_description, $_instruction, $_creationDate, $_duration, $_difficulty, $_certified, $_lastChange, $_userId)
+    {        
+        $_result = "";
+
+        if($_title == null || $_creationDate == null || $_userId == null){
+            return "403";
+        }
+
+        try{
+            $_sql="INSERT INTO recipe (Title, Picture, Servings, R_Descr, Instruction, CreationDate, Duration, Difficulty, Certified, LastChange, U_ID) VALUES (:Title, :Picture, :Servings, :R_Descr, :Instruction, :CreationDate, :Duration, :Difficulty, :Certified, :LastChange, :U_ID)";
+            $_stmt= $this->conn->prepare($_sql);
+            
+
+            // sanitize
+            $_title=htmlspecialchars(strip_tags($_title));
+            $_picture=htmlspecialchars(strip_tags($_picture));
+            $_description=htmlspecialchars(strip_tags($_description));
+            $_instruction=htmlspecialchars(strip_tags($_instruction));
+
+
+            // bind values
+            $_stmt->bindParam(":Title", $_title);
+            $_stmt->bindParam(":Picture", $_picture);
+            $_stmt->bindParam(":Servings", $_servings);
+            $_stmt->bindParam(":R_Descr", $_description);
+            $_stmt->bindParam(":Instruction", $_instruction);
+            $_stmt->bindParam(":CreationDate", $_creationDate);
+            $_stmt->bindParam(":Duration", $_duration);
+            $_stmt->bindParam(":Difficulty", $_difficulty);
+            $_stmt->bindParam(":Certified", $_certified);
+            $_stmt->bindParam(":LastChange", $_lastChange);
+            $_stmt->bindParam(":U_ID", $_userId);
+
+            $_stmt->execute();
+            $_result = "200";
+        }catch(Eception $_e){
+            $_result = $_e;
+        }
+
+    
+    }
+
+    /**
+     * Gets an recipe and sets the data to this object
+     * 
+     * @param $_date creation date of this recipe
+     * @param $_userId id from creation user
+     * 
+     * @return int the id of this recipe
+     */
+    public function fetchRecipe($_date, $_userId)
+    {
+        $_result = -1;
+
+        $_sql = "SELECT * FROM recipe WHERE CreationDate = :CreationDate AND U_ID = :U_ID";
+
+        $_stmt= $this->conn->prepare($_sql);
+
+        // sanitize
+        //$_date=htmlspecialchars(strip_tags($_date));
+
+        // bind values
+        $_stmt->bindParam(":CreationDate", $_date);
+        $_stmt->bindParam(":U_ID", $_userId);
+
+        $_stmt->execute();
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+
+                $this->id = $R_ID;
+                $this->title = $Title;
+                $this->picture = $Picture;
+                $this->servings = $Servings;
+                $this->description = $R_Descr;
+                $this->instruction = $Instruction;
+                $this->creationDate = $CreationDate;
+                $this->duration = $Duration;
+                $this->difficulty = $Difficulty;
+                $this->certified = $Certified;
+                $this->lastChange = $LastChange;
+                $this->createdUser = $U_ID;
+                $_result = $R_ID;
+
+            }
+        }
+
+        return $_result;
     }
 
     /**
