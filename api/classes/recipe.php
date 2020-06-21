@@ -753,14 +753,19 @@ class Recipe{
      * 
      * @param $_date creation date of this recipe
      * @param $_userId id from creation user
+     * @param $_lastChange an optinal parameter
      * 
      * @return int the id of this recipe
      */
-    public function fetchRecipe($_date, $_userId)
+    public function fetchRecipe($_date, $_userId, $_lastChange = "")
     {
         $_result = -1;
-
-        $_sql = "SELECT * FROM recipe WHERE CreationDate = :CreationDate AND U_ID = :U_ID";
+        if($_lastChange === ""){
+            $_sql = "SELECT * FROM recipe WHERE CreationDate = :CreationDate AND U_ID = :U_ID";
+        }else{
+            $_sql = "SELECT * FROM recipe WHERE CreationDate = :CreationDate AND U_ID = :U_ID AND LastChange = :LastChange";
+        }
+        
 
         $_stmt= $this->conn->prepare($_sql);
 
@@ -770,6 +775,7 @@ class Recipe{
         // bind values
         $_stmt->bindParam(":CreationDate", $_date);
         $_stmt->bindParam(":U_ID", $_userId);
+        if($_lastChange != ""){ $_stmt->bindParam(":LastChange", $_lastChange); }
 
         $_stmt->execute();
 
@@ -804,6 +810,26 @@ class Recipe{
         }
 
         return $_result;
+    }
+
+        /**
+     * Gets an recipe and sets the data to this object
+     * 
+     * @param $_userId id from creation user
+     * 
+     * @return array
+     */
+    public function fetchAllRecipe($_userId)
+    {
+        $_sql = "SELECT * FROM recipe WHERE U_ID = :U_ID"; 
+
+        $_stmt= $this->conn->prepare($_sql);
+
+        $_stmt->bindParam(":U_ID", $_userId);
+
+        $_stmt->execute();
+
+        return $_stmt;
     }
 
     /**

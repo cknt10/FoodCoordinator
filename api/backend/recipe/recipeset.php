@@ -95,7 +95,7 @@ if($checkRecipe == -1){
             $dummyarray['ingredients'][$_i]['r_id']= strval($recipeId);
         }
 
-        $checkIngredient = $ingredient->createIngredients(array(), $dummyarray['ingredients']);
+        $checkIngredient = $ingredient->createIngredients($dummyarray['ingredients']);
         if($checkIngredient === "200"){
             //Keywords
             $checkKeywords = $recipe->createKeywords($recipeId, $dummyarray['keywords']);
