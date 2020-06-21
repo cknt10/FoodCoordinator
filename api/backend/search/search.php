@@ -312,8 +312,8 @@ if(count($testData) > 0 && $testData[0] != ""){
    echo json_encode($searchArray);
   }
 }else{
-   // set response code - 403
-   http_response_code(403);
+   // set response code - 404
+   http_response_code(404);
   
    // tell the user no result found
    $searchArray["message"] = "No input";

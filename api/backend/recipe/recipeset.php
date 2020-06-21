@@ -127,8 +127,8 @@ if($checkRecipe == -1){
         echo json_encode($recipeArray);
     }
 }else{
-   // set response code - 403
-   http_response_code(403);
+   // set response code - 404
+   http_response_code(404);
 
    $recipeArray["message"] = "Recipe allready exits";
    echo json_encode($recipeArray);

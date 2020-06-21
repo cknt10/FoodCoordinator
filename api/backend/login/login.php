@@ -65,7 +65,7 @@ if($num>0){
         // show result data in json format
         echo json_encode($resultArr);
     } else {
-        // set response code - 404 Not found
+        // set response code - 403 Not found
         http_response_code(403);
     
         // tell the user no result found
