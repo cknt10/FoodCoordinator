@@ -143,8 +143,32 @@ class Format{
 
         //TODO Dustin: Hole alle Formate aus der Datenbank und gebe diese als assoziatives array zurück. Ein beispielt wie dies gemacht wird findest du in
         //classes/recipe.php in der Funktion fetchKeywords
+        $_query = "SELECT Format FROM cookBook";
 
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
 
+        // execute query
+        $_stmt->execute();
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+                array_push($_result, array(
+                    "format" => $CB_FORMAT,
+                ));
+
+            }
+        }
         return empty($_result) ? null : $_result;
     }
 }
