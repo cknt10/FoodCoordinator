@@ -54,8 +54,7 @@ export class SearchComponent implements OnInit {
       this.ingredients.push(this.ingredient);
       this.ingredient = ""
     }
-    ///console.log(await this.searchReqService.getUserResults(this.ingredients));
-    this.recipeAdministrationReqService.converRecipeKeywordsArray(this.ingredients);
+  await this.searchReqService.getUserResults(this.ingredients);
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
@@ -68,7 +67,6 @@ export class SearchComponent implements OnInit {
             this.options.push(all[i]);
           }
   }
-    //console.log(this.searchReqService.getFilteredKeywords());
   };
 
 }

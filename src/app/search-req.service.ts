@@ -34,12 +34,12 @@ export class SearchReqService {
   }
 
   /////////////////////////////////method to display keywords with id///////////////////////////
-  getKeywords(): SearchParameter[]{
+  getKeywords(): SearchParameter[] {
     return this.serverKeywords;
   }
 
   /////////////////////////////////method to display ingredients with id///////////////////////////
-  getIngredients(): SearchParameter[]{
+  getIngredients(): SearchParameter[] {
     return this.serverIngredients;
   }
 
@@ -82,7 +82,6 @@ export class SearchReqService {
     await this.fetchServerSearchPropositionForIngredients().then((data) => {
       this.serverIngredients = data['ingredients'];
     });
-    this.parseJson(this.serverIngredients);
     return this.serverIngredients;
   }
 
@@ -91,7 +90,6 @@ export class SearchReqService {
     await this.fetchServerSearchPropositionForKeywords().then((data) => {
       this.serverKeywords = data['keywords'];
     });
-    this.parseJson(this.getKeywords());
     return this.serverKeywords;
   }
 
@@ -117,15 +115,6 @@ export class SearchReqService {
       .toPromise();
   }
 
-  parseJson(array: SearchParameter[]){
-    //JSON.stringify(array, null, '').replace("\\r", " ");
-    array.filter(function() {
-      return function(value) {
-        return (!value) ? '' : value.replace(/(\\r\\n|\\n|\\r)/gm, "");
-      };
-    });
-  }
-
   /////////////////////////////////Http-Request method to send keywords and get results of the search//////////////////////////
   async getUserResults(userSearchInputs: string[]): Promise<Recipe> {
     console.log('server request with keywords');
@@ -136,8 +125,7 @@ export class SearchReqService {
 
     console.log(params);
 
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/search/search.php';
+    const requestLink = 'http://xcsd.ddns.net/api/backend/search/search.php';
 
     console.log('request finished');
 
