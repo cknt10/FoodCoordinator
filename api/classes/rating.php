@@ -117,6 +117,70 @@ class Rating{
     }
 
     /**
+     * Creates rating to an recipe
+     * 
+     * @param int $_userId
+     * @param float $_rating
+     * @param string $_comment
+     * 
+     * @return string
+     */
+    public function createRating(Type $var = null)
+    {
+        //TODO
+    }
+
+    /**
+     * Creates rating to an recipe
+     * 
+     * @param float $_ratingId
+     * @param int $_userId
+     * 
+     * @return string
+     */
+    public function fetchRatings($_ratingId, $_userId)
+    {
+        $_result = array();
+        $_query = "SELECT * FROM rating WHERE R_ID = :R_ID AND U_ID = :U_ID";
+
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
+
+        // sanitize
+        //$_postcode=htmlspecialchars(strip_tags($_postcode));
+
+        // bind values
+        $_stmt->bindParam(":R_ID", $_ratingId);
+        $_stmt->bindParam(":U_ID", $_userId);
+
+        // execute query
+        $_stmt->execute();
+        
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+                array_push($_result, array(
+                    "recipeId" => $R_ID,
+                    "userId" => $U_ID,
+                    "comment" => $Comment,
+                    "rating" => $BananaAmount,
+                ));
+                
+            }
+        }
+        return empty($_result) ? null : $_result;
+    }
+    /**
      * Get this Object as Array for JSON import
      * 
      * @return array

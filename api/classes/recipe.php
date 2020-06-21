@@ -445,7 +445,7 @@ class Recipe{
     /**
      * Set the value of createdUser
      *
-     * @param  string  $createdUser
+     * @param  string  $_createdUser
      *
      * @return  self
      */ 
@@ -464,6 +464,20 @@ class Recipe{
     public function getRatings()
     {
         return $this->ratings;
+    }
+
+    /**
+     * Set the value of ratings
+     *
+     * @param  string  $_retings
+     *
+     * @return  self
+     */ 
+    public function setRatings($_ratings)
+    {
+        $this->ratings = $_ratings;
+
+        return $this;
     }
 
     /**
