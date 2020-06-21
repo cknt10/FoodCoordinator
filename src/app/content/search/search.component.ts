@@ -3,6 +3,9 @@ import { FormBuilder, Validator, FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
+
+import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -18,19 +21,22 @@ export class SearchComponent implements OnInit {
   drop = new FormControl();
 
   constructor(
-    private searchReqService: SearchReqService
+    private searchReqService: SearchReqService,
+    private recipeAdministrationReqService:RecipeAdministrationReqService
   ) { }
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
-  ngOnInit() {
-  this.searchReqService.fetchSearchKeywords();
+  async ngOnInit() {
+  await this.searchReqService.fetchSearchKeywords().then(data =>
+    console.log(this.searchReqService.filterKeywords()));
+
   }
 
   ////////////////////////add ingredient to array///////////////////////////////////////////
   addIngredient(){
    if (this.ingredient){
       this.ingredients.push(this.ingredient);
-      this.ingredient ="";
+      this.ingredient = "";
     }
     else {
       window.alert("Bitte füge eine Zutat hinzu!");
@@ -44,10 +50,11 @@ export class SearchComponent implements OnInit {
 
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search(){
-    if(this.ingredient != null){
-    this.addIngredient();
+    if(this.ingredient != ""){
+      this.ingredients.push(this.ingredient);
+      this.ingredient = ""
     }
-    console.log(await this.searchReqService.getUserResults(this.ingredients));
+  await this.searchReqService.getUserResults(this.ingredients);
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
@@ -60,7 +67,6 @@ export class SearchComponent implements OnInit {
             this.options.push(all[i]);
           }
   }
-    //console.log(this.searchReqService.getFilteredKeywords());
   };
 
 }

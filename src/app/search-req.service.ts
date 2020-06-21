@@ -5,7 +5,6 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Recipe } from './recipe';
-import { LoginReqService } from './login-req.service';
 import { SearchParameter } from './searchParameter';
 
 import { throwError } from 'rxjs';
@@ -24,7 +23,7 @@ export class SearchReqService {
 
   constructor(private http: HttpClient) {}
 
-  /////////////////////////////////method to get keywords///////////////////////////
+  /////////////////////////////////method to get keywords without duplicate and id///////////////////////////
   getFilteredKeywords(): string[] {
     return this.filteredKeywords;
   }
@@ -32,6 +31,16 @@ export class SearchReqService {
   /////////////////////////////////method to display error message to user///////////////////////////
   getErrorMessageUser(): string {
     return this.errorValue;
+  }
+
+  /////////////////////////////////method to display keywords with id///////////////////////////
+  getKeywords(): SearchParameter[] {
+    return this.serverKeywords;
+  }
+
+  /////////////////////////////////method to display ingredients with id///////////////////////////
+  getIngredients(): SearchParameter[] {
+    return this.serverIngredients;
   }
 
   /////////////////////////////////method to filter duplicate keywords///////////////////////////
@@ -116,8 +125,7 @@ export class SearchReqService {
 
     console.log(params);
 
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/search/search.php';
+    const requestLink = 'http://xcsd.ddns.net/api/backend/search/search.php';
 
     console.log('request finished');
 
@@ -145,7 +153,7 @@ export class SearchReqService {
         this.errorValue = `Leider haben wir noch keine Rezepte zu diesem Suchbegriff.`;
       }
       if (error.status == 500) {
-        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen.`;
       }
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
