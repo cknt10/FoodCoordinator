@@ -5,7 +5,6 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Recipe } from './recipe';
-import { LoginReqService } from './login-req.service';
 import { SearchParameter } from './searchParameter';
 
 import { throwError } from 'rxjs';
@@ -24,7 +23,7 @@ export class SearchReqService {
 
   constructor(private http: HttpClient) {}
 
-  /////////////////////////////////method to get keywords///////////////////////////
+  /////////////////////////////////method to get keywords without duplicate and id///////////////////////////
   getFilteredKeywords(): string[] {
     return this.filteredKeywords;
   }
@@ -32,6 +31,16 @@ export class SearchReqService {
   /////////////////////////////////method to display error message to user///////////////////////////
   getErrorMessageUser(): string {
     return this.errorValue;
+  }
+
+  /////////////////////////////////method to display keywords with id///////////////////////////
+  getKeywords(): SearchParameter[]{
+    return this.serverKeywords;
+  }
+
+  /////////////////////////////////method to display ingredients with id///////////////////////////
+  getIngredients(): SearchParameter[]{
+    return this.serverIngredients;
   }
 
   /////////////////////////////////method to filter duplicate keywords///////////////////////////
@@ -73,6 +82,7 @@ export class SearchReqService {
     await this.fetchServerSearchPropositionForIngredients().then((data) => {
       this.serverIngredients = data['ingredients'];
     });
+    this.parseJson(this.serverIngredients);
     return this.serverIngredients;
   }
 
@@ -81,6 +91,7 @@ export class SearchReqService {
     await this.fetchServerSearchPropositionForKeywords().then((data) => {
       this.serverKeywords = data['keywords'];
     });
+    this.parseJson(this.getKeywords());
     return this.serverKeywords;
   }
 
@@ -104,6 +115,15 @@ export class SearchReqService {
       .get<string>(requestLink)
       .pipe(catchError(this.handleError))
       .toPromise();
+  }
+
+  parseJson(array: SearchParameter[]){
+    //JSON.stringify(array, null, '').replace("\\r", " ");
+    array.filter(function() {
+      return function(value) {
+        return (!value) ? '' : value.replace(/(\\r\\n|\\n|\\r)/gm, "");
+      };
+    });
   }
 
   /////////////////////////////////Http-Request method to send keywords and get results of the search//////////////////////////
@@ -145,7 +165,7 @@ export class SearchReqService {
         this.errorValue = `Leider haben wir noch keine Rezepte zu diesem Suchbegriff.`;
       }
       if (error.status == 500) {
-        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen.`;
       }
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
