@@ -83,20 +83,20 @@ class Recipe{
 
     /**
      * creates connection in class to database
-     * 
+     *
      * @param $conn PDO
      */
     public function connection($_conn)
     {
         $this->conn = $_conn;
     }
-    
+
 
     /**
      * Get the value of id
      *
      * @return  int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -108,7 +108,7 @@ class Recipe{
      * @param  int  $id
      *
      * @return  self
-     */ 
+     */
     public function setId($_id)
     {
         $this->id = $_id;
@@ -120,7 +120,7 @@ class Recipe{
      * Get the value of title
      *
      * @return  string
-     */ 
+     */
     public function getTitle()
     {
         return $this->title;
@@ -132,7 +132,7 @@ class Recipe{
      * @param  string  $title
      *
      * @return  self
-     */ 
+     */
     public function setTitle($_title)
     {
         $this->title = $_title;
@@ -144,7 +144,7 @@ class Recipe{
      * Get the value of picture
      *
      * @return  string
-     */ 
+     */
     public function getPicture()
     {
         return $this->picture;
@@ -156,7 +156,7 @@ class Recipe{
      * @param  string  $picture
      *
      * @return  self
-     */ 
+     */
     public function setPicture($_picture)
     {
         $this->picture = $_picture;
@@ -168,7 +168,7 @@ class Recipe{
      * Get the value of description
      *
      * @return  string
-     */ 
+     */
     public function getDescription()
     {
         return $this->description;
@@ -180,7 +180,7 @@ class Recipe{
      * @param  string  $description
      *
      * @return  self
-     */ 
+     */
     public function setDescription($_description)
     {
         $this->description = $_description;
@@ -192,7 +192,7 @@ class Recipe{
      * Get the value of instruction
      *
      * @return  string
-     */ 
+     */
     public function getInstruction()
     {
         return $this->instruction;
@@ -204,7 +204,7 @@ class Recipe{
      * @param  string  $instruction
      *
      * @return  self
-     */ 
+     */
     public function setInstruction($_instruction)
     {
         $this->instruction = $_instruction;
@@ -216,7 +216,7 @@ class Recipe{
      * Get the value of duration
      *
      * @return  Period
-     */ 
+     */
     public function getDuration()
     {
         return $this->duration;
@@ -228,7 +228,7 @@ class Recipe{
      * @param  Period  $duration
      *
      * @return  self
-     */ 
+     */
     public function setDuration($_duration)
     {
         $this->duration = $_duration;
@@ -240,7 +240,7 @@ class Recipe{
      * Get the value of creationDate
      *
      * @return  date
-     */ 
+     */
     public function getCreationDate()
     {
         return $this->creationDate;
@@ -252,7 +252,7 @@ class Recipe{
      * @param  date  $creationDate
      *
      * @return  self
-     */ 
+     */
     public function setCreationDate($_creationDate)
     {
         $this->creationDate = $_creationDate;
@@ -264,7 +264,7 @@ class Recipe{
      * Get the value of lastChange
      *
      * @return  date
-     */ 
+     */
     public function getLastChange()
     {
         return $this->lastChange;
@@ -276,7 +276,7 @@ class Recipe{
      * @param  date  $lastChange
      *
      * @return  self
-     */ 
+     */
     public function setLastChange($_lastChange)
     {
         $this->lastChange = $_lastChange;
@@ -288,7 +288,7 @@ class Recipe{
      * Get the value of difficulty
      *
      * @return  string
-     */ 
+     */
     public function getDifficulty()
     {
         return $this->difficulty;
@@ -300,7 +300,7 @@ class Recipe{
      * @param  string  $difficulty
      *
      * @return  self
-     */ 
+     */
     public function setDifficulty($_difficulty)
     {
         $this->difficulty = $_difficulty;
@@ -312,7 +312,7 @@ class Recipe{
      * Get the value of rating
      *
      * @return  float
-     */ 
+     */
     public function getRating()
     {
         return $this->rating;
@@ -324,7 +324,7 @@ class Recipe{
      * @param  float  $rating
      *
      * @return  self
-     */ 
+     */
     public function setRating($_rating)
     {
         $this->rating = $_rating;
@@ -336,7 +336,7 @@ class Recipe{
      * Get the value of certified
      *
      * @return  bool
-     */ 
+     */
     public function getCertified()
     {
         return $this->certified;
@@ -348,7 +348,7 @@ class Recipe{
      * @param  bool  $certified
      *
      * @return  self
-     */ 
+     */
     public function setCertified($_certified)
     {
         $this->certified = $_certified;
@@ -360,7 +360,7 @@ class Recipe{
      * Get the value of keywords
      *
      * @return  string[]
-     */ 
+     */
     public function getKeywords()
     {
         return $this->keywords;
@@ -372,7 +372,7 @@ class Recipe{
      * @param  string[]  $keywords
      *
      * @return  self
-     */ 
+     */
     public function setKeywords($_keywords)
     {
         $this->keywords = $_keywords;
@@ -380,13 +380,13 @@ class Recipe{
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of ingredients
      *
      * @return  Ingredient[]
-     */ 
+     */
     public function getIngredients()
     {
         return $this->ingredients;
@@ -398,7 +398,7 @@ class Recipe{
      * @param  Ingredient[]  $ingredients
      *
      * @return  self
-     */ 
+     */
     public function setIngredients($_ingredients)
     {
         $this->ingredients = $_ingredients;
@@ -406,13 +406,13 @@ class Recipe{
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of servings
      *
      * @return  float
-     */ 
+     */
     public function getServings()
     {
         return $this->servings;
@@ -424,7 +424,7 @@ class Recipe{
      * @param  float  $servings
      *
      * @return  self
-     */ 
+     */
     public function setServings($_servings)
     {
         $this->servings = $_servings;
@@ -436,7 +436,7 @@ class Recipe{
      * Get the value of createdUser
      *
      * @return  string
-     */ 
+     */
     public function getCreatedUser()
     {
         return $this->createdUser;
@@ -448,7 +448,7 @@ class Recipe{
      * @param  string  $createdUser
      *
      * @return  self
-     */ 
+     */
     public function setCreatedUser($_createdUser)
     {
         $this->createdUser = $_createdUser;
@@ -460,7 +460,7 @@ class Recipe{
      * Get the value of ratings
      *
      * @return  Rating[]
-     */ 
+     */
     public function getRatings()
     {
         return $this->ratings;
@@ -468,14 +468,14 @@ class Recipe{
 
     /**
      * Change all Attributes in Recipe except id, created Date, certified, createdUser and ratings
-     * 
+     *
      * @param Recipe $recipe
      * @param date $timestamp
-     * 
+     *
      * @return self
      */
     public function changeRecipe($_recipe, $_timestamp){
-        
+
         $this->title = $_recipe->getTitle();
         $this->picture = $_recipe->getPicture();
         $this->description = $_recipe->getDescription();
@@ -494,9 +494,9 @@ class Recipe{
 
     /**
      * Add a new keyword to the array distinct
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @return array
      */
     public function addKeyword($_name){
@@ -508,7 +508,7 @@ class Recipe{
                 }
             }
         }
-        
+
         if($_unique){
             array_push($this->keywords, $_name);
         }
@@ -518,9 +518,9 @@ class Recipe{
 
     /**
      * Remove Keyword from Keywords
-     * 
+     *
      * @param string $name
-     * 
+     *
      * @return string[]
      */
     public function removeKeyword($_name){
@@ -535,11 +535,11 @@ class Recipe{
 
     /**
      * Saves keywords to this recipe
-     * 
+     *
      * @param int $_id recipe id
      * @param array $_keywords
-     * 
-     * @return string 
+     *
+     * @return string
      */
     public function createKeywords($_id, $_keywords)
     {
@@ -552,14 +552,14 @@ class Recipe{
             for($_i = 1; $_i < count($_keywords); $_i++){
                 $_sql = $_sql . ', (:R_ID' .strval($_i). ', :KW_ID'.strval($_i).')';
             }
-    
+
             $_stmt= $this->conn->prepare($_sql);
-    
+
             //bind params
             for($_i=0; $_i<count($_keywords); $_i++){
                 $_stmt->bindParam(":R_ID".strval($_i), $_id);
                 $_stmt->bindParam(":KW_ID".strval($_i), $_keywords[$_i]);
-            }   
+            }
 
             $_stmt->execute();
             $_result = "200";
@@ -573,9 +573,9 @@ class Recipe{
 
     /**
      * Add an ingredient to the recipe distinct
-     * 
+     *
      * @param Ingredient $ingredient
-     * 
+     *
      */
     public function addIngredient($_ingredient){
         $_unique = true;
@@ -586,7 +586,7 @@ class Recipe{
                 }
             }
         }
-        
+
         if($_unique){
             array_push($this->ingredients, $_ingredient);
         }
@@ -594,9 +594,9 @@ class Recipe{
 
     /**
      * Remove Ingredient from the Recipe
-     * 
+     *
      * @param Ingredient $ingredient
-     * 
+     *
      * @return Ingredient[]
      */
     public function removeIngredient($_ingredient){
@@ -607,24 +607,24 @@ class Recipe{
 
     /**
      * Add an rating to the recipe distinct
-     * 
+     *
      * @param Rating $ingredient
-     * 
+     *
      */
     public function addRating($_rating){
         $_unique = true;
         if(count($this->ratings) > 0){
             for($_i = 0; $_i < count($this->ratings); $_i++){
-                if($this->ratings[$_i]["userId"] == $_rating["userId"] && 
-                $this->ratings[$_i]["rating"] == $_rating["rating"] && 
-                $this->ratings[$_i]["comment"] == $_rating["comment"] && 
+                if($this->ratings[$_i]["userId"] == $_rating["userId"] &&
+                $this->ratings[$_i]["rating"] == $_rating["rating"] &&
+                $this->ratings[$_i]["comment"] == $_rating["comment"] &&
                 $_rating["userId"] != null &&
                 $_rating["rating"] != null){
                     $_unique = false;
                 }
             }
         }
-        
+
         if($_unique){
             array_push($this->ratings, $_rating);
         }
@@ -632,13 +632,13 @@ class Recipe{
 
     /**
      * Remove Ingredient from the Recipe
-     * 
+     *
      * @param Rating $ingredient
-     * 
+     *
      * @return Rating[]
      */
     public function removeRating($_rating){
-        //TODO 
+        //TODO
     }
 
     /**
@@ -647,13 +647,22 @@ class Recipe{
     public function calculateRating()
     {
         //TODO Dustin: Berechne anhand ratings in diesem Objekt das rating und setze es.
+      $avg = 0;
+      $countRating = 0;
 
+      if (count($ratings)>0){
+        for ($_i = 1; $_i < count($ratings); $_i=$_i+3){
+          $avg = $avg + $ratings[$_i];
+			    $countRating == $countRating ++;
+        }
+        $this->rating = $_dump($avg / $countRating);
+      }
     }
 
     /**
      * Get load all keywords
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public function fetchKeywords()
     {
@@ -665,7 +674,7 @@ class Recipe{
 
         // execute query
         $_stmt->execute();
-        
+
 
         $_num = $_stmt->rowCount();
 
@@ -683,7 +692,7 @@ class Recipe{
                     "id" => $KW_ID,
                     "name" => $KW_NAME,
                 ));
-                
+
             }
         }
         return empty($_result) ? null : $_result;
@@ -691,23 +700,23 @@ class Recipe{
 
     /**
      * Create an recipe in the database
-     * 
-     * @param $_title 
+     *
+     * @param $_title
      * @param $_picture
      * @param $_servings
-     * @param $_description 
+     * @param $_description
      * @param $_instruction
      * @param $_creationDate
      * @param $_duration
-     * @param $_difficulty 
+     * @param $_difficulty
      * @param $_certified
-     * @param $_lastChange 
+     * @param $_lastChange
      * @param $_userId
-     * 
+     *
      * @return self
      */
     public function createRecipe($_title, $_picture, $_servings, $_description, $_instruction, $_creationDate, $_duration, $_difficulty, $_certified, $_lastChange, $_userId)
-    {        
+    {
         $_result = "";
 
         if($_title == null || $_creationDate == null || $_userId == null){
@@ -717,7 +726,7 @@ class Recipe{
         try{
             $_sql="INSERT INTO recipe (Title, Picture, Servings, R_Descr, Instruction, CreationDate, Duration, Difficulty, Certified, LastChange, U_ID) VALUES (:Title, :Picture, :Servings, :R_Descr, :Instruction, :CreationDate, :Duration, :Difficulty, :Certified, :LastChange, :U_ID)";
             $_stmt= $this->conn->prepare($_sql);
-            
+
 
             // sanitize
             $_title=htmlspecialchars(strip_tags($_title));
@@ -745,15 +754,15 @@ class Recipe{
             $_result = $_e;
         }
 
-    
+
     }
 
     /**
      * Gets an recipe and sets the data to this object
-     * 
+     *
      * @param $_date creation date of this recipe
      * @param $_userId id from creation user
-     * 
+     *
      * @return int the id of this recipe
      */
     public function fetchRecipe($_date, $_userId)
@@ -808,14 +817,14 @@ class Recipe{
 
     /**
      * Get this Object as Array for JSON import
-     * 
+     *
      * @return array
      */
     public function getObjectAsArray()
     {
         //TODOs
         //order ratings by Creation Date
-        //order keywords 
+        //order keywords
         //calculate ratins for this recipe
         return array(
             "id" => $this->id,

@@ -25,10 +25,10 @@ class Format{
      */
     private $designTitle;
 
-    
+
     /**
      * creates connection in class to database
-     * 
+     *
      * @param $conn PDO
      */
     public function connection($_conn)
@@ -40,7 +40,7 @@ class Format{
      * Get the value of id
      *
      * @return  int
-     */ 
+     */
     public function getId()
     {
         return $this->id;
@@ -52,7 +52,7 @@ class Format{
      * @param  int  $id
      *
      * @return  self
-     */ 
+     */
     public function setId($_id)
     {
         $this->id = $_id;
@@ -64,7 +64,7 @@ class Format{
      * Get the value of format
      *
      * @return  string
-     */ 
+     */
     public function getFormat()
     {
         return $this->format;
@@ -76,7 +76,7 @@ class Format{
      * @param  string  $format
      *
      * @return  self
-     */ 
+     */
     public function setFormat($_format)
     {
         $this->format = $_format;
@@ -88,7 +88,7 @@ class Format{
      * Get the value of pageNumber
      *
      * @return  int
-     */ 
+     */
     public function getPageNumber()
     {
         return $this->pageNumber;
@@ -100,7 +100,7 @@ class Format{
      * @param  int  $pageNumber
      *
      * @return  self
-     */ 
+     */
     public function setPageNumber($_pageNumber)
     {
         $this->pageNumber = $_pageNumber;
@@ -112,7 +112,7 @@ class Format{
      * Get the value of designTitle
      *
      * @return  string
-     */ 
+     */
     public function getDesignTitle()
     {
         return $this->designTitle;
@@ -124,7 +124,7 @@ class Format{
      * @param  string  $designTitle
      *
      * @return  self
-     */ 
+     */
     public function setDesignTitle($_designTitle)
     {
         $this->designTitle = $_designTitle;
@@ -134,15 +134,16 @@ class Format{
 
     /**
      * Get load all formats
-     * 
-     * @return array 
+     *
+     * @return array
      */
     public function fetchFormats()
     {
         $_result = array();
 
-        //TODO Dustin: Hole alle Formate aus der Datenbank und gebe diese als assoziatives array zurück. Ein beispielt wie dies gemacht wird findest du in 
+        //TODO Dustin: Hole alle Formate aus der Datenbank und gebe diese als assoziatives array zurück. Ein beispielt wie dies gemacht wird findest du in
         //classes/recipe.php in der Funktion fetchKeywords
+
 
         return empty($_result) ? null : $_result;
     }
