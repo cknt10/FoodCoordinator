@@ -1,6 +1,11 @@
 <div class="searcharea">
   <div class="searching">
-    <input (keyup)="suggestions()" type="text" placeholder="Gib einen Suchbegriff ein" name="search" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Gib einen Suchbegriff ein'" [(ngModel)]="ingredient">
+    <input (keyup)="suggestions()" type="text" matInput [formControl]="drop" [matAutocomplete]="auto" placeholder="Gib einen Suchbegriff ein" name="search" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Gib einen Suchbegriff ein'" [(ngModel)]="ingredient">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of options" [value]=option>
+        {{ option }}
+      </mat-option>
+    </mat-autocomplete>
     <button id="add" mat-mini-fab (click)="addIngredient()">+</button>
   </div>
   <div id="search">
