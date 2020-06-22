@@ -16,8 +16,8 @@ export class SearchComponent implements OnInit {
   input: string;
   ingredient: string;
   ingredients: string[] = [];
-  recipe: Recipe;
   options: string[] = [];
+  recipe: Recipe;
   drop = new FormControl();
 
   constructor(
