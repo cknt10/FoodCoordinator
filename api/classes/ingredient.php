@@ -288,7 +288,7 @@ class Ingredient{
                 extract($_row);
                 array_push($_result, array(
                     "id" => $F_ID,
-                    "description" => $F_Descr,
+                    "description" => str_replace("\r", "", $F_Descr),
                 ));
                 
             }
