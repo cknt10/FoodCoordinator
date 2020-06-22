@@ -55,10 +55,7 @@ export class RecipeAdministrationReqService {
       .set('difficulty', difficulty)
       .set('userId', userId.toString())
       .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'))
-      .set(
-        'ingredients',
-        this.convertRecipeIngredientsArray(ingredients).join('|')
-      );
+      .set('ingredients', this.convertRecipeIngredientsArray(ingredients).join('|'));
 
     console.log(params);
 
@@ -76,7 +73,7 @@ export class RecipeAdministrationReqService {
   getServerChangeRecipe(recipe: Recipe): Promise<Recipe> {
     console.log('server request with keywords');
 
-    console.log(recipe);
+    //console.log(recipe);
 
     let params = new HttpParams()
       .set('title', recipe.getTitle())
@@ -90,19 +87,12 @@ export class RecipeAdministrationReqService {
       .set('certified', recipe.getCertified().toString())
       .set('lastChangeDate', recipe.getLastChangeDate().toString())
       .set('userId', recipe.getUserId().toString())
-      .set(
-        'keywords',
-        this.convertRecipeKeywordsArray(recipe.getKeywords()).join('|')
-      )
-      .set(
-        'ingredients',
-        this.convertRecipeKeywordsArray(recipe.getIngredients()).join('|')
-      );
+      .set('keywords', this.convertRecipeKeywordsArray(recipe.getKeywords()).join('|') )
+      .set('ingredients', this.convertRecipeKeywordsArray(recipe.getIngredients()).join('|'));
 
-    console.log(params);
+    //console.log(params);
 
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/recipe/recipechange.php';
+    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/recipechange.php';
 
     console.log('request finished');
 

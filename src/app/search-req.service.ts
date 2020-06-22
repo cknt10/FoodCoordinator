@@ -95,8 +95,7 @@ export class SearchReqService {
 
   /////////////////////////////////Http-Request method to get ingredients as proposition///////////////////////////
   async fetchServerSearchPropositionForIngredients() {
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/search/getingredients.php';
+    const requestLink = 'http://xcsd.ddns.net/api/backend/search/getingredients.php';
 
     return this.http
       .get<string>(requestLink)
@@ -106,8 +105,7 @@ export class SearchReqService {
 
   /////////////////////////////////Http-Request method to get keywords as proposition///////////////////////////
   async fetchServerSearchPropositionForKeywords(): Promise<string> {
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
+    const requestLink = 'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
 
     return this.http
       .get<string>(requestLink)
@@ -119,11 +117,11 @@ export class SearchReqService {
   async getUserResults(userSearchInputs: string[]): Promise<Recipe> {
     console.log('server request with keywords');
 
-    console.log(userSearchInputs);
+   // console.log(userSearchInputs);
 
     let params = new HttpParams().set('keys', userSearchInputs.join('|'));
 
-    console.log(params);
+    //console.log(params);
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/search/search.php';
 

@@ -54,7 +54,7 @@ export class SearchComponent implements OnInit {
       this.ingredients.push(this.ingredient);
       this.ingredient = ""
     }
-  await this.searchReqService.getUserResults(this.ingredients);
+  console.log(await this.searchReqService.getUserResults(this.ingredients));
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
