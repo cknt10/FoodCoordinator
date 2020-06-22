@@ -13,7 +13,6 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
 })
 export class SearchComponent implements OnInit {
   neu: string;
-  input: string;
   ingredient: string;
   ingredients: string[] = [];
   options: string[] = [];
@@ -60,13 +59,15 @@ export class SearchComponent implements OnInit {
   ////////////////////////suggestions for search///////////////////////////////////////////
   suggestions(){
     let all = this.searchReqService.getFilteredKeywords(), i, j;
-    this.input = this.ingredient;
     //does the users input match with our keywords
     for (i = 0; i < all.length; i++) {
-      if (all[i].match(this.input)) {
+      if (all[i].match(this.ingredient)) {
             this.options.push(all[i]);
           }
-  }
+          else{
+            this.options.splice(i);
+          }
+      }
   };
 
 }

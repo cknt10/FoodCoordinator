@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-create-recipe',
@@ -14,6 +15,11 @@ export class CreateRecipeComponent implements OnInit {
   ingredients: string[] = [];
   description: string;
   picture: File;
+  servings: number;
+  duration: number;
+  amount: number;
+  unit: string[] = [];
+
 
   constructor() { }
 

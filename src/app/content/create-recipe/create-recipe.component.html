@@ -1,33 +1,44 @@
 <button class="create" mat-raised-button>Erstellen</button>
 <div class="workspace">
   <div class="left">
-    <label for="title">Titel:</label><br>
-    <input type="text"><br>
-    <label for="kurzbeschreibung">kurze Beschreibung:</label><br>
-    <input type="text"><br>
-    <label for="stichwort">Stichwort:</label><br>
+    <label for="title">Titel:</label><br />
+    <input type="text" [(ngModel)]="title" /><br />
+    <label for="kurzbeschreibung">kurze Beschreibung:</label><br />
+    <input type="text" [(ngModel)]="shortDescription" /><br />
+    <label for="stichwort">Stichwort:</label><br />
     <!-- Hier muss das Dropdown für Keywords hin -->
     <div class="keywords"></div>
     <div class="ingredients">
       <label for="menge">Menge:</label>
-      <input type="select">
+      <input type="select" [(ngModel)]="amount" />
       <label for="einheit">Einheit:</label>
-      <input type="select">
-      <label for="zutat">Zutat:</label>
-      <input type="text">
+      <input type="select" [(ngModel)]="unit" />
+      <div>
+        <label for="zutat">Zutat:</label>
+        <input type="text" [(ngModel)]="ingredient" />
+        <button id="add" mat-mini-fab (click)="addIngredient()">+</button>
+      </div>
+      <div id="ingredientTable">
+        <span *ngFor="let ingredient of ingredients">
+          {{ ingredient }}
+          <!--<button id="remove" (click)="removeIngredient()">
+            <mat-icon>close</mat-icon>
+          </button>-->
+        </span>
+      </div>
     </div>
-  <div class="zutaten"></div>
-  <label for="zubereitung">Zubereitungsdauer in Minuten:</label><br>
-  <input type="select" name="dauer" id="dauer">
+    <div class="zutaten"></div>
+    <label for="zubereitung">Zubereitungsdauer in Minuten:</label><br />
+    <input type="select" name="dauer" id="dauer" [(ngModel)]="duration" />
   </div>
   <div class="mid">
-    <label for="portion">Portionsmenge:</label><br>
-    <input type="select"><br>
-    <label for="schritte">Zubereitungsschritte:</label><br>
-    <input type="text">
+    <label for="portion">Portionsmenge:</label><br />
+    <input type="select" [(ngModel)]="servings" /><br />
+    <label for="schritte">Zubereitungsschritte:</label><br />
+    <input type="text" [(ngModel)]="description" />
   </div>
   <div class="right">
     <label for="picture">Bild:</label>
-    <input type="file">
+    <input type="file" />
   </div>
 </div>
