@@ -8,7 +8,6 @@ import {
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { User } from './user';
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
 
