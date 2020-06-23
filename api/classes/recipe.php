@@ -649,13 +649,12 @@ class Recipe{
         //TODO Dustin: Berechne anhand ratings in diesem Objekt das rating und setze es.
       $avg = 0;
 
-      if (count($ratings)>0){
-        for ($_i = 1; $_i < count($this->ratings); $_i++){
-          $avg = $avg + $this->ratings[$_i]["rating"];
-        }
-        $this->rating = $avg / (count($this->ratings)/3);
+      for ($_i = 1; $_i < count($this->ratings); $_i++){
+        $avg = $avg + $this->ratings[$_i]["rating"];
       }
+      $this->rating = $avg / count($this->ratings);
     }
+
 
     /**
      * Get load all keywords
