@@ -2,6 +2,7 @@
   <div id="closing">
     <button id="close" mat-mini-fab><mat-icon>close</mat-icon></button>
   </div>
+  <form [formGroup]="form">
   <div id="left">
     <label>* Vorname:</label>
     <input type="text" [(ngModel)]="firstname"><br>
@@ -60,4 +61,5 @@
     <button id="subReg" mat-raised-button (click)="regUser()">Registrieren</button>
     <p id="goLog">Du hast bereits ein Konto? <a routerLink="/login" id="log">Anmelden</a></p>
   </div>
+</form>
 </div>

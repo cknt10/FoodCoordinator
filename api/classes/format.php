@@ -164,10 +164,11 @@ class Format{
                 // just $name only
                 extract($_row);
                 array_push($_result, array(
-                    "id" => $_CB_ID,
-                    "title" => $_Designtitle,
-                    "format" => $_Format,
-                    "pages" => $_Pagenumber,
+                    "id" => $CB_ID,
+                    "title" => $Designtitle,
+                    "format" => $Format,
+                    "pages" => $Pagenumber,
+                    "price" => $price;
                 ));
 
             }
