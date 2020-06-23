@@ -2,12 +2,11 @@
   <div id="closing">
     <button id="close" mat-mini-fab><mat-icon>close</mat-icon></button>
   </div>
-  <form [formGroup]="form">
   <div id="left">
     <label>* Vorname:</label>
-    <input type="text" [(ngModel)]="firstname"><br>
+    <input type="text" [(ngModel)]="firstname" ><br>
     <label>* Nachname:</label>
-    <input type="text" [(ngModel)]="name"><br>
+    <input type="text" [(ngModel)]="name" ><br>
     <label>Geschlecht:</label>
       <div id="geschlechter">
       <input type="radio" value="m" name="gender" [(ngModel)]="gender" >
@@ -18,25 +17,25 @@
         <label for="divers">d</label>
       </div>
     <label>* Straße:</label>
-    <input type="text" [(ngModel)]="street"><br>
+    <input type="text" [(ngModel)]="street" ><br>
     <label>* Hausnummer:</label>
-    <input type="text" [(ngModel)]="housenumber"><br>
+    <input type="text" [(ngModel)]="housenumber" ><br>
     <label>* Postleitzahl</label>
-    <input type="text" [(ngModel)]="postalcode"><br>
+    <input type="text" [(ngModel)]="postalcode" ><br>
     <label>* Wohnort:</label>
-    <input type="text" [(ngModel)]="city"><br>
+    <input type="text" [(ngModel)]="city" ><br>
   </div>
   <div id="mid">
     <label>* Geburtstag:</label>
-    <input type="date" [(ngModel)]="birthday"><br>
+    <input type="date" [(ngModel)]="birthday" ><br>
     <label>* Benutzername:</label>
-    <input type="text" [(ngModel)]="username"><br>
+    <input type="text" [(ngModel)]="username" ><br>
     <label>* Email- Adresse:</label>
-    <input type="text" [(ngModel)]="email"><br>
+    <input type="text" [(ngModel)]="email" ><br>
     <label>* Email- Adresse bestätigen:</label>
-    <input type="text" [(ngModel)]="emailConfirm"><br>
+    <input type="text" [(ngModel)]="emailConfirm" ><br>
     <label>* Passwort:</label>
-    <input type="password" [(ngModel)]="password"><br>
+    <input type="password" [(ngModel)]="password" ><br>
     <label>* Passwort bestätigen:</label>
     <input type="password" [(ngModel)]="passwordConfirm"><br>
     <label>Profilbild:</label>
@@ -61,5 +60,4 @@
     <button id="subReg" mat-raised-button (click)="regUser()">Registrieren</button>
     <p id="goLog">Du hast bereits ein Konto? <a routerLink="/login" id="log">Anmelden</a></p>
   </div>
-</form>
 </div>

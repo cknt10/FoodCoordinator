@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../../authentication.service';
 
 @Component({
@@ -9,7 +8,6 @@ import { AuthenticationService } from '../../authentication.service';
   styleUrls: ['./reg.component.scss']
 })
 export class RegComponent implements OnInit {
-  form: FormGroup;
   firstname: string;
   name: string;
   gender: string;
@@ -32,7 +30,7 @@ export class RegComponent implements OnInit {
     private authentication: AuthenticationService
     ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
   async regUser(){
