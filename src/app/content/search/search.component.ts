@@ -13,11 +13,10 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
 })
 export class SearchComponent implements OnInit {
   neu: string;
-  input: string;
   ingredient: string;
   ingredients: string[] = [];
-  recipe: Recipe;
   options: string[] = [];
+  recipe: Recipe;
   drop = new FormControl();
 
   constructor(
@@ -54,19 +53,21 @@ export class SearchComponent implements OnInit {
       this.ingredients.push(this.ingredient);
       this.ingredient = ""
     }
-  await this.searchReqService.getUserResults(this.ingredients);
+  console.log(await this.searchReqService.getUserResults(this.ingredients));
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
   suggestions(){
     let all = this.searchReqService.getFilteredKeywords(), i, j;
-    this.input = this.ingredient;
     //does the users input match with our keywords
     for (i = 0; i < all.length; i++) {
-      if (all[i].match(this.input)) {
+      if (all[i].match(this.ingredient)) {
             this.options.push(all[i]);
           }
-  }
+          else{
+            this.options.splice(i);
+          }
+      }
   };
 
 }
