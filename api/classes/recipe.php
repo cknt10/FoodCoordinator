@@ -650,10 +650,10 @@ class Recipe{
       $avg = 0;
 
       if (count($ratings)>0){
-        for ($_i = 1; $_i < count($this->ratings); $_i=$_i+3){
+        for ($_i = 1; $_i < count($this->ratings); $_i++){
           $avg = $avg + $this->ratings[$_i]["rating"];
         }
-        $this->rating = $avg / count($this->ratings["rating"]);
+        $this->rating = $avg / (count($this->ratings)/3);
       }
     }
 
