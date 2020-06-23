@@ -22,8 +22,8 @@ $passwort = $_GET['password'];
 // $user->setUsername("test");
 // $passwort = "123456";
 // query products
-//$num = $user->login($_GET['username'], "");
-$num = $user->login("test", "");
+$num = $user->login($_GET['username'], "");
+//$num = $user->login("test", "");
 
 // check if more than 0 record found
 if($num>0){
