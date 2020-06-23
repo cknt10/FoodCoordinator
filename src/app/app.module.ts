@@ -6,6 +6,9 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatMenuModule} from '@angular/material/menu';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -17,6 +20,9 @@ import { ImpressumComponent } from './footer/impressum/impressum.component';
 import { DatenschutzComponent } from './footer/datenschutz/datenschutz.component';
 import { ContentComponent } from './content/content.component';
 import { SearchComponent } from './content/search/search.component';
+import { CreateRecipeComponent } from './content/create-recipe/create-recipe.component';
+import { MenuComponent } from './content/menu/menu.component';
+import { MyRecipesComponent } from './content/my-recipes/my-recipes.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +36,9 @@ import { SearchComponent } from './content/search/search.component';
     DatenschutzComponent,
     ContentComponent,
     SearchComponent,
+    CreateRecipeComponent,
+    MenuComponent,
+    MyRecipesComponent,
 
   ],
   imports: [
@@ -39,11 +48,16 @@ import { SearchComponent } from './content/search/search.component';
     HttpClientModule,
     MatButtonModule,
     MatIconModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatMenuModule,
     RouterModule.forRoot([
-      { path: '',   redirectTo: '/home', pathMatch: 'full' },
-      { path: 'home', component: SearchComponent },
+      { path: '',   redirectTo: '/content', pathMatch: 'full' },
+      { path: 'content', component: ContentComponent },
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },
+      { path: 'createrecipe', component: CreateRecipeComponent },
+      { path: 'myrecipes', component: MyRecipesComponent },
       { path: 'benefits', component: BenefitsComponent },
       { path: 'impressum', component: ImpressumComponent },
       { path: 'datenschutz', component: DatenschutzComponent }

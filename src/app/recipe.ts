@@ -11,7 +11,7 @@ export class Recipe {
   certified: boolean;
   lastChangeDate: Date;
   userId: number;
-  keywords: string;
+  keywords: string[];
   ratings: number;
   ingredients: string[];
 
@@ -166,7 +166,7 @@ export class Recipe {
     this.certified = null;
     this.lastChangeDate = null;
     this.userId = null;
-    this.keywords = '';
+    this.keywords = null;
     this.ratings = null;
     this.ingredients = null;
   }
