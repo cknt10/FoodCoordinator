@@ -9,11 +9,13 @@
     <button id="add" mat-mini-fab (click)="addIngredient()">+</button>
   </div>
   <div id="search">
-    <span *ngFor="let ingredient of ingredients"> {{ ingredient }}
-      <!--<button id="remove" (click)="removeIngredient()">
+    <span *ngFor="let ingredient of ingredients; let i = index;" > {{ ingredient }}
+      <button id="remove"  (click)="removeIngredient(i)">
         <mat-icon>close</mat-icon>
-      </button>-->
+      </button>
     </span>
   </div>
   <button id="find" mat-raised-button (click)="search()">let's go</button>
 </div>
+
+<app-search-result></app-search-result>
