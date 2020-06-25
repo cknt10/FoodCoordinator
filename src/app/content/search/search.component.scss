@@ -49,11 +49,17 @@ span{
 }
 
 #remove{
-
   border: none;
 }
 
 mat-icon{
   width: 0.5em;
   height: 0.5em;
+}
+
+app-search-result{
+  display: block;
+  background-color: green($color: #000000);
+  width:50%;
+  height: 50%;
 }

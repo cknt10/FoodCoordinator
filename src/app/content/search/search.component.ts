@@ -1,4 +1,4 @@
-import { Component, OnInit, ErrorHandler } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormBuilder, Validator, FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
@@ -15,7 +15,7 @@ export class SearchComponent implements OnInit {
   ingredients: string[] = [];
   allKeywords: string[] = [];
   options: string[] = [];
-  recipes: Recipe[];
+  recipes: Recipe[] = [];
   drop = new FormControl();
   error: string;
 
@@ -31,16 +31,17 @@ export class SearchComponent implements OnInit {
       .then((data) => console.log(this.searchReqService.filterKeywords())); // Hier alle Keywords, durch getFilteredKeywords() abrufen
     this.allKeywords = this.searchReqService.getFilteredKeywords();
   }
+
   ////////////////////////add ingredient to array///////////////////////////////////////////
   addIngredient() {
     if (this.options.includes(this.ingredient)) {
       this.ingredients.push(this.ingredient);
-      this.ingredient = '';
-      while (this.options.length !== 0) {
-        this.options.shift();
-      }
     } else {
       window.alert('Wähle bitte einen gültigen Suchbegriff');
+    }
+    this.ingredient = '';
+    while (this.options.length !== 0) {
+      this.options.shift();
     }
   }
 
@@ -51,31 +52,33 @@ export class SearchComponent implements OnInit {
 
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search() {
+    //search recipes if there is one or more values in ingredients and the search area is empty
     if (this.ingredients.length > 0 && this.ingredient.length == 0) {
-      console.log(await this.searchReqService.getUserResults(this.ingredients)); // Hier alle Rezepte
-    } else if (
+      //getUserResults returns all recipes which include the stored ingredients
+      console.log(await this.searchReqService.getUserResults(this.ingredients));
+    }
+    //add valid value in search area to ingredients and return recipes
+    else if (
       this.ingredient.length > 0 &&
       this.options.includes(this.ingredient)
     ) {
       this.addIngredient();
-      console.log(await this.searchReqService.getUserResults(this.ingredients)); // Hier alle Rezepte
-    } else if (
+      console.log(await this.searchReqService.getUserResults(this.ingredients));
+    }
+    //if there is nowhere a value or just an invalid value don't search
+    else if (
       (this.ingredient.length == 0 && this.ingredients.length == 0) ||
       (this.ingredient.length > 0 && !this.options.includes(this.ingredient))
     ) {
-      window.alert(
-        'Bitte gib einen gültigen Suchbegriff ein, so können wir nicht arbeiten'
-      );
+      this.addIngredient();
     }
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
   suggestions() {
-    //this.allKeywords = this.searchReqService.getFilteredKeywords();
-    //does the users input match with our keywords
+    //compare users input with every keyword to find a match
     for (let i = 0; i < this.allKeywords.length; i++) {
-      //if user input matches some word in the complete keyword array
-      //push the value into options to display him what he can choose
+      //if user input matches values in keyword array push value into options to display whats selectable
       if (
         this.allKeywords[i].match(this.ingredient) &&
         !this.ingredients.includes(this.allKeywords[i])

@@ -5,17 +5,12 @@ import { Recipe } from 'src/app/recipe';
 @Component({
   selector: 'app-search-result',
   templateUrl: './search-result.component.html',
-  styleUrls: ['./search-result.component.css']
+  styleUrls: ['./search-result.component.scss']
 })
 export class SearchResultComponent implements OnInit {
-  recipes: Recipe[];
+  recipes: Recipe;
   results: [];
-  title: string;
-  descr: string;
-  rating: number;
   ratingCount: number;
-  imgSrc: string;
-  certi: boolean;
 
   constructor(
     private searchReqService: SearchReqService,
