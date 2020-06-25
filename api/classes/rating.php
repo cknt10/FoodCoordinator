@@ -119,27 +119,40 @@ class Rating{
     /**
      * Creates rating to an recipe
      * 
-     * @param int $_userId
      * @param int $_recipeId
-     * @param float $_rating
-     * @param string $_comment
      * 
      * @return string
      */
-    public function createRating($_userId, $_recipeId, $_rating, $_comment)
+    public function createRating($_recipeId)
     {
         $_sql = "";
         $_result = "";
 
 
         try{
+            $_sql="INSERT INTO rating (R_ID, U_ID, Comment, BananaAmount) VALUES (:R_ID, :U_ID, :Comment, :BananaAmount)";
+            $_stmt= $this->conn->prepare($_sql);
 
+
+            // sanitize
+            $this->comment=htmlspecialchars(strip_tags($this->comment));
+
+
+
+            // bind values
+            $_stmt->bindParam(":R_ID", $_recipeId);
+            $_stmt->bindParam(":U_ID", $this->userId);
+            $_stmt->bindParam(":Comment", $this->comment);
+            $_stmt->bindParam(":BananaAmount", $this->rating);
+       
+
+            $_stmt->execute();
+            $_result = "200";
         }catch(Exception $_e){
             $_result = $_e->getMessage();
         }
 
-
-
+        return $_result;
     }
 
     /**
