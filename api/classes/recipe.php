@@ -614,8 +614,21 @@ class Recipe{
      * @return Ingredient[]
      */
     public function removeIngredient($_ingredient){
-        $this->ingredients = array_diff($this->ingredients, $_ingredient);
+        $_newIngredients = array();
+        $_changes = false;
 
+        if(count($this->ingredients) > 0){
+            for($_i = 0; $_i < count($this->ingredients); $_i++){
+                if($this->ingredients[$_i]["id"] != $_ingredient["id"] && $_ingredient["id"] != null){
+                    array_push($_newIngredients, $this->ingredients[$_i]);
+                    $_changes = true;
+                }
+            }
+        }
+
+        if($_changes){
+            $this->ingredients = $_newIngredients;
+        }
         return $this->ingredients;
     }
 
