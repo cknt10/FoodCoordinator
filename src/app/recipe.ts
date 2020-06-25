@@ -1,3 +1,5 @@
+import { Ingredient } from './ingredient';
+
 export class Recipe {
   id: number;
   title: string;
@@ -13,7 +15,7 @@ export class Recipe {
   userId: number;
   keywords: string[];
   ratings: number;
-  ingredients: string[];
+  ingredients: Ingredient[];
 
   constructor(recipe: Recipe) {
     this.id = recipe.id;
@@ -94,63 +96,63 @@ export class Recipe {
   }
 
   setId( id: number) {
-    return this.id;
+     this.id = id;
   }
 
   setTitle(title: string) {
-    return this.title;
+    this.title = title;
   }
 
   setPicture(picture: File) {
-    return this.picture;
+     this.picture = picture;
   }
 
   setServings(servings: number) {
-    return this.servings;
+   this.servings = servings;
   }
 
   setDescription(description: string) {
-    return this.description;
+    this.description = description;
   }
 
   setInstruction(instruction: string) {
-    return this.instruction;
+    this.instruction = instruction;
   }
 
   setCreateionDate(createionDate: Date) {
-    return this.createionDate;
+    this.createionDate = createionDate;
   }
 
   setDuration(duration: number) {
-    return this.duration;
+    this.duration = duration;
   }
 
   setDifficulty(difficulty: string) {
-    return this.difficulty;
+    this.difficulty = difficulty;
   }
 
-  setCertified(certified: number) {
-    return this.certified;
+  setCertified(certified: boolean) {
+     this.certified = certified;
   }
 
   setLastChangeDate(lastChangeDate: Date) {
-    return this.lastChangeDate;
+     this.lastChangeDate = lastChangeDate;
   }
 
   setUserId(userId: number) {
-    return this.userId;
+     this.userId = userId;
   }
 
-  setKeywords(keywords: string) {
-    return this.keywords;
+  setKeywords(keywords: string[]) {
+     this.keywords = keywords;
   }
 
   setRatings(ratings: number) {
-    return this.ratings;
+     this.ratings = ratings;
   }
 
-  setIngredients( ingredients: string) {
-    return this.ingredients;
+  setIngredients( ingredients: Ingredient[]) {
+    this.ingredients = ingredients;
   }
 
   cleanRecipe() {

@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient} from '@angular/common/http';
+import { Ingredient } from 'src/app/ingredient';
+import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
+import { SearchReqService } from 'src/app/search-req.service';
+import { User } from '../../user';
+import { AuthenticationService } from 'src/app/authentication.service';
 
 @Component({
   selector: 'app-create-recipe',
@@ -12,28 +17,69 @@ export class CreateRecipeComponent implements OnInit {
   shortDescription: string;
   keywords: [];
   ingredient: string;
-  ingredients: string[] = [];
+  allParamsOfIngredient:Ingredient;
+  ingredients: Ingredient[] = [];
   description: string;
   picture: File;
   servings: number;
   duration: number;
   amount: number;
-  unit: string[] = [];
+
+  unit: string;
+  
+  createonDate: Date = new Date();
 
 
-  constructor() { }
+  constructor(
+    private recipeAdministrationReqService: RecipeAdministrationReqService, 
+    private searchReqService: SearchReqService, 
+    private authenticationService: AuthenticationService
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.searchReqService.fetchSearchKeywords().then(data =>
+      console.log(this.searchReqService.filterKeywords()));
+
+      console.log(this.authenticationService.getUser());
+    
   }
 
   addIngredient(){
-    if (this.ingredient){
-       this.ingredients.push(this.ingredient);
-       this.ingredient ="";
+    let idIngredient: number;
+    if (this.ingredient != null && this.amount != null && this.unit != null){
+      idIngredient = this.recipeAdministrationReqService.convertRecipeIngredient(this.ingredient);
+      this.allParamsOfIngredient = new Ingredient(
+        idIngredient, 
+        this.ingredient, 
+        this.amount, 
+        this.unit, 
+        null)
+       this.ingredient = null;
+       this.amount = null;
+       this.unit = null;
+
+       this.ingredients.push(this.allParamsOfIngredient);
      }
      else {
        window.alert("Bitte füge eine Zutat hinzu!");
      }
+   }
+
+   async createRecipe(){
+     await this.recipeAdministrationReqService.getCreateRecipe(
+       this.title,
+       this.picture,
+       this.servings,
+       this.shortDescription,
+       this.description,
+       this.createonDate,
+       this.duration,
+       //this.difficulty,
+      this.authenticationService.getUser().getId(),
+       this.keywords,
+       this.ingredients
+     );
+  
    }
 
 }

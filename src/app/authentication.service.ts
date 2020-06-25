@@ -24,7 +24,7 @@ export class AuthenticationService {
   }
 
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////
-  async getUser(
+  async getDataUser(
     username: string,
     password: string
     ) {
@@ -35,6 +35,10 @@ export class AuthenticationService {
         );
     }
     return this.UserData;
+  }
+
+  getUser(): User{
+  return this.UserData;
   }
 
 
@@ -48,11 +52,6 @@ export class AuthenticationService {
       password
       ).then((data: User) => {
       this.UserData = new User(data['user']);
-
-
-      console.log('hallo ' + data['eure Daten']);
-
-      console.log(this.UserData);
     }),
       (error => {
         console.log('Auslesen gescheitert');

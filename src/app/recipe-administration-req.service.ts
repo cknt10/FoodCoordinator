@@ -11,6 +11,7 @@ import { catchError } from 'rxjs/operators';
 import { User } from './user';
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
+import { Ingredient } from './ingredient';
 
 @Injectable({
   providedIn: 'root',
@@ -35,12 +36,12 @@ export class RecipeAdministrationReqService {
     servings: number,
     description: string,
     instruction: string,
-    //createionDate: Date,
+    createionDate: Date,
     duration: number,
-    difficulty: string,
+    //difficulty: string,
     userId: number,
     keywords: string[],
-    ingredients: string[]
+    ingredients: Ingredient[]
   ): Promise<Recipe> {
     console.log('server request with keywords');
 
@@ -50,12 +51,12 @@ export class RecipeAdministrationReqService {
       .set('servings', servings.toString())
       .set('description', description)
       .set('instruction', instruction)
-      //.set('createionDate', createionDate.toString())
+      .set('createionDate', createionDate.toString())
       .set('duration', duration.toString())
-      .set('difficulty', difficulty)
+      //.set('difficulty', difficulty)
       .set('userId', userId.toString())
       .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'))
-      .set('ingredients', this.convertRecipeIngredientsArray(ingredients).join('|'));
+      .set('ingredients', ingredients.join('|'));
 
     console.log(params);
 
@@ -88,7 +89,7 @@ export class RecipeAdministrationReqService {
       .set('lastChangeDate', recipe.getLastChangeDate().toString())
       .set('userId', recipe.getUserId().toString())
       .set('keywords', this.convertRecipeKeywordsArray(recipe.getKeywords()).join('|') )
-      .set('ingredients', this.convertRecipeKeywordsArray(recipe.getIngredients()).join('|'));
+      .set('ingredients', recipe.getIngredients().join('|'));
 
     //console.log(params);
 
@@ -124,8 +125,9 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////convert ingredients to their id///////////////////////////
-  convertRecipeIngredientsArray(keywords: string[]): string[] {
+  convertRecipeIngredientsArray(keywords: Ingredient[]): Ingredient[] {
     let tempRecipe = keywords;
+
     let ingredientsId = [];
     let serverKeywords = this.searchRequestService.getIngredients();
 
@@ -135,12 +137,34 @@ export class RecipeAdministrationReqService {
       elem1;
       tempRecipe.forEach((elem2) => {
         elem2;
-        if (elem1.description === elem2) {
+        if (elem1.description === elem2.getDescription()) {
           ingredientsId.push(elem1.id.toString());
         }
       });
     });
 
+    console.log(ingredientsId);
+    return ingredientsId;
+  }
+
+
+  convertRecipeIngredient(keywords: string): number {
+    let tempRecipe = keywords;
+
+    let ingredientsId = 0;
+    let serverKeywords = this.searchRequestService.getIngredients();
+
+    console.log("you're at convert to ingredientsId...");
+
+    serverKeywords.forEach((elem1) => {
+      elem1;
+
+        if (elem1.description === tempRecipe) {
+          ingredientsId = elem1.id;
+        }
+
+      });
+    
     console.log(ingredientsId);
     return ingredientsId;
   }
