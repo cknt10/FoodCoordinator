@@ -179,7 +179,11 @@ if(count($testData) > 0 && $testData[0] != ""){
         $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
         if($rating->getUserId() != null && $rating->getComment()!= null && $rating->getRating() != null){
           $recipe->addRating($rating->getObjectAsArray());
+
+          //Calculate new rating
+          $recipe->calculateRating();
         }
+
         
         if($F_ID != null){
           $ingredient = new Ingredient();
@@ -215,7 +219,12 @@ if(count($testData) > 0 && $testData[0] != ""){
         //Add only not emty Objects
         if($rating->getUserId() != null && $rating->getComment() != null && $rating->getRating() != null){
           $recipe->addRating($rating->getObjectAsArray());
+          
+          //Calculate new rating
+          $recipe->calculateRating();
         }
+
+
 
         //Only if ingredient exists
         if($F_ID != null){

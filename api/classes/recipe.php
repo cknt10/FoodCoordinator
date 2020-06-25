@@ -676,7 +676,7 @@ class Recipe{
         //TODO Dustin: Berechne anhand ratings in diesem Objekt das rating und setze es.
       $avg = 0;
 
-      for ($_i = 1; $_i < count($this->ratings); $_i++){
+      for ($_i = 0; $_i < count($this->ratings); $_i++){
         $avg = $avg + $this->ratings[$_i]["rating"];
       }
       $this->rating = $avg / count($this->ratings);
@@ -786,12 +786,8 @@ class Recipe{
      *
      * @param $_date creation date of this recipe
      * @param $_userId id from creation user
-<<<<<<< HEAD
      * @param $_lastChange an optinal parameter
      * 
-=======
-     *
->>>>>>> 07d8dcc3eb37fc33f90d0e5d77ec88e701557c5e
      * @return int the id of this recipe
      */
     public function fetchRecipe($_date, $_userId, $_lastChange = "")

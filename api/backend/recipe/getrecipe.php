@@ -16,7 +16,7 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$recipeID = "2";
+$recipeID = "1";
 
 if($recipeID != ""){
 function fetchRecipe($_id, $_conn)
@@ -147,6 +147,9 @@ function fetchRecipe($_id, $_conn)
         $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
         if($rating->getUserId() != null && $rating->getComment()!= null && $rating->getRating() != null){
           $recipe->addRating($rating->getObjectAsArray());
+          
+          //Calculate new rating
+          $recipe->calculateRating();
         }
         
         if($F_ID != null){
@@ -189,6 +192,9 @@ function fetchRecipe($_id, $_conn)
         //Add only not emty Objects
         if($rating->getUserId() != null && $rating->getComment() != null && $rating->getRating() != null){
           $recipe->addRating($rating->getObjectAsArray());
+          
+          //Calculate new rating
+          $recipe->calculateRating();
         }
 
         //Only if ingredient exists

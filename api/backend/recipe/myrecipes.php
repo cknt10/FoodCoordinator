@@ -18,7 +18,7 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$userId = "15";
+$userId = "2";
 
 //Intitiate classes
 $recipe = new Recipe();
@@ -63,6 +63,7 @@ if($recipies->rowCount() > 0){
 
         if($ratings != null && $R_ID === $ratings[0]['recipeId']){
             $recipe->setRatings($ratings);
+            $recipe->calculateRating();
         }else{
             $recipe->setRatings(array());
         }
