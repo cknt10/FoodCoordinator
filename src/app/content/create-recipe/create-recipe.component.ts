@@ -9,13 +9,14 @@ import { AuthenticationService } from 'src/app/authentication.service';
 @Component({
   selector: 'app-create-recipe',
   templateUrl: './create-recipe.component.html',
-  styleUrls: ['./create-recipe.component.css']
+  styleUrls: ['./create-recipe.component.scss']
 })
 export class CreateRecipeComponent implements OnInit {
 
   title: string;
   shortDescription: string;
-  keywords: [];
+  keyword: string;
+  keywords: string[] = [];
   ingredient: string;
   allParamsOfIngredient:Ingredient;
   ingredients: Ingredient[] = [];
@@ -24,8 +25,8 @@ export class CreateRecipeComponent implements OnInit {
   servings: number;
   duration: number;
   amount: number;
-
   unit: string;
+  difficulty: string;
   
   createonDate: Date = new Date();
 
