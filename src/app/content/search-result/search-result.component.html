@@ -1,25 +1,25 @@
-<div class="result" *ngFor=" let recipe of recipes">
-    <div class="cb-btn">
+<div class="result" >
+    <div class="cb-btn">Zum Kochbuch hinzuzufügen
       <!-- img-tag for logo (?)-->
       <img src="">
       <button id="addCb">Logo</button>
     </div>
-    <div class="result-img">
+    <div class="result-img">Bild
         <img src="">
     </div>
     <div class="result-title">
-      <p> {{ recipe.title }} </p>
+      <p>Titel: {{ title }} </p>
     </div>
     <div class="result-descr">
-        <p> {{ recipe.description }} </p>
+        <p>Beschreibung {{ description }} </p>
     </div>
     <div class="result-rating">
       <!-- Questioning if ratings is "Note" or "Bewertungen"-->
-        <p> Note: {{ recipe.ratings }} Bewertungen: {{ ratingCount }} </p>
+        <p> Note: {{ ratings }} Bewertungen: {{ ratingCount }} </p>
     </div>
-    <div class="zerti">
+    <div class="zerti">Zertifikat
       <!-- img-tag for logo (?)-->
         <img src="">
-        <p>{{recipe.certified}}</p>
+        <p>{{certified}}</p>
     </div>
 </div>

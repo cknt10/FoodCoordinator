@@ -1,6 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SearchReqService } from '../../search-req.service';
-import { Recipe } from 'src/app/recipe';
 
 @Component({
   selector: 'app-search-result',
@@ -8,16 +7,19 @@ import { Recipe } from 'src/app/recipe';
   styleUrls: ['./search-result.component.scss']
 })
 export class SearchResultComponent implements OnInit {
-  recipes: Recipe;
   results: [];
+  title: string;
+  description: string;
+  ratings: number;
   ratingCount: number;
+  imgSrc: string;
+  certified: boolean;
 
   constructor(
     private searchReqService: SearchReqService,
   ) { }
 
-  ngOnInit() {
-
+  ngOnInit(): void {
   }
 
 
