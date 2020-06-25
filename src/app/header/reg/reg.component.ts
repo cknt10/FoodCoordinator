@@ -8,7 +8,6 @@ import { AuthenticationService } from '../../authentication.service';
   styleUrls: ['./reg.component.scss']
 })
 export class RegComponent implements OnInit {
-
   firstname: string;
   name: string;
   gender: string;
@@ -31,7 +30,7 @@ export class RegComponent implements OnInit {
     private authentication: AuthenticationService
     ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
   }
 
   async regUser(){

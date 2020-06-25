@@ -10,6 +10,8 @@ export class LoginComponent implements OnInit {
 
   username: string;
   password: string;
+  loggedIn: boolean = false;
+  log: string = "Login";
 
   constructor(
     private authenticationService: AuthenticationService
@@ -20,16 +22,20 @@ export class LoginComponent implements OnInit {
   }
 
 ///////////////////////////////////////////////////////////http request to get user and password///////////////////////////////////////////////////////////////////
- async loginUser(){
-
+  async loginUser(){
     console.log('start logging...');
+    //add parameter username and password
+    console.log((await this.authenticationService.setUserData(this.username, this.password)).getFirstname());
+    //return user?
 
-//add parameter username and password
+    this.loggedIn = true;
 
-   console.log((await this.authenticationService.setUserData(this.username, this.password)).getFirstname());
-   //return user?
-   }
-
-
+    if (this.loggedIn){
+      this.log = "Logout";
+    }
+    else{
+      this.log = "Login";
+    }
+  }
 
 }

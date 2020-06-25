@@ -12,7 +12,6 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  neu: string;
   ingredient: string;
   ingredients: string[] = [];
   options: string[] = [];
@@ -27,7 +26,7 @@ export class SearchComponent implements OnInit {
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
   async ngOnInit() {
   await this.searchReqService.fetchSearchKeywords().then(data =>
-    console.log(this.searchReqService.filterKeywords()));
+    console.log(this.searchReqService.filterKeywords())); // Hier alle Keywords, durch getFilteredKeywords() abrufen
 
   }
 
@@ -53,12 +52,12 @@ export class SearchComponent implements OnInit {
       this.ingredients.push(this.ingredient);
       this.ingredient = ""
     }
-  console.log(await this.searchReqService.getUserResults(this.ingredients));
+  console.log(await this.searchReqService.getUserResults(this.ingredients)); // Hier alle Rezepte,
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
   suggestions(){
-    let all = this.searchReqService.getFilteredKeywords(), i, j;
+    let all = this.searchReqService.getFilteredKeywords(), i;
     //does the users input match with our keywords
     for (i = 0; i < all.length; i++) {
       if (all[i].match(this.ingredient)) {
