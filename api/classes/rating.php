@@ -120,14 +120,26 @@ class Rating{
      * Creates rating to an recipe
      * 
      * @param int $_userId
+     * @param int $_recipeId
      * @param float $_rating
      * @param string $_comment
      * 
      * @return string
      */
-    public function createRating(Type $var = null)
+    public function createRating($_userId, $_recipeId, $_rating, $_comment)
     {
-        //TODO
+        $_sql = "";
+        $_result = "";
+
+
+        try{
+
+        }catch(Exception $_e){
+            $_result = $_e->getMessage();
+        }
+
+
+
     }
 
     /**

@@ -168,7 +168,7 @@ class Format{
                     "title" => $Designtitle,
                     "format" => $Format,
                     "pages" => $Pagenumber,
-                    "price" => $price;
+                    "price" => $price
                 ));
 
             }

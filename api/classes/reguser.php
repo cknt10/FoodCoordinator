@@ -725,7 +725,7 @@ class RegUser{
             $_stmt->execute();
             $_result = "201";
         }catch(Eception $_e){
-            $_result = $_e-getMessage();
+            $_result = $_e->getMessage();
         }
 
         $this->login($_username);

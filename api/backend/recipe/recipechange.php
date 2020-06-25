@@ -51,7 +51,7 @@ function overwriteRecipeId($_oldId, $_newId, $_conn)
                 $_stmt->execute();
 
             }catch(Eception $_e){
-                $_result = $_e;
+                $_result = $_e->getMessage();
             }
 
             $_num = $_stmt->rowCount();
@@ -74,7 +74,7 @@ function overwriteRecipeId($_oldId, $_newId, $_conn)
         }
         $_result = "200";
     }catch(Eception $_e){
-            $_result = $_e;
+            $_result = $_e->getMessage();
     }
 
       return $_result;
@@ -106,7 +106,7 @@ function dropOldRecipe($_oldId, $_conn)
 
         $_result = "200";
     }catch(Eception $_e){
-            $_result = $_e;
+            $_result = $_e->getMessage();
     }
 
       return $_result;

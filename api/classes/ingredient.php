@@ -334,7 +334,7 @@ class Ingredient{
             $_stmt->execute();
             $_result = "200";
         }catch(Eception $_e){
-            $_result = $_e;
+            $_result = $_e->getMessage();
         }
 
         return $_result;
