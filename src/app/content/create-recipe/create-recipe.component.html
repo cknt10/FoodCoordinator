@@ -3,7 +3,7 @@
   <div class="left">
     <label for="title">Titel:</label><br />
     <input type="text" [(ngModel)]="title" /><br />
-    <label for="difficulty"></label>
+    <label for="difficulty">Schwierigkeit:</label>
     <input type="text" [(ngModel)]="difficulty" /><br />
     <label for="kurzbeschreibung">kurze Beschreibung:</label><br />
     <input type="text" [(ngModel)]="shortDescription" /><br />
@@ -25,7 +25,7 @@
       </div>
       <div id="ingredientTable">
         <span *ngFor="let ingredient of ingredients">
-          {{ ingredient }}
+          {{ ingredient.description }} {{ ingredient.amount }} {{ ingredient.unit }}
           <!--<button id="remove" (click)="removeIngredient()">
             <mat-icon>close</mat-icon>
           </button>-->

@@ -3,8 +3,6 @@ import { FormBuilder, Validator, FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
-import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -20,8 +18,7 @@ export class SearchComponent implements OnInit {
   error: string;
 
   constructor(
-    private searchReqService: SearchReqService,
-    private recipeAdministrationReqService: RecipeAdministrationReqService
+    private searchReqService: SearchReqService
   ) {}
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////

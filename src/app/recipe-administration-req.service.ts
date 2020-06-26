@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import {
   HttpClient,
@@ -8,10 +9,10 @@ import {
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { User } from './user';
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +22,8 @@ export class RecipeAdministrationReqService {
 
   constructor(
     private http: HttpClient,
-    private searchRequestService: SearchReqService
+    private searchRequestService: SearchReqService,
+    private datePipe: DatePipe
   ) {}
 
   /////////////////////////////////method to display error message to user///////////////////////////
@@ -29,34 +31,53 @@ export class RecipeAdministrationReqService {
     return this.errorValue;
   }
 
+  Date(){
+    let creation = this.datePipe.transform( new Date(),'yyyy-MM-dd  h:mm:ss');
+    return creation;
+  }
+
   /////////////////////////////////Http-Request to send new recipe///////////////////////////
-  getCreateRecipe(
+  async getCreateRecipe(
     title: string,
-    picture: File,
+    //picture: File,
     servings: number,
     description: string,
     instruction: string,
-    createionDate: Date,
     duration: number,
-    //difficulty: string,
+    difficulty: string,
     userId: number,
     keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
     console.log('server request with keywords');
 
+    console.log(title, servings, description, instruction,  duration, difficulty, userId, keywords, ingredients);
+
+    this.Date();
+
+    console.log(this.Date());
+
     let params = new HttpParams()
       .set('title', title)
-      .set('picture', picture.toString())
+      //.set('picture', picture.toString())
       .set('servings', servings.toString())
       .set('description', description)
       .set('instruction', instruction)
-      .set('createionDate', createionDate.toString())
+      .set('createionDate', this.Date())
       .set('duration', duration.toString())
-      //.set('difficulty', difficulty)
+      .set('difficulty', difficulty)
+      .set('certified', null)
+      .set('lastChange', null)
       .set('userId', userId.toString())
-      .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'))
-      .set('ingredients', ingredients.join('|'));
+      .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'));
+
+
+      for (let i = 0; i < ingredients.length-1; i++) {
+        params = params.append('id', ingredients[i].getId().toString());
+        params = params.append('amount', ingredients[i].getAmount().toString());
+        params = params.append('unit', ingredients[i].getUnit());
+      }
+      
 
     console.log(params);
 

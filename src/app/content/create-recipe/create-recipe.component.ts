@@ -5,6 +5,7 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
 import { SearchReqService } from 'src/app/search-req.service';
 import { User } from '../../user';
 import { AuthenticationService } from 'src/app/authentication.service';
+import { SearchParameter } from 'src/app/searchParameter';
 
 @Component({
   selector: 'app-create-recipe',
@@ -18,7 +19,6 @@ export class CreateRecipeComponent implements OnInit {
   keyword: string;
   keywords: string[] = [];
   ingredient: string;
-  allParamsOfIngredient:Ingredient;
   ingredients: Ingredient[] = [];
   description: string;
   picture: File;
@@ -27,8 +27,11 @@ export class CreateRecipeComponent implements OnInit {
   amount: number;
   unit: string;
   difficulty: string;
-  
-  createonDate: Date = new Date();
+  options: string[] = [];
+
+  serverIngredients: SearchParameter[] = [];
+  serverKeywords: SearchParameter[] = [];
+  allParamsOfIngredient:Ingredient;
 
 
   constructor(
@@ -38,11 +41,15 @@ export class CreateRecipeComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await this.searchReqService.fetchSearchKeywords().then(data =>
-      console.log(this.searchReqService.filterKeywords()));
-
-      console.log(this.authenticationService.getUser());
-    
+    await Promise.all([
+      this.searchReqService.getServerIngredients(),
+      this.searchReqService.getServerKeywords(),
+    ]).then((data) => {
+      this.serverIngredients = data['0'];
+      this.serverKeywords = data['1'];
+  });
+  console.log(this.serverIngredients);
+  console.log(this.serverKeywords);
   }
 
   addIngredient(){
@@ -69,13 +76,12 @@ export class CreateRecipeComponent implements OnInit {
    async createRecipe(){
      await this.recipeAdministrationReqService.getCreateRecipe(
        this.title,
-       this.picture,
+      // this.picture,
        this.servings,
        this.shortDescription,
        this.description,
-       this.createonDate,
        this.duration,
-       //this.difficulty,
+       this.difficulty,
       this.authenticationService.getUser().getId(),
        this.keywords,
        this.ingredients
