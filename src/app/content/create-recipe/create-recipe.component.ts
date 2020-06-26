@@ -39,14 +39,9 @@ export class CreateRecipeComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    await Promise.all([
-      this.searchReqService.getServerIngredients(),
-      this.searchReqService.getServerKeywords(),
-    ]).then((data) => {
-      this.serverIngredients = data['0'];
-      this.serverKeywords = data['1'];
-  });
-  console.log(this.serverIngredients);
+ this.serverIngredients = this.searchReqService.getIngredients();
+      this.serverKeywords = this.searchReqService.getKeywords();
+      console.log(this.serverIngredients);
   console.log(this.serverKeywords);
   }
 

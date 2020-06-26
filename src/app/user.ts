@@ -1,18 +1,18 @@
 export class User {
 
-  id: number;
-  username: String;
-  email: String;
-  firstname: String;
-  name: String;
-  birthday: Date;
-  gender: String;
-  street: String;
-  houseNumber: number;
-  postcode: number;
-  city: String;
-  isPremium: boolean;
-  picture: String;
+ private id: number;
+ private username: String;
+  private email: String;
+  private firstname: String;
+  private name: String;
+  private birthday: Date;
+  private gender: String;
+  private street: String;
+  private houseNumber: number;
+  private postcode: number;
+  private city: String;
+  private isPremium: boolean;
+  private picture: String;
 
 constructor(user: User){
   this.id = user.id;
