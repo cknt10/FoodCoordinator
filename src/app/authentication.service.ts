@@ -16,13 +16,6 @@ export class AuthenticationService {
     private http: HttpClient
   ) {}
 
-  private handleError(error: HttpErrorResponse) {
-    console.log(error);
-
-    // return an observable with a user friendly message
-    return throwError('Error! something went wrong.');
-  }
-
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////
   async getDataUser(
     username: string,
@@ -37,10 +30,10 @@ export class AuthenticationService {
     return this.UserData;
   }
 
+  /////////////////////////////////////////////////////////////get User without params/////////////////////////////////////////////////////////////////////////////
   getUser(): User{
   return this.UserData;
   }
-
 
  ///////////////////////////////////////////////////////////set user data////////////////////////////////////////////////////////////////////////////
   async setUserData(
@@ -128,6 +121,14 @@ export class AuthenticationService {
 
     return this.UserData;
   }
+}
+
+/////////////////////////////////////////////analize server Errors////////////////////////////////////
+private handleError(error: HttpErrorResponse) {
+  console.log(error);
+
+  // return an observable with a user friendly message
+  return throwError('Error! something went wrong.');
 }
 
 
