@@ -19,6 +19,7 @@ export class SearchReqService {
   private serverIngredients: SearchParameter[];
   private serverKeywords: SearchParameter[];
   private filteredKeywords: string[] = [];
+  private userInputForSearch: string[] = [];
 
   private errorValue: string;
 
@@ -134,6 +135,15 @@ export class SearchReqService {
       .get<Recipe>(requestLink, { params: params })
       .pipe(catchError(this.handleError))
       .toPromise();
+  }
+
+  ///////////////////////////////save User search Params//////////////////////////
+  saveUserInput(value: string[]){
+    this.userInputForSearch = value;
+  }
+
+  userInput(): string[]{
+    return this.userInputForSearch;
   }
 
   /////////////////////////////////analyze kind of error//////////////////////////
