@@ -35,39 +35,39 @@ export class Recipe {
     this.ingredients = recipe.ingredients;
   }
 
-  getId() {
+  getId(): number {
     return this.id;
   }
 
-  getTitle() {
+  getTitle(): string {
     return this.title;
   }
 
-  getPicture() {
+  getPicture(): File {
     return this.picture;
   }
 
-  getServings() {
+  getServings(): number {
     return this.servings;
   }
 
-  getDescription() {
+  getDescription(): string {
     return this.description;
   }
 
-  getInstruction() {
+  getInstruction(): string {
     return this.instruction;
   }
 
-  getCreateionDate() {
+  getCreateionDate(): Date {
     return this.createionDate;
   }
 
-  getDuration() {
+  getDuration(): number {
     return this.duration;
   }
 
-  getDifficulty() {
+  getDifficulty(): string {
     return this.difficulty;
   }
 
@@ -79,23 +79,23 @@ export class Recipe {
     }
   }
 
-  getLastChangeDate() {
+  getLastChangeDate(): Date {
     return this.lastChangeDate;
   }
 
-  getUserId() {
+  getUserId(): number {
     return this.userId;
   }
 
-  getKeywords() {
+  getKeywords(): string[] {
     return this.keywords;
   }
 
-  getRatings() {
+  getRatings(): number {
     return this.ratings;
   }
 
-  getIngredients() {
+  getIngredients(): Ingredient[] {
     return this.ingredients;
   }
 

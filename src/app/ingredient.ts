@@ -21,18 +21,18 @@ export class Ingredient {
     }
 
 
-    getId(){
+    getId():number{
         return this.id;
     }
 
-    getDescription(){
+    getDescription():string{
         return this.description;
     }
-    getAmount(){
+    getAmount():number{
         return this.amount;
     }
 
-    getUnit(){
+    getUnit():string{
         return this.unit;
     }
 

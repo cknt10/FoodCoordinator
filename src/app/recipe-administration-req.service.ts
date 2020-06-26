@@ -12,12 +12,14 @@ import { catchError } from 'rxjs/operators';
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
+import { User } from './User';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeAdministrationReqService {
   private errorValue: string;
+  private userRecipe: Recipe[] = [];
 
   constructor(
     private http: HttpClient,
@@ -200,7 +202,6 @@ export class RecipeAdministrationReqService {
   /////////////////////////////////convert ingredients to their id///////////////////////////
   convertRecipeIngredientsArray(keywords: Ingredient[]): Ingredient[] {
     let tempRecipe = keywords;
-
     let ingredientsId = [];
     let serverKeywords = this.searchRequestService.getIngredients();
 
@@ -240,7 +241,6 @@ export class RecipeAdministrationReqService {
   /////////////////////////////////convert ingredient to their id///////////////////////////
   convertRecipeIngredient(keywords: string): number {
     let tempRecipe = keywords;
-
     let ingredientsId = 0;
     let serverKeywords = this.searchRequestService.getIngredients();
 
@@ -257,6 +257,34 @@ export class RecipeAdministrationReqService {
     //console.log(ingredientsId);
     return ingredientsId;
   }
+
+  /////////////////////////////////////////get from Server user recipes///////////////////////////////////////////
+ async getServerUserRecipe(user: User): Promise<Recipe[]> {
+    await this.fetchServerUserRecipe(user).then((data: Recipe) => {
+      data['recipes'].forEach((value) => {
+        this.userRecipe.push(new Recipe(value));
+      });
+    });
+    console.log(this.userRecipe);
+    return this.userRecipe;
+  }
+
+  /////////////////////////////////Http-Request to get all Cities///////////////////////////
+  async fetchServerUserRecipe(user: User): Promise<Recipe> {
+
+    let params = new HttpParams()
+    .set('userId', user.getId().toString())
+
+  console.log(params);
+
+    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/myrecipes.php';
+
+    return this.http
+      .get<Recipe>(requestLink, { params: params })
+      .pipe(catchError(this.handleError))
+      .toPromise();
+  }
+
 
   /////////////////////////////////analyze error and get understanable message to user///////////////////////////
   handleError(error: HttpErrorResponse) {
@@ -282,4 +310,6 @@ export class RecipeAdministrationReqService {
     }
     return throwError(errorMessage);
   }
+
+
 }
