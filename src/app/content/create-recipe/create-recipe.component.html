@@ -8,11 +8,13 @@
     <label for="kurzbeschreibung">kurze Beschreibung:</label><br />
     <input type="text" [(ngModel)]="shortDescription" /><br />
     <label for="stichwort">Stichwort:</label><br />
-    <input type="text" [ngModel]="keyword" />
+    <input type="text" [(ngModel)]="keyword" />
+    <button id="add" mat-mini-fab (click)="addKeyword()">+</button>
     <!-- Hier muss das Dropdown für Keywords hin -->
     <div class="keywords">
       <span *ngFor="let keyword of keywords">{{ keyword }}</span>
     </div>
+    <!-- Hier muss das Dropdown für ingredients hin -->
     <div class="ingredients">
       <label for="menge">Menge:</label>
       <input type="select" [(ngModel)]="amount" />

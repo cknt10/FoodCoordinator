@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
 import { Ingredient } from 'src/app/ingredient';
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 import { SearchReqService } from 'src/app/search-req.service';
-import { User } from '../../user';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { SearchParameter } from 'src/app/searchParameter';
 
@@ -67,23 +65,34 @@ export class CreateRecipeComponent implements OnInit {
        this.unit = null;
 
        this.ingredients.push(this.allParamsOfIngredient);
+       this.allParamsOfIngredient= null;
      }
      else {
        window.alert("Bitte füge eine Zutat hinzu!");
      }
    }
 
+   addKeyword(){
+     if(this.keyword != null){
+      this.keywords.push(this.keyword);
+      this.keyword = "";
+     }else {
+       window.alert("Bitte füge ein Stichwort hinzu!");
+     }
+   }
+
    async createRecipe(){
+     //this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
      await this.recipeAdministrationReqService.getCreateRecipe(
-       this.title,
-      // this.picture,
+       /*this.title,
+      //this.picture,
        this.servings,
        this.shortDescription,
        this.description,
        this.duration,
-       this.difficulty,
-      this.authenticationService.getUser().getId(),
-       this.keywords,
+       this.difficulty,*/
+      //this.authenticationService.getUser().getId(),
+       //this.keywords,
        this.ingredients
      );
   

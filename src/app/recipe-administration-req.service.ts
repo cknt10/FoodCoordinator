@@ -32,33 +32,27 @@ export class RecipeAdministrationReqService {
   }
 
   Date(){
-    let creation = this.datePipe.transform( new Date(),'yyyy-MM-dd  h:mm:ss');
-    return creation;
+    let creation: string;
+  creation = this.datePipe.transform( new Date(),'yyyy-MM-dd  h:mm:ss');
+  return creation;
   }
 
   /////////////////////////////////Http-Request to send new recipe///////////////////////////
   async getCreateRecipe(
-    title: string,
+    /*title: string,
     //picture: File,
     servings: number,
     description: string,
     instruction: string,
     duration: number,
     difficulty: string,
-    userId: number,
-    keywords: string[],
+    //userId: number,
+    keywords: string[],*/
     ingredients: Ingredient[]
   ): Promise<Recipe> {
-    console.log('server request with keywords');
-
-    console.log(title, servings, description, instruction,  duration, difficulty, userId, keywords, ingredients);
-
-    this.Date();
-
-    console.log(this.Date());
 
     let params = new HttpParams()
-      .set('title', title)
+      /*.set('title', title)
       //.set('picture', picture.toString())
       .set('servings', servings.toString())
       .set('description', description)
@@ -66,19 +60,18 @@ export class RecipeAdministrationReqService {
       .set('createionDate', this.Date())
       .set('duration', duration.toString())
       .set('difficulty', difficulty)
-      .set('certified', null)
+      .set('certified', '0')
       .set('lastChange', null)
-      .set('userId', userId.toString())
-      .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'));
-
-
-      for (let i = 0; i < ingredients.length-1; i++) {
-        params = params.append('id', ingredients[i].getId().toString());
-        params = params.append('amount', ingredients[i].getAmount().toString());
-        params = params.append('unit', ingredients[i].getUnit());
+      //.set('userId', userId.toString())
+      .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'));*/
+    console.log(ingredients);
+      for (let i = 0; i < ingredients.length; i++) {
+        console.log(ingredients[i]);
+        params = params.set('id', ingredients[i].getId().toString());
+        params = params.set('amount', ingredients[i].getAmount().toString());
+        params = params.set('unit', ingredients[i].getUnit());
       }
       
-
     console.log(params);
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/recipeset.php';
@@ -130,7 +123,7 @@ export class RecipeAdministrationReqService {
     let keywordsId = [];
     let serverKeywords = this.searchRequestService.getKeywords();
 
-    console.log("you're at convert to keywordsId...");
+    //console.log("you're at convert to keywordsId...");
 
     serverKeywords.forEach((elem1) => {
       elem1;
@@ -141,7 +134,7 @@ export class RecipeAdministrationReqService {
         }
       });
     });
-    console.log(keywordsId);
+    //console.log(keywordsId);
     return keywordsId;
   }
 
@@ -152,7 +145,7 @@ export class RecipeAdministrationReqService {
     let ingredientsId = [];
     let serverKeywords = this.searchRequestService.getIngredients();
 
-    console.log("you're at convert to ingredientsId...");
+    //console.log("you're at convert to ingredientsId...");
 
     serverKeywords.forEach((elem1) => {
       elem1;
@@ -164,7 +157,7 @@ export class RecipeAdministrationReqService {
       });
     });
 
-    console.log(ingredientsId);
+    //console.log(ingredientsId);
     return ingredientsId;
   }
 
@@ -175,7 +168,7 @@ export class RecipeAdministrationReqService {
     let ingredientsId = 0;
     let serverKeywords = this.searchRequestService.getIngredients();
 
-    console.log("you're at convert to ingredientsId...");
+    //console.log("you're at convert to ingredientsId...");
 
     serverKeywords.forEach((elem1) => {
       elem1;

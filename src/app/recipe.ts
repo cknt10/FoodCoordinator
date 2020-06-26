@@ -71,8 +71,12 @@ export class Recipe {
     return this.difficulty;
   }
 
-  getCertified() {
-    return this.certified;
+  getCertified(): number {
+    if (this.certified == true){
+      return 1;
+    }else{
+      return 0;
+    }
   }
 
   getLastChangeDate() {
@@ -131,8 +135,12 @@ export class Recipe {
     this.difficulty = difficulty;
   }
 
-  setCertified(certified: boolean) {
-     this.certified = certified;
+  setCertified(certified: number) {
+    if(certified == 1){
+      this.certified = true;
+    }else{
+      this.certified = false;
+    }
   }
 
   setLastChangeDate(lastChangeDate: Date) {
