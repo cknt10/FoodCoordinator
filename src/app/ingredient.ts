@@ -1,9 +1,11 @@
+import { Nutriernt } from './nutrient';
+
 export class Ingredient {
    private id: number;
    private description: string;
     private amount: number;
     private unit: string;
-    private nutrients: string[];
+    private nutrients: Nutriernt[];
 
 
     constructor(
@@ -11,7 +13,7 @@ export class Ingredient {
         description: string, 
         amount: number,
         unit: string, 
-        nutrients: string[] 
+        nutrients: Nutriernt[] 
         ){
         this.id  =id;
         this.description = description;
@@ -36,7 +38,7 @@ export class Ingredient {
         return this.unit;
     }
 
-    getNutrients(){
+    getNutrients():Nutriernt[]{
         return this.nutrients;
     }
 
@@ -56,7 +58,7 @@ export class Ingredient {
         this.unit = unit;
     }
 
-    setNutrients(nutrients: string[]){
-        this.nutrients = nutrients;
+    setNutrients(nutrients: Nutriernt){
+        this.nutrients.push(nutrients);
     }
 }

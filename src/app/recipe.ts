@@ -18,7 +18,6 @@ export class Recipe {
   keywords: string[];
   ratings: Ratings[];
   ingredients: Ingredient[];
-  nutrients: Nutriernt[];
 
   constructor(recipe: Recipe) {
     this.id = recipe.id;
@@ -36,7 +35,6 @@ export class Recipe {
     this.keywords = recipe.keywords;
     this.ratings = recipe.ratings;
     this.ingredients = recipe.ingredients;
-    this.nutrients = recipe.nutrients;
   }
 
   getId(): number {
@@ -167,10 +165,6 @@ export class Recipe {
     this.ingredients = ingredients;
   }
 
-  setNutient(nutrient: Nutriernt){
-    this.nutrients.push(nutrient);
-  }
-
   cleanRecipe() {
     this.id = null;
     this.title = '';
@@ -187,6 +181,5 @@ export class Recipe {
     this.keywords = null;
     this.ratings = null;
     this.ingredients = null;
-    this.nutrients = null;
   }
 }

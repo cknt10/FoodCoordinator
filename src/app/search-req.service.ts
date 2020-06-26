@@ -20,6 +20,7 @@ export class SearchReqService {
   private serverKeywords: SearchParameter[];
   private filteredKeywords: string[] = [];
   private userInputForSearch: string[] = [];
+  private userRecipes: Recipe[] = [];
 
   private errorValue: string;
 
@@ -43,6 +44,14 @@ export class SearchReqService {
   /////////////////////////////////method to display ingredients with id///////////////////////////
   getIngredients(): SearchParameter[] {
     return this.serverIngredients;
+  }
+
+  userInput(): string[]{
+    return this.userInputForSearch;
+  }
+
+  getUserResults(){
+    return this.userRecipes;
   }
 
   /////////////////////////////////method to filter duplicate keywords///////////////////////////
@@ -118,7 +127,7 @@ export class SearchReqService {
   }
 
   /////////////////////////////////Http-Request method to send keywords and get results of the search//////////////////////////
-  async getUserResults(userSearchInputs: string[]): Promise<Recipe> {
+  async fetchUserServerResults(userSearchInputs: string[]): Promise<Recipe> {
     console.log('server request with keywords');
 
     // console.log(userSearchInputs);
@@ -137,13 +146,18 @@ export class SearchReqService {
       .toPromise();
   }
 
+  async getUserServerResult(userSearchInputs: string[]){
+    await this.fetchUserServerResults(userSearchInputs).then((data) => {
+      data['recipe'].forEach((value: Recipe) =>{
+      this.userRecipes.push(new Recipe(value));
+      }) 
+    });
+    return this.serverIngredients;
+  }
+
   ///////////////////////////////save User search Params//////////////////////////
   saveUserInput(value: string[]){
     this.userInputForSearch = value;
-  }
-
-  userInput(): string[]{
-    return this.userInputForSearch;
   }
 
   /////////////////////////////////analyze kind of error//////////////////////////
