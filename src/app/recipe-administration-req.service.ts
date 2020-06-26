@@ -261,7 +261,7 @@ export class RecipeAdministrationReqService {
   /////////////////////////////////////////get from Server user recipes///////////////////////////////////////////
  async getServerUserRecipe(user: User): Promise<Recipe[]> {
     await this.fetchServerUserRecipe(user).then((data: Recipe) => {
-      data['recipes'].forEach((value) => {
+      data['recipes'].forEach((value: Recipe) => {
         this.userRecipe.push(new Recipe(value));
       });
     });
