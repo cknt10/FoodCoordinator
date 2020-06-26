@@ -82,17 +82,17 @@ export class CreateRecipeComponent implements OnInit {
    }
 
    async createRecipe(){
-     //this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
+     this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
      await this.recipeAdministrationReqService.getCreateRecipe(
-       /*this.title,
+       this.title,
       //this.picture,
        this.servings,
        this.shortDescription,
        this.description,
        this.duration,
-       this.difficulty,*/
+       this.difficulty,
       //this.authenticationService.getUser().getId(),
-       //this.keywords,
+       this.keywords,
        this.ingredients
      );
   
