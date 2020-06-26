@@ -9,7 +9,9 @@ import { retry, catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  public UserData: User;
+  private UserData: User;
+
+  private errorValue: string;
 
   constructor(
     private reqService: LoginReqService,
@@ -33,6 +35,11 @@ export class AuthenticationService {
   /////////////////////////////////////////////////////////////get User without params/////////////////////////////////////////////////////////////////////////////
   getUser(): User{
   return this.UserData;
+  }
+
+  //////////////////////////////////////////////////display error message for the user/////////////////////////////////////////////////////////
+  getErrorMessage(){
+    return this.errorValue;
   }
 
  ///////////////////////////////////////////////////////////set user data////////////////////////////////////////////////////////////////////////////
@@ -124,11 +131,28 @@ export class AuthenticationService {
 }
 
 /////////////////////////////////////////////analize server Errors////////////////////////////////////
-private handleError(error: HttpErrorResponse) {
-  console.log(error);
-
-  // return an observable with a user friendly message
-  return throwError('Error! something went wrong.');
+handleError(error: HttpErrorResponse) {
+  let errorMessage = 'Unknown error!';
+  if (error.error instanceof ErrorEvent) {
+    // Client-side errors
+    errorMessage = `Error: ${error.error.message}`;
+  } else {
+    // Server-side errors
+    if (error.status == 401) {
+      this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+    }
+    if (error.status == 403) {
+      this.errorValue = `Der Benutzername exisitert bereits.`;
+    }
+    if (error.status == 404) {
+      this.errorValue = `Falscher Benutzername oder falsches Passwort`;
+    }
+    if (error.status == 500) {
+      this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+    }
+    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  }
+  return throwError(errorMessage);
 }
 
 

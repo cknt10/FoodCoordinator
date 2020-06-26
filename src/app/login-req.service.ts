@@ -94,12 +94,8 @@ export class LoginReqService {
     await this.fetchServerCities().then((data: Cities) => {
       data['cities'].forEach((value) => {
         this.cities.push(new Cities(value));
-        console.log(data['cities']['cityId']);
       });
     });
-    //this.getCities();
-    //console.log(this.cities[0].getCity());
-    console.log(this.cities);
     return this.cities;
   }
 
