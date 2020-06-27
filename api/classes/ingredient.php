@@ -288,7 +288,7 @@ class Ingredient{
                 extract($_row);
                 array_push($_result, array(
                     "id" => $F_ID,
-                    "description" => $F_Descr,
+                    "description" => str_replace("\r", "", $F_Descr),
                 ));
                 
             }
@@ -298,55 +298,43 @@ class Ingredient{
 
     /**
      * Create an connection from recipe to ingredients
-     * @param $_singlearray for one ingredient
-     * @param $_multiarray for multi values
+     * @param $_multiarray input for ingredients
      * 
      * 
      */
-    public function createIngredients($_singlearray, $_multiarray=array())
+    public function createIngredients($_multiarray)
     {
         $_result = "";
         $_sql = null;
         $_stmt = null;
         try{
-            if(!empty($_singlearray)){
-                $_sql="INSERT INTO ingredient (F_ID, R_ID, Amount, Unit) VALUES (:F_ID, :R_ID, :Amount, :Unit)";
 
-                $_stmt= $this->conn->prepare($_sql);
+            //first entry
+            $_sql='INSERT INTO ingredient (F_ID, R_ID, Amount, Unit) VALUES (:F_ID0, :R_ID0, :Amount0, :Unit0)';
 
-                // bind values
-                $_stmt->bindParam(":F_ID", $_singlearray['f_id']);
-                $_stmt->bindParam(":Amount", $_singlearray['amount']);
-                $_stmt->bindParam(":Unit", $_singlearray['unit']);
-                $_stmt->bindParam(":R_ID", $_singlearray['r_id']);
-    
-            }else{
-                //first entry
-                $_sql='INSERT INTO ingredient (F_ID, R_ID, Amount, Unit) VALUES (:F_ID0, :R_ID0, :Amount0, :Unit0)';
-
-                //Add new values
-                if(count($_multiarray)>1){
-                    for($_i = 1; $_i < count($_multiarray); $_i++){
-                        $_sql = $_sql . ', (:F_ID' .strval($_i). ', :R_ID'.strval($_i).', :Amount'.strval($_i).', :Unit'.strval($_i).')';
-                    }    
-                }
-
-                $_stmt= $this->conn->prepare($_sql);
-
-                //bind params
-                for($_i=0; $_i<count($_multiarray); $_i++){
-                    $_stmt->bindParam(":F_ID".strval($_i), $_multiarray[$_i]['f_id']);
-                    $_stmt->bindParam(":Amount".strval($_i), $_multiarray[$_i]['amount']);
-                    $_stmt->bindParam(":Unit".strval($_i), $_multiarray[$_i]['unit']);
-                    $_stmt->bindParam(":R_ID".strval($_i), $_multiarray[$_i]['r_id']);
-                }     
+            //Add new values
+            if(count($_multiarray)>1){
+                for($_i = 1; $_i < count($_multiarray); $_i++){
+                    $_sql = $_sql . ', (:F_ID' .strval($_i). ', :R_ID'.strval($_i).', :Amount'.strval($_i).', :Unit'.strval($_i).')';
+                }    
             }
+
+            $_stmt= $this->conn->prepare($_sql);
+
+            //bind params
+            for($_i=0; $_i<count($_multiarray); $_i++){
+                $_stmt->bindParam(":F_ID".strval($_i), $_multiarray[$_i]['f_id']);
+                $_stmt->bindParam(":Amount".strval($_i), $_multiarray[$_i]['amount']);
+                $_stmt->bindParam(":Unit".strval($_i), $_multiarray[$_i]['unit']);
+                $_stmt->bindParam(":R_ID".strval($_i), $_multiarray[$_i]['r_id']);
+            }     
+
                                                          
 
             $_stmt->execute();
             $_result = "200";
         }catch(Eception $_e){
-            $_result = $_e;
+            $_result = $_e->getMessage();
         }
 
         return $_result;

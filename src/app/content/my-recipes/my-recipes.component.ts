@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { AuthenticationService } from '../../authentication.service';
+import { RecipeAdministrationReqService } from '../../recipe-administration-req.service';
+
 @Component({
   selector: 'app-my-recipes',
   templateUrl: './my-recipes.component.html',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyRecipesComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private authenticationService: AuthenticationService,
+    private recipeAdministrationService: RecipeAdministrationReqService
+  ) { }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
   }
+
 
 }

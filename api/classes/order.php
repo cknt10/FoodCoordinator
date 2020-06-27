@@ -448,7 +448,7 @@ class Order{
             $_stmt->execute();
             $_result = "200";
        }catch(Eception $_e){
-        $_result = $_e-getMessage();
+        $_result = $_e->getMessage();
        }
        
        return $_result;

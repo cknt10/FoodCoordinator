@@ -1,18 +1,20 @@
-<button class="create" mat-raised-button>Erstellen</button>
+<button class="create" mat-raised-button (click)="createRecipe()">Erstellen</button>
 <div class="workspace">
   <div class="left">
     <label for="title">Titel:</label><br />
     <input type="text" [(ngModel)]="title" /><br />
-    <label for="difficulty"></label>
+    <label for="difficulty">Schwierigkeit:</label>
     <input type="text" [(ngModel)]="difficulty" /><br />
     <label for="kurzbeschreibung">kurze Beschreibung:</label><br />
     <input type="text" [(ngModel)]="shortDescription" /><br />
     <label for="stichwort">Stichwort:</label><br />
-    <input type="text" [ngModel]="keyword" />
+    <input type="text" [(ngModel)]="keyword" />
+    <button id="add" mat-mini-fab (click)="addKeyword()">+</button>
     <!-- Hier muss das Dropdown für Keywords hin -->
     <div class="keywords">
       <span *ngFor="let keyword of keywords">{{ keyword }}</span>
     </div>
+    <!-- Hier muss das Dropdown für ingredients hin -->
     <div class="ingredients">
       <label for="menge">Menge:</label>
       <input type="select" [(ngModel)]="amount" />
@@ -25,7 +27,7 @@
       </div>
       <div id="ingredientTable">
         <span *ngFor="let ingredient of ingredients">
-          {{ ingredient }}
+          {{ ingredient.description }} {{ ingredient.amount }} {{ ingredient.unit }}
           <!--<button id="remove" (click)="removeIngredient()">
             <mat-icon>close</mat-icon>
           </button>-->

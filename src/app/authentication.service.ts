@@ -9,22 +9,17 @@ import { retry, catchError } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class AuthenticationService {
-  public UserData: User;
+  private UserData: User;
+
+  private errorValue: string;
 
   constructor(
     private reqService: LoginReqService,
     private http: HttpClient
   ) {}
 
-  private handleError(error: HttpErrorResponse) {
-    console.log(error);
-
-    // return an observable with a user friendly message
-    return throwError('Error! something went wrong.');
-  }
-
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////
-  async getUser(
+  async getDataUser(
     username: string,
     password: string
     ) {
@@ -37,6 +32,15 @@ export class AuthenticationService {
     return this.UserData;
   }
 
+  /////////////////////////////////////////////////////////////get User without params/////////////////////////////////////////////////////////////////////////////
+  getUser(): User{
+  return this.UserData;
+  }
+
+  //////////////////////////////////////////////////display error message for the user/////////////////////////////////////////////////////////
+  getErrorMessage(){
+    return this.errorValue;
+  }
 
  ///////////////////////////////////////////////////////////set user data////////////////////////////////////////////////////////////////////////////
   async setUserData(
@@ -48,11 +52,6 @@ export class AuthenticationService {
       password
       ).then((data: User) => {
       this.UserData = new User(data['user']);
-
-
-      console.log('hallo ' + data['eure Daten']);
-
-      console.log(this.UserData);
     }),
       (error => {
         console.log('Auslesen gescheitert');
@@ -129,6 +128,31 @@ export class AuthenticationService {
 
     return this.UserData;
   }
+}
+
+/////////////////////////////////////////////analize server Errors////////////////////////////////////
+handleError(error: HttpErrorResponse) {
+  let errorMessage = 'Unknown error!';
+  if (error.error instanceof ErrorEvent) {
+    // Client-side errors
+    errorMessage = `Error: ${error.error.message}`;
+  } else {
+    // Server-side errors
+    if (error.status == 401) {
+      this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+    }
+    if (error.status == 403) {
+      this.errorValue = `Der Benutzername exisitert bereits.`;
+    }
+    if (error.status == 404) {
+      this.errorValue = `Falscher Benutzername oder falsches Passwort`;
+    }
+    if (error.status == 500) {
+      this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+    }
+    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+  }
+  return throwError(errorMessage);
 }
 
 

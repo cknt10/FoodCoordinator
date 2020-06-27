@@ -117,6 +117,95 @@ class Rating{
     }
 
     /**
+     * Creates rating to an recipe
+     * 
+     * @param int $_recipeId
+     * 
+     * @return string
+     */
+    public function createRating($_recipeId)
+    {
+        $_sql = "";
+        $_result = "";
+
+
+        try{
+            $_sql="INSERT INTO rating (R_ID, U_ID, Comment, BananaAmount) VALUES (:R_ID, :U_ID, :Comment, :BananaAmount)";
+            $_stmt= $this->conn->prepare($_sql);
+
+
+            // sanitize
+            $this->comment=htmlspecialchars(strip_tags($this->comment));
+
+
+
+            // bind values
+            $_stmt->bindParam(":R_ID", $_recipeId);
+            $_stmt->bindParam(":U_ID", $this->userId);
+            $_stmt->bindParam(":Comment", $this->comment);
+            $_stmt->bindParam(":BananaAmount", $this->rating);
+       
+
+            $_stmt->execute();
+            $_result = "200";
+        }catch(Exception $_e){
+            $_result = $_e->getMessage();
+        }
+
+        return $_result;
+    }
+
+    /**
+     * Creates rating to an recipe
+     * 
+     * @param float $_ratingId
+     * @param int $_userId
+     * 
+     * @return string
+     */
+    public function fetchRatings($_ratingId, $_userId)
+    {
+        $_result = array();
+        $_query = "SELECT * FROM rating WHERE R_ID = :R_ID AND U_ID = :U_ID";
+
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
+
+        // sanitize
+        //$_postcode=htmlspecialchars(strip_tags($_postcode));
+
+        // bind values
+        $_stmt->bindParam(":R_ID", $_ratingId);
+        $_stmt->bindParam(":U_ID", $_userId);
+
+        // execute query
+        $_stmt->execute();
+        
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+                array_push($_result, array(
+                    "recipeId" => $R_ID,
+                    "userId" => $U_ID,
+                    "comment" => $Comment,
+                    "rating" => $BananaAmount,
+                ));
+                
+            }
+        }
+        return empty($_result) ? null : $_result;
+    }
+    /**
      * Get this Object as Array for JSON import
      * 
      * @return array
