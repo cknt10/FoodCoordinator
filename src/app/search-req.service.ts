@@ -151,7 +151,7 @@ export class SearchReqService {
         this.errorValue = `Leider haben wir noch keine Rezepte zu diesem Suchbegriff.`;
       }
       if (error.status == 500) {
-        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen.`;
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
       }
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
