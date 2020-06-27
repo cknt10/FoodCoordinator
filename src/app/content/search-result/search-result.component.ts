@@ -16,8 +16,9 @@ export class SearchResultComponent implements OnInit {
     private searchReqService: SearchReqService,
   ) { }
 
-  ngOnInit() {
-
+  async ngOnInit() {
+    //console.log(await this.searchReqService.getUserResults());
+    console.log(this.searchReqService.getUserResults());
   }
 
 

@@ -31,7 +31,7 @@ if($result["keywords"] != null){
     echo json_encode($result);
 }else{
     // set response code - 404 Not found
-    http_response_code(403);
+    http_response_code(404);
 
     // tell the user no result found
     $result["message"] = "Keywords not exits";

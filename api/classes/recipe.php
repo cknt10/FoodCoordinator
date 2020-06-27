@@ -445,7 +445,7 @@ class Recipe{
     /**
      * Set the value of createdUser
      *
-     * @param  string  $createdUser
+     * @param  string  $_createdUser
      *
      * @return  self
      */
@@ -464,6 +464,20 @@ class Recipe{
     public function getRatings()
     {
         return $this->ratings;
+    }
+
+    /**
+     * Set the value of ratings
+     *
+     * @param  string  $_retings
+     *
+     * @return  self
+     */ 
+    public function setRatings($_ratings)
+    {
+        $this->ratings = $_ratings;
+
+        return $this;
     }
 
     /**
@@ -564,7 +578,7 @@ class Recipe{
             $_stmt->execute();
             $_result = "200";
         }catch(Eception $_e){
-            $_result = $_e;
+            $_result = $_e->getMessage();
         }
 
 
@@ -600,8 +614,21 @@ class Recipe{
      * @return Ingredient[]
      */
     public function removeIngredient($_ingredient){
-        $this->ingredients = array_diff($this->ingredients, $_ingredient);
+        $_newIngredients = array();
+        $_changes = false;
 
+        if(count($this->ingredients) > 0){
+            for($_i = 0; $_i < count($this->ingredients); $_i++){
+                if($this->ingredients[$_i]["id"] != $_ingredient["id"] && $_ingredient["id"] != null){
+                    array_push($_newIngredients, $this->ingredients[$_i]);
+                    $_changes = true;
+                }
+            }
+        }
+
+        if($_changes){
+            $this->ingredients = $_newIngredients;
+        }
         return $this->ingredients;
     }
 
@@ -649,7 +676,7 @@ class Recipe{
         //TODO Dustin: Berechne anhand ratings in diesem Objekt das rating und setze es.
       $avg = 0;
 
-      for ($_i = 1; $_i < count($this->ratings); $_i++){
+      for ($_i = 0; $_i < count($this->ratings); $_i++){
         $avg = $avg + $this->ratings[$_i]["rating"];
       }
       $this->rating = $avg / count($this->ratings);
@@ -748,7 +775,7 @@ class Recipe{
             $_stmt->execute();
             $_result = "200";
         }catch(Eception $_e){
-            $_result = $_e;
+            $_result = $_e->getMessage();
         }
 
 
@@ -759,14 +786,19 @@ class Recipe{
      *
      * @param $_date creation date of this recipe
      * @param $_userId id from creation user
-     *
+     * @param $_lastChange an optinal parameter
+     * 
      * @return int the id of this recipe
      */
-    public function fetchRecipe($_date, $_userId)
+    public function fetchRecipe($_date, $_userId, $_lastChange = "")
     {
         $_result = -1;
-
-        $_sql = "SELECT * FROM recipe WHERE CreationDate = :CreationDate AND U_ID = :U_ID";
+        if($_lastChange === ""){
+            $_sql = "SELECT * FROM recipe WHERE CreationDate = :CreationDate AND U_ID = :U_ID";
+        }else{
+            $_sql = "SELECT * FROM recipe WHERE CreationDate = :CreationDate AND U_ID = :U_ID AND LastChange = :LastChange";
+        }
+        
 
         $_stmt= $this->conn->prepare($_sql);
 
@@ -776,6 +808,7 @@ class Recipe{
         // bind values
         $_stmt->bindParam(":CreationDate", $_date);
         $_stmt->bindParam(":U_ID", $_userId);
+        if($_lastChange != ""){ $_stmt->bindParam(":LastChange", $_lastChange); }
 
         $_stmt->execute();
 
@@ -810,6 +843,26 @@ class Recipe{
         }
 
         return $_result;
+    }
+
+        /**
+     * Gets an recipe and sets the data to this object
+     * 
+     * @param $_userId id from creation user
+     * 
+     * @return array
+     */
+    public function fetchAllRecipe($_userId)
+    {
+        $_sql = "SELECT * FROM recipe WHERE U_ID = :U_ID"; 
+
+        $_stmt= $this->conn->prepare($_sql);
+
+        $_stmt->bindParam(":U_ID", $_userId);
+
+        $_stmt->execute();
+
+        return $_stmt;
     }
 
     /**

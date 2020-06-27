@@ -3,8 +3,6 @@ import { FormBuilder, Validator, FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
-import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
-
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -20,8 +18,7 @@ export class SearchComponent implements OnInit {
   error: string;
 
   constructor(
-    private searchReqService: SearchReqService,
-    private recipeAdministrationReqService: RecipeAdministrationReqService
+    private searchReqService: SearchReqService
   ) {}
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
@@ -55,7 +52,7 @@ export class SearchComponent implements OnInit {
     //search recipes if there is one or more values in ingredients and the search area is empty
     if (this.ingredients.length > 0 && this.ingredient.length == 0) {
       //getUserResults returns all recipes which include the stored ingredients
-      console.log(await this.searchReqService.getUserResults(this.ingredients));
+      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
     }
     //add valid value in search area to ingredients and return recipes
     else if (
@@ -63,7 +60,7 @@ export class SearchComponent implements OnInit {
       this.options.includes(this.ingredient)
     ) {
       this.addIngredient();
-      console.log(await this.searchReqService.getUserResults(this.ingredients));
+      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
     }
     //if there is nowhere a value or just an invalid value don't search
     else if (

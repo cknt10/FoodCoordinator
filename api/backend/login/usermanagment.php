@@ -11,10 +11,10 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$postcode = "35510";
-
 $user = new RegUser();
 $user->connection($db);
+
+
 $result = array();
 $result["message"] = "";
 $result["cities"] = array();
