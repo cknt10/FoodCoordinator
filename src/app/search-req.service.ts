@@ -156,14 +156,16 @@ export class SearchReqService {
   }
 
   ///////////////////////////////save User search Params//////////////////////////
-  saveUserInput(value: string[]){
+ /* saveUserInput(value: string[]){
     this.userInputForSearch = value;
-  }
+  }*/
 
   /////////////////////////////////analyze kind of error//////////////////////////
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unbekannter Fehler!';
     if (error.error instanceof ErrorEvent) {
+
+
       // Client-side errors
       errorMessage = `Error: ${error.error.message}`;
     } else {

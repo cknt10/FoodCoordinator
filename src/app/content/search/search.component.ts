@@ -69,7 +69,6 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
     }
-    this.searchReqService.saveUserInput(this.ingredients);
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////

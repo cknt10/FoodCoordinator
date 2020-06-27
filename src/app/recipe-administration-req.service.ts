@@ -41,7 +41,7 @@ export class RecipeAdministrationReqService {
 
   /////////////////////////////////Http-Request to send new recipe///////////////////////////
   async getCreateRecipe(
-    title: string,
+    /*title: string,
     //picture: File,
     servings: number,
     description: string,
@@ -49,27 +49,12 @@ export class RecipeAdministrationReqService {
     duration: number,
     difficulty: string,
     //userId: number,
-    keywords: string[],
+    keywords: string[],*/
     ingredients: Ingredient[]
   ): Promise<Recipe> {
 
-    let ingredientsID = new Array<string>();
-    let ingredientsAmount = new Array<string>();
-    let ingredientsUnit = new Array<string>();
-    let ingredientsDescription = new Array<string>();
-    ingredients.forEach((value) => {
-      ingredientsID.push(value.getId().toString());
-      ingredientsAmount.push(value.getAmount().toString());
-      ingredientsUnit.push(value.getUnit());
-      ingredientsDescription.push(value.getDescription());
-    });
-
-    console.log(ingredientsID);
-    console.log(ingredientsUnit);
-    console.log(ingredientsAmount);
-
     let params = new HttpParams()
-      .set('title', title)
+      /*.set('title', title)
       //.set('picture', picture.toString())
       .set('servings', servings.toString())
       .set('description', description)
@@ -83,24 +68,29 @@ export class RecipeAdministrationReqService {
     //.set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'))
     keywords.forEach((key) => {
       params = params.append('keywords', this.convertRecipeKeyword(key));
-    });
+    });*/
     //.set('ingredients', ingredientsDescription.join('|'));
-    ingredientsDescription.forEach((description) => {
-      params = params.append('ingredients', description);
-    });
 
-    ingredientsID.forEach((id) => {
-      params = params.append('id', id);
+    let modifiedIngredients: Object[]=[];
+    ingredients.forEach((value,index) => {
+      modifiedIngredients[index]=new Object();
+      modifiedIngredients[index]={id: value.getId().toString(),amount: value.getAmount().toString(), unit: value.getUnit()};
     });
+  
+    console.log(modifiedIngredients);
 
-    ingredientsAmount.forEach((amount) => {
-      params = params.append('amount', amount);
-    });
+    // modifiedIngredients.forEach((value, i) => {
+    //   params = params.append('ingredients', value.join(|));
+    // })
 
-    ingredientsUnit.forEach((unit) => {
-      params = params.append('unit', unit);
-    });
+     let haha: any = {};
+     haha.myArray = JSON.stringify(modifiedIngredients);
+     console.log(ingredients);
+     console.log(haha.myArray);
     
+     
+      params = params.append('ingredients', haha.myArray);
+
     console.log(params);
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/recipeset.php';
@@ -111,7 +101,7 @@ export class RecipeAdministrationReqService {
       .get<Recipe>(requestLink, { params: params })
       .pipe(catchError(this.handleError))
       .toPromise();
-  }
+}
 
   /////////////////////////////////Http-Request to change recipe///////////////////////////
   getServerChangeRecipe(recipe: Recipe): Promise<Recipe> {
