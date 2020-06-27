@@ -18,7 +18,7 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$userId = "2";
+$userId = $_GET['userId'];
 
 //Intitiate classes
 $recipe = new Recipe();
