@@ -175,6 +175,21 @@ class Format{
         }
         return empty($_result) ? null : $_result;
     }
+
+    /**
+     * Returns this Object as Array
+     * 
+     * @return array
+     */
+    public function getObjectAsArray()
+    {
+        return array(
+            "id" => $this->id,
+            "format" => $this->format,
+            "pageNumber" => $this->pageNumber,
+            "title" => $this->designTitle
+        );
+    }
 }
 
 ?>
