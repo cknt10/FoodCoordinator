@@ -8,6 +8,8 @@ header("Content-Type: application/json; charset=UTF-8");
 include_once '../sql/coni.php';
 include_once '../../classes/reguser.php';
 include_once '../../classes/premiumuser.php';
+include_once '../../classes/favourite.php';
+include_once '../../classes/gift.php';
   
 // instantiate database and product object
 $database = new Connection();
@@ -19,11 +21,12 @@ $user->connection($db);
 $user->setUsername($_GET['username']);
 $passwort = $_GET['password'];
 
-// $user->setUsername("test");
-// $passwort = "123456";
+
 // query products
 $num = $user->login($_GET['username'], "");
-//$num = $user->login("test", "");
+// $user->setUsername("test");
+// $passwort = "123456";
+// $num = $user->login("test", "");
 
 // check if more than 0 record found
 if($num>0){
@@ -52,10 +55,26 @@ if($num>0){
     //Check for Premium
     $resultArr["user"]['isPremium'] = $user->isPremium($resultArr["user"]['id'], "") ? true : false;
 
+    if($resultArr["user"]['isPremium']){
+        $resultArr["premium"] = array();
+        //TODO Gifts and Favourites
+        $favourite = new Favourite();
+        $favourite->connection($db);
 
+        //gets only the group classes and the expected recipe ids 
+        $user->setFavourites($favourite->fetchFavourites($user->getPremiumId()));
+        //TODO if needed add additional information to the recipies
+
+        //Gifts
+        $gifts = new Gift();
+        $gifts->connection($db);
+
+        $user->setGifts($gifts->fetchGifts($user->getPremiumId()));
+
+        $resultArr["premium"] = $user->getObjectAsArray();
+    }
 
     //Check Password
-    //TODO
     if (password_verify($passwort, $wrongPassword)) {
         $_SESSION['userid'] = $resultArr["user"]['id'];
 
