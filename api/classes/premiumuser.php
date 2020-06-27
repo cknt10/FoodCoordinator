@@ -139,6 +139,17 @@ class PremiumUser extends RegUser{
     }
 
     /**
+     * Set $favourites
+     *
+     * @return  array
+     */
+    public function setFavourites($_favourites)
+    {
+        return $this->favourites = $_favourites;
+    }
+
+
+    /**
      * Get $payed Check if this User payed his Premium
      *
      * @return  bool
@@ -248,7 +259,7 @@ class PremiumUser extends RegUser{
         $_date = "";
 
         // select all query
-        $_query = "SELECT pu.PU_ID, pu.Premium_ID, pu.U_ID, pu.PM_ID, pu.StartingDate as UserStaringDate, p.StartingDate as PremiumStartingDate, p.Premium_Descr, p.Price, p.Duration
+        $_query = "SELECT pu.PU_ID, pu.Premium_ID, pu.U_ID, pu.PM_ID, pu.StartingDate as UserStartingDate, p.StartingDate as PremiumStartingDate, p.Premium_Descr, p.Price, p.Duration
         from premiumUser as pu
         Inner Join premium as p
         ON pu.Premium_ID = p.Premium_ID
@@ -283,7 +294,7 @@ class PremiumUser extends RegUser{
 
 
                 //Split date from db
-                $_date = explode(' ', $UserStaringDate);
+                $_date = explode(' ', $UserStartingDate);
 
                 //Check if he is still Premium
                 $_date1 = new DateTime($_date[0]);
@@ -293,7 +304,15 @@ class PremiumUser extends RegUser{
                 if($_date1 > $_date2){
                     $_result = true;
                     $this->premiumId = $PU_ID;
+                    $_premium = new Premium();
+                    $_premium->setId($PM_ID);
+                    $_premium->setDescription($Premium_Descr);
+                    $_premium->setNetprice($Price);
+                    $_premium->setDuration($Duration);
+                    $_premium->setStartDate($PremiumStartingDate);
+                    $this->premium = $_premium->getObjectAsArray();
                     $this->startDate = $_date[0];
+                    $this->payed = true;
                 }
             }
         }
@@ -326,16 +345,14 @@ class PremiumUser extends RegUser{
      */
     public function getObjectAsArray()
     {
-        $arrayReg = parent::getObjectAsArray();
-        $arrayPrime = array(
-                "premiumId" => $this->premiumId,
-                "premium" => empty ($this->premium) ? null : $this->premium,
-                "gifts" => empty ($this->gifts) ? null : $this->gifts,
-                "favourites" => empty ($this->favourites) ? null : $this->favourites,
-                "payed" => $this->payed,
-                "startDate" => $this->startDate,
-                );
-        return array_merge ($arrayReg , $arrayPrime);
+        return array(
+            "premiumId" => $this->premiumId,
+            "premium" => empty ($this->premium) ? null : $this->premium,
+            "gifts" => empty ($this->gifts) ? null : $this->gifts,
+            "favourites" => empty ($this->favourites) ? null : $this->favourites,
+            "payed" => $this->payed,
+            "startDate" => $this->startDate,
+            );
     }
 
 }

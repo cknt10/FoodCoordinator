@@ -18,6 +18,9 @@ $ingredient = new Ingredient();
 $ingredient->connection($db);
 
 
+$ingredinetsFrontend = json_decode($_GET["ingredients"]);
+$keywordsFrontend = explode("|", $_GET["keywords"]);
+
 
 //Dummy data
 
@@ -58,9 +61,9 @@ array_push($multiarray, array(
 ));
 
 
-$dummyarray['ingredients'] = $multiarray;
+$dummyarray['ingredients'] = $ingredinetsFrontend == "" ? $multiarray : $ingredinetsFrontend;
 
-$dummyarray['keywords'] = array("3", "4");
+$dummyarray['keywords'] = empty($keywordsFrontend) ? array("3", "4") : $keywordsFrontend;
 
 
 //Create return 
@@ -95,7 +98,7 @@ if($checkRecipe == -1){
             $dummyarray['ingredients'][$_i]['r_id']= strval($recipeId);
         }
 
-        $checkIngredient = $ingredient->createIngredients(array(), $dummyarray['ingredients']);
+        $checkIngredient = $ingredient->createIngredients($dummyarray['ingredients']);
         if($checkIngredient === "200"){
             //Keywords
             $checkKeywords = $recipe->createKeywords($recipeId, $dummyarray['keywords']);
@@ -127,9 +130,10 @@ if($checkRecipe == -1){
         echo json_encode($recipeArray);
     }
 }else{
-   // set response code - 403
-   http_response_code(403);
-
+   // set response code - 404
+   //http_response_code(404);
+   $recipeArray["keywords"] = $keywordsFrontend;
+   $recipeArray["ingredients"] = $ingredinetsFrontend;
    $recipeArray["message"] = "Recipe allready exits";
    echo json_encode($recipeArray);
 }

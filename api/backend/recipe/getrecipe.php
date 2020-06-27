@@ -5,124 +5,92 @@ header("Content-Type: application/json; charset=UTF-8");
   
 // include database and object files
 include_once '../sql/coni.php';
-
-//include classes
 include_once '../../classes/recipe.php';
-include_once '../../classes/rating.php';
 include_once '../../classes/ingredient.php';
 include_once '../../classes/nutrient.php';
+include_once '../../classes/rating.php';
 
-$db = null;
-//instantiate database and product object
+
+// instantiate database and product object
 $database = new Connection();
 $db = $database->connection();
 
 
-// $recipe = null;
-// $ingredient = null;
-// $nutrient = null;
-// $rating = null;
-// $searchArray = null;
+$recipeID = "1";
 
-
-//$testData = array("Erdbeere", "Walnuss");
-$testData = explode("|", $_GET['keys']);
-if(count($testData) > 0 && $testData[0] != ""){
-
-  function search($_keywords, $_conn){
+if($recipeID != ""){
+function fetchRecipe($_id, $_conn)
+{
     $_query = null;
     $_stmt = null;
 
     //Basic Recipe Search
-  $_query = 'SELECT * FROM (
-                      SELECT r.R_ID, 
-                              r.Title, 
-                              r.picture, 
-                              r.servings, 
-                              r.R_Descr, 
-                              r.instruction, 
-                              r.creationDate, 
-                              r.Duration, 
-                              r.Difficulty, 
-                              r.certified, 
-                              r.LastChange, 
-                              r.U_ID, 
-                              keywords.KW_ID, 
-                              food.F_ID, 
-                              food.F_Descr, 
-                              ingredient.Amount AS IngredientAmount,
-                              ingredient.Unit AS IngredientUnit,
-                              keywords.KW_Name, 
-                              BananaAmount, 
-                              Comment, 
-                              rating.U_ID AS RatingUserId,
-                              PU_ID, 
-                              FavDate, 
-                              FavGroup, 
-                              foodHasNutrients.N_ID, 
-                              nutrients.N_Descr,
-                              nutrients.N_Unit,  
-                              foodHasNutrients.N_Amount
-                      FROM recipe r 
-                        LEFT join recipeHasKeywords
-                          ON r.R_ID = recipeHasKeywords.R_ID
-                        left join keywords
-                          ON keywords.KW_ID = recipeHasKeywords.KW_ID
-                            left join ingredient
-                          ON r.R_ID = ingredient.R_ID
-                        left join food
-                          ON food.F_ID = ingredient.F_ID     
-                        left join foodHasNutrients
-                          ON food.F_ID = foodHasNutrients.F_ID
-                        left join nutrients
-                          ON nutrients.N_ID = foodHasNutrients.N_ID
-                        left join rating
-                          ON r.R_ID = rating.R_ID
-                        left join favourites
-                          ON r.R_ID = favourites.R_ID
-                            ORDER BY R_ID, food.F_ID
-                                ) as tab1
-                        WHERE';
+    $_query = 'SELECT * FROM (
+                SELECT r.R_ID, 
+                        r.Title,
+                        r.picture, 
+                        r.servings, 
+                        r.R_Descr, 
+                        r.instruction, 
+                        r.creationDate, 
+                        r.Duration, 
+                        r.Difficulty, 
+                        r.certified, 
+                        r.LastChange, 
+                        r.U_ID, 
+                        food.F_ID, 
+                        food.F_Descr, 
+                        ingredient.Amount AS IngredientAmount,
+                        ingredient.Unit AS IngredientUnit,
+                        BananaAmount, 
+                        Comment, 
+                        rating.U_ID AS RatingUserId,
+                        rkw.KW_ID, 
+                        kw.KW_Name, 
+                        PU_ID, 
+                        FavDate, 
+                        FavGroup, 
+                        foodHasNutrients.N_ID, 
+                        nutrients.N_Descr, 
+                        nutrients.N_Unit, 
+                        foodHasNutrients.N_Amount
+                FROM recipe r 
+                    left join ingredient
+                        ON r.R_ID = ingredient.R_ID
+                    left join food
+                        ON food.F_ID = ingredient.F_ID     
+                    left join foodHasNutrients
+                        ON food.F_ID = foodHasNutrients.F_ID
+                    left join nutrients
+                        ON nutrients.N_ID = foodHasNutrients.N_ID
+                    left join rating
+                        ON r.R_ID = rating.R_ID
+                    left join favourites
+                        ON r.R_ID = favourites.R_ID
+                    LEFT OUTER JOIN recipeHasKeywords rkw
+                        ON r.R_ID = rkw.R_ID
+                    LEFT OUTER JOIN keywords kw
+                        on kw.KW_ID = rkw.KW_ID
+                    ORDER BY R_ID  
+                        ) as tab1
+                        WHERE R_ID = :R_ID;';
 
-                    //Creates or statements
+    // prepare query statement
+    $_stmt = $_conn->prepare($_query);
 
-                    $_sqlKeywords = 'KW_NAME LIKE :KW_Name0 OR F_Descr LIKE :F_Descr0';
-                    if(count($_keywords) > 1){
-                      for($_i = 1; $_i < count($_keywords); $_i++){
-                        $_sqlKeywords = $_sqlKeywords . ' OR KW_NAME LIKE :KW_Name'.strval($_i).' OR F_Descr LIKE :F_Descr'.strval($_i);
-                      }
-                    }
+    //bind
+    $_stmt->bindParam(":R_ID", $_id);
 
-                    // WHERE KW_NAME LIKE :KW_Name
-                    // OR F_Descr LIKE :F_Descr';
-                $_sql = $_query . ' ' . $_sqlKeywords;
-      // prepare query statement
-      $_stmt = $_conn->prepare($_sql);
+    // execute query
+    $_stmt->execute();
 
-        //sanitize
-      //$_keywords=htmlspecialchars(strip_tags($_keywords));
-      //$_keywords = "%{$_keywords}%";
-
-      for($_i = 0; $_i < count($_keywords); $_i++){
-        //sanitize
-        $_keywords[$_i]=htmlspecialchars(strip_tags($_keywords[$_i]));
-        $_keywords[$_i] = '%'. $_keywords[$_i] . '%';
-        //bind
-        $_stmt->bindParam(":KW_Name".strval($_i), $_keywords[$_i]);
-        $_stmt->bindParam(":F_Descr".strval($_i), $_keywords[$_i]);  
-      }
+    return $_stmt;
+}
 
 
-
-      // execute query
-      $_stmt->execute();
-
-      return $_stmt;
-  }
 
   //Call Function
-  $searchResults = search($testData, $db);
-
+  $searchResults = fetchRecipe($recipeID, $db);
 
   $num = $searchResults->rowCount();
   //recipe
@@ -179,57 +147,12 @@ if(count($testData) > 0 && $testData[0] != ""){
         $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
         if($rating->getUserId() != null && $rating->getComment()!= null && $rating->getRating() != null){
           $recipe->addRating($rating->getObjectAsArray());
-
+          
           //Calculate new rating
           $recipe->calculateRating();
         }
-
         
         if($F_ID != null){
-          $ingredient = new Ingredient();
-          $ingredient->setId($F_ID);
-          $ingredient->setDescription($F_Descr);
-          $ingredient->setAmount($IngredientAmount);
-          $ingredient->setUnit($IngredientUnit);
-          
-          //Update indexes
-          $lastIngredientId = $F_ID;
-          $ingredientindex++;
-
-          if($N_ID != null){
-            $nutrient = new Nutrient();
-            $nutrient->setId($N_ID);
-            $nutrient->setDescription($N_Descr);
-            $nutrient->setUnit($N_Unit);
-            $nutrient->setAmount($N_Amount);
-            $lastNutrientId = $N_ID;
-      
-            $ingredient->addNutrient($nutrient->getObjectAsArray());
-          }
-          $recipe->addIngredient($ingredient->getObjectAsArray());
-        }
-      }
-      else{
-        //Same recipe id therefore extend properties
-
-        //Extend object if not null
-        if($KW_Name != null){$recipe->addKeyword($KW_Name);}
-
-        $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
-        //Add only not emty Objects
-        if($rating->getUserId() != null && $rating->getComment() != null && $rating->getRating() != null){
-          $recipe->addRating($rating->getObjectAsArray());
-          
-          //Calculate new rating
-          $recipe->calculateRating();
-        }
-
-
-
-        //Only if ingredient exists
-        if($F_ID != null){
-          //Check if new Ingredient
-          if($lastIngredientId != $F_ID || $ingredientindex == -1){
             $lastIngredientId = $F_ID;
             $ingredientindex++;
             $changesingredient = true;
@@ -257,7 +180,56 @@ if(count($testData) > 0 && $testData[0] != ""){
 
             //Add ingredient to recipe
             $recipe->addIngredient($ingredient->getObjectAsArray());
-          }else{
+        }
+      }
+      else{
+        //Same recipe id therefore extend properties
+
+        //Extend object if not null
+        if($KW_Name != null){$recipe->addKeyword($KW_Name);}
+
+        $rating = new Rating($RatingUserId, $BananaAmount, $Comment);
+        //Add only not emty Objects
+        if($rating->getUserId() != null && $rating->getComment() != null && $rating->getRating() != null){
+          $recipe->addRating($rating->getObjectAsArray());
+          
+          //Calculate new rating
+          $recipe->calculateRating();
+        }
+
+        //Only if ingredient exists
+        if($F_ID != null){
+          //Check if new Ingredient
+          if($lastIngredientId != $F_ID){
+            $lastIngredientId = $F_ID;
+            $ingredientindex++;
+            $changesingredient = true;
+
+            //create new Ingredient
+            $ingredient = new Ingredient();
+            $ingredient->setId($F_ID);
+            $ingredient->setDescription($F_Descr);
+            $ingredient->setAmount($IngredientAmount);
+            $ingredient->setUnit($IngredientUnit);
+
+            if($N_ID != null){
+              //new Nutrient
+              $lastNutrientId = $N_ID;
+
+              $nutrient = new Nutrient();
+              $nutrient->setId($N_ID);
+              $nutrient->setDescription($N_Descr);
+              $nutrient->setUnit($N_Unit);
+              $nutrient->setAmount($N_Amount);
+
+              //Add nutrient to ingredient
+              $ingredient->addNutrient($nutrient->getObjectAsArray());
+            }
+
+            //Add ingredient to recipe
+            $recipe->addIngredient($ingredient->getObjectAsArray());
+          }
+          else{
             //TODO extend ingredient and filter NULL
             $changesingredient = false;
             //Same ingredient check new nutrient
@@ -282,10 +254,9 @@ if(count($testData) > 0 && $testData[0] != ""){
 
 
           }
+
+
         }
-
-
-      
       }
 
       //Update object
@@ -328,6 +299,10 @@ if(count($testData) > 0 && $testData[0] != ""){
    $searchArray["message"] = "No input";
    echo json_encode($searchArray);
 }
+
+
+  
+
 
 
 ?>
