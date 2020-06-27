@@ -36,25 +36,27 @@ export class RecipeAdministrationReqService {
   Date() {
     let creation: string;
     creation = this.datePipe.transform(new Date(), 'yyyy-MM-dd  h:mm:ss');
+    console.log(creation);
     return creation;
+    
   }
 
   /////////////////////////////////Http-Request to send new recipe///////////////////////////
   async getCreateRecipe(
-    /*title: string,
+    title: string,
     //picture: File,
     servings: number,
     description: string,
     instruction: string,
     duration: number,
     difficulty: string,
-    //userId: number,
-    keywords: string[],*/
+    userId: number,
+    keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
 
     let params = new HttpParams()
-      /*.set('title', title)
+      .set('title', title)
       //.set('picture', picture.toString())
       .set('servings', servings.toString())
       .set('description', description)
@@ -63,10 +65,10 @@ export class RecipeAdministrationReqService {
       .set('duration', duration.toString())
       .set('difficulty', difficulty)
       .set('certified', '0')
-      .set('lastChange', null);
-    //.set('userId', userId.toString())
-    //.set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'))
-    keywords.forEach((key) => {
+      .set('lastChange', null)
+      .set('userId', userId.toString())
+      .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'));
+    /*keywords.forEach((key) => {
       params = params.append('keywords', this.convertRecipeKeyword(key));
     });*/
     //.set('ingredients', ingredientsDescription.join('|'));
@@ -168,6 +170,36 @@ export class RecipeAdministrationReqService {
       .toPromise();
   }
 
+  async getServerRecipe(
+    title: string,
+    //picture: File,
+    servings: number,
+    description: string,
+    instruction: string,
+    duration: number,
+    difficulty: string,
+    userId: number,
+    keywords: string[],
+    ingredients: Ingredient[]
+  ): Promise<Recipe[]> {
+    await this.getCreateRecipe(title,
+      //picture,
+      servings,
+      description,
+      instruction,
+      duration,
+      difficulty,
+      userId,
+      keywords,
+      ingredients).then((data: Recipe) => {
+      data['recipes'].forEach((value: Recipe) => {
+        this.userRecipe.push(new Recipe(value));
+      });
+    });
+    console.log(this.userRecipe);
+    return this.userRecipe;
+  }
+
   /////////////////////////////////convert keywords to their id///////////////////////////
   convertRecipeKeywordsArray(keywords: string[]): string[] {
     let tempRecipe = keywords;
@@ -185,6 +217,9 @@ export class RecipeAdministrationReqService {
         }
       });
     });
+    keywordsId.filter((value) =>{
+      value !== ""
+    })
     //console.log(keywordsId);
     return keywordsId;
   }
