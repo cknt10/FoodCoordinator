@@ -27,7 +27,7 @@
       </div>
       <div id="ingredientTable">
         <span *ngFor="let ingredient of ingredients">
-          {{ ingredient.description }} {{ ingredient.amount }} {{ ingredient.unit }}
+          {{ ingredient.getDescription() }} {{ ingredient.getAmount() }} {{ ingredient.getUnit() }}
           <!--<button id="remove" (click)="removeIngredient()">
             <mat-icon>close</mat-icon>
           </button>-->
