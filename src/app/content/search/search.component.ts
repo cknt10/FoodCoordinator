@@ -1,9 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, Validator, FormControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
+import { title } from 'process';
+import { count } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -15,7 +17,9 @@ export class SearchComponent implements OnInit {
   ingredients: string[] = [];
   allKeywords: string[] = [];
   options: string[] = [];
-  recipe: Recipe;
+  recipes: Recipe[] = [];
+  recipe: Recipe[] = [];
+  result: Recipe;
   drop = new FormControl();
   error: string;
 
@@ -55,7 +59,14 @@ export class SearchComponent implements OnInit {
     //search recipes if there is one or more values in ingredients and the search area is empty
     if (this.ingredients.length > 0 && this.ingredient.length == 0) {
       //getUserResults returns all recipes which include the stored ingredients
-      console.log(await this.searchReqService.getUserResults(this.ingredients));
+      this.result = await this.searchReqService.getUserResults(
+        this.ingredients
+      );
+      for (let key in this.result['recipe']) {
+        if (this.result['recipe'].hasOwnProperty(key)) {
+          this.recipes.push(this.result['recipe'][key]);
+        }
+      }
     }
     //add valid value in search area to ingredients and return recipes
     else if (
@@ -63,7 +74,15 @@ export class SearchComponent implements OnInit {
       this.options.includes(this.ingredient)
     ) {
       this.addIngredient();
-      console.log(await this.searchReqService.getUserResults(this.ingredients));
+      this.result = await this.searchReqService.getUserResults(
+        this.ingredients
+      );
+
+      for (let key in this.result['recipe']) {
+        if (this.result['recipe'].hasOwnProperty(key)) {
+          this.recipes.push(this.result['recipe'][key]);
+        }
+      }
     }
     //if there is nowhere a value or just an invalid value don't search
     else if (
@@ -72,6 +91,8 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
     }
+
+    console.log(this.recipes);
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////

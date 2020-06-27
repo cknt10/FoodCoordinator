@@ -57,9 +57,11 @@ mat-icon{
   height: 0.5em;
 }
 
-app-search-result{
+.Suchergebnisse{
   display: block;
+  float: left;
   background-color: green($color: #000000);
-  width:50%;
-  height: 50%;
+  width:25%;
+  height: 25%;
 }
+
