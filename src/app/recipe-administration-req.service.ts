@@ -125,7 +125,7 @@ export class RecipeAdministrationReqService {
     let params = new HttpParams()
       .set('id', recipe.getId().toString())
       .set('title', recipe.getTitle())
-      .set('picture', recipe.picture.toString())
+      .set('picture', recipe.getPicture().toString())
       .set('servings', recipe.getServings().toString())
       .set('description', recipe.getDescription())
       .set('instruction', recipe.getInstruction())
