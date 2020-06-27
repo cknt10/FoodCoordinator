@@ -143,7 +143,7 @@ class Format{
 
         //TODO Dustin: Hole alle Formate aus der Datenbank und gebe diese als assoziatives array zurück. Ein beispielt wie dies gemacht wird findest du in
         //classes/recipe.php in der Funktion fetchKeywords
-        $_query = "SELECT Format FROM cookBook";
+        $_query = "SELECT * FROM cookBook";
 
         // prepare query statement
         $_stmt = $this->conn->prepare($_query);
@@ -164,7 +164,11 @@ class Format{
                 // just $name only
                 extract($_row);
                 array_push($_result, array(
-                    "format" => $CB_FORMAT,
+                    "id" => $CB_ID,
+                    "title" => $Designtitle,
+                    "format" => $Format,
+                    "pages" => $Pagenumber,
+                    "price" => $price;
                 ));
 
             }

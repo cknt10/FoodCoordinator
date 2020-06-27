@@ -23,6 +23,7 @@ import { SearchComponent } from './content/search/search.component';
 import { CreateRecipeComponent } from './content/create-recipe/create-recipe.component';
 import { MenuComponent } from './content/menu/menu.component';
 import { MyRecipesComponent } from './content/my-recipes/my-recipes.component';
+import { SearchResultComponent } from './content/search-result/search-result.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { MyRecipesComponent } from './content/my-recipes/my-recipes.component';
     CreateRecipeComponent,
     MenuComponent,
     MyRecipesComponent,
+    SearchResultComponent,
 
   ],
   imports: [
