@@ -3,22 +3,22 @@ import { Ratings } from './ratings';
 import { Nutrient } from './nutrient';
 
 export class Recipe {
-  id: number;
-  title: string;
-  picture: File;
-  servings: number;
-  description: string;
-  instruction: string;
-  createionDate: Date;
-  duration: number;
-  difficulty: string;
-  certified: boolean;
-  lastChangeDate: Date;
-  userId: number;
-  keywords: string[];
-  ratings: Ratings[];
-  ingredients: Ingredient[];
-  nutrients: Nutrient[];
+  private id: number;
+  private title: string;
+  private picture: File;
+  private servings: number;
+  private description: string;
+  private instruction: string;
+  private createionDate: Date;
+  private duration: number;
+  private difficulty: string;
+  private certified: boolean;
+  private lastChangeDate: Date;
+  private userId: number;
+  private keywords: string[];
+  private ratings: Ratings[];
+  private ingredients: Ingredient[];
+  private nutrients: Nutrient[];
 
   constructor(recipe: Recipe) {
     this.id = recipe.id;
