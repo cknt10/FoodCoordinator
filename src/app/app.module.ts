@@ -24,6 +24,7 @@ import { CreateRecipeComponent } from './content/create-recipe/create-recipe.com
 import { MenuComponent } from './content/menu/menu.component';
 import { MyRecipesComponent } from './content/my-recipes/my-recipes.component';
 import { SearchResultComponent } from './content/search-result/search-result.component';
+import { UploadImageComponent } from './upload-image/upload-image.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { SearchResultComponent } from './content/search-result/search-result.com
     MenuComponent,
     MyRecipesComponent,
     SearchResultComponent,
+    UploadImageComponent,
 
   ],
   imports: [
