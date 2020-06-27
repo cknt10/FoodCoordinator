@@ -52,6 +52,7 @@ export class AuthenticationService {
       password
       ).then((data: User) => {
       this.UserData = new User(data['user']);
+      console.log(data['user']);
     }),
       (error => {
         console.log('Auslesen gescheitert');

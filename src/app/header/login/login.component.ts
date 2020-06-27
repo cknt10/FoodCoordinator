@@ -25,8 +25,9 @@ export class LoginComponent implements OnInit {
   async loginUser(){
     console.log('start logging...');
     //add parameter username and password
-    console.log((await this.authenticationService.setUserData(this.username, this.password)).getFirstname());
-    //return user?
+    await this.authenticationService.setUserData(this.username, this.password);
+
+    console.log(this.authenticationService.getUser());
 
     this.loggedIn = true;
 
