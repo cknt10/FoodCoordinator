@@ -3,11 +3,16 @@
   <div class="left">
     <label for="title">Titel:</label><br />
     <input type="text" [(ngModel)]="title" /><br />
+    <label for="difficulty"></label>
+    <input type="text" [(ngModel)]="difficulty" /><br />
     <label for="kurzbeschreibung">kurze Beschreibung:</label><br />
     <input type="text" [(ngModel)]="shortDescription" /><br />
     <label for="stichwort">Stichwort:</label><br />
+    <input type="text" [ngModel]="keyword" />
     <!-- Hier muss das Dropdown für Keywords hin -->
-    <div class="keywords"></div>
+    <div class="keywords">
+      <span *ngFor="let keyword of keywords">{{ keyword }}</span>
+    </div>
     <div class="ingredients">
       <label for="menge">Menge:</label>
       <input type="select" [(ngModel)]="amount" />
