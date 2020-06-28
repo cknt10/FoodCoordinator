@@ -3,6 +3,7 @@ import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
+import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 
 @Component({
   selector: 'app-search-result',
@@ -22,6 +23,7 @@ export class SearchResultComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private searchReqService: SearchReqService,
+    private recipeAdministrationReqService: RecipeAdministrationReqService
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +31,15 @@ export class SearchResultComponent implements OnInit {
   /*async ngOnInit() {
     //console.log(await this.searchReqService.getUserResults());
     console.log(this.searchReqService.getUserResults());
+  }
   }*/
+
+  throwError() {
+    console.log(this.recipeAdministrationReqService.getErrorMessage());
+    //window.alert(this.error);
+  }
+
+
 
 /*getRecipe(): void {
     const title = map.get('title');

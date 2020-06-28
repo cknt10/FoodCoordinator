@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
+import { LoginReqService } from 'src/app/login-req.service';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,7 @@ export class LoginComponent implements OnInit {
   log: string = "Login";
 
   constructor(
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService, 
     ) { }
 
   ngOnInit(): void {
@@ -25,8 +26,7 @@ export class LoginComponent implements OnInit {
   async loginUser(){
     console.log('start logging...');
     //add parameter username and password
-    console.log((await this.authenticationService.setUserData(this.username, this.password)).getFirstname());
-    //return user?
+    console.log((await this.authenticationService.readUserData(this.username, this.password)));
 
     this.loggedIn = true;
 
@@ -36,6 +36,11 @@ export class LoginComponent implements OnInit {
     else{
       this.log = "Login";
     }
+  }
+
+  throwError() {
+    console.log(this.authenticationService.getErrorMessage());
+    //window.alert(this.error);
   }
 
 }
