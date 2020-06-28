@@ -46,7 +46,7 @@ export class PremiumReqService {
 
   Date():string {
     let startDay: string;
-    startDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd  h:mm:ss');
+    startDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
     return startDay;
   }
    /////////////////////////////////method to get keywords as proposition///////////////////////////

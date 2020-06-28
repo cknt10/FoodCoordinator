@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import {formatDate} from '@angular/common';
 
 import {
   HttpClient,
@@ -35,8 +36,9 @@ export class RecipeAdministrationReqService {
   /////////////////////////////////method for current date///////////////////////////
   Date() {
     let creation: string;
-    creation = this.datePipe.transform(new Date(), 'yyyy-MM-dd  h:mm:ss');
+  creation = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
     console.log(creation);
+    console.log
     return creation;
     
   }
