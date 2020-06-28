@@ -20,7 +20,7 @@
 
 <div class="Suchergebnisse" *ngFor="let recipe of recipes">
   <div class="result">
-    <div>{{recipe.id}}</div>
+   <div>{{recipe.id}}</div>
   <div class="cb-btn">Zum Kochbuch hinzuzufügen
     <!-- img-tag for logo (?)-->
     <img src="">
@@ -30,18 +30,18 @@
       <img src="">
   </div>
   <div class="result-title">
-    <p>Titel: {{ recipe.title }} </p>
+   <p>Titel: {{ recipe.title }} </p>
   </div>
   <div class="result-descr">
-      <p>Beschreibung {{ recipe.description }} </p>
+     <p>Beschreibung {{ recipe.description }} </p>
   </div>
   <div class="result-rating">
     <!-- Questioning if ratings is "Note" or "Bewertungen"-->
-      <p> Note: {{ recipe.ratings }} <!--Bewertungen: {{ ratingCount }} --></p>
+     <p> Note: {{ recipe.ratings }} <!--Bewertungen: {{ ratingCount }}--> </p>
   </div>
   <div class="zerti">Zertifikat
     <!-- img-tag for logo (?)-->
       <img src="">
-      <p>{{recipe.certified}}</p>
+     <p>{{recipe.certified}}</p>
   </div>
 </div></div>

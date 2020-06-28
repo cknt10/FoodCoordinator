@@ -18,12 +18,9 @@ export class SearchComponent implements OnInit {
   allKeywords: string[] = [];
   options: string[] = [];
   recipes: Recipe[] = [];
-  result: Recipe;
   drop = new FormControl();
 
-  constructor(
-    private searchReqService: SearchReqService
-  ) {}
+  constructor(private searchReqService: SearchReqService) {}
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
   async ngOnInit() {
@@ -41,9 +38,7 @@ export class SearchComponent implements OnInit {
       window.alert('Wähle bitte einen gültigen Suchbegriff');
     }
     this.ingredient = '';
-    while (this.options.length !== 0) {
-      this.options.shift();
-    }
+    this.clearArray(this.options);
   }
 
   // remove added ingredient in array ingredients at index where the user clicks
@@ -51,24 +46,27 @@ export class SearchComponent implements OnInit {
     this.ingredients.splice(i, 1);
   }
 
-  async getResult(parameter: string[]){
-    /*this.result = await this.searchReqService.getUserResults(
-      parameter
-    );*/
-    for (let key in this.result['recipe']) {
-      if (this.result['recipe'].hasOwnProperty(key)) {
-        this.recipes.push(this.result['recipe'][key]);
+  async getResult(){
+    console.log(
+        await this.searchReqService.getUserServerResult(this.ingredients)
+      );
+      this.recipes = this.searchReqService.getUserResults();
+      console.log(this.recipes);
+    }
+
+    clearArray(array){
+      while (array.length !== 0) {
+        array.shift();
       }
     }
-  }
 
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search() {
+    this.clearArray(this.recipes);
     //search recipes if there is one or more values in ingredients and the search area is empty
     if (this.ingredients.length > 0 && this.ingredient.length == 0) {
       //getUserResults returns all recipes which include the stored ingredients
-      this.getResult(this.ingredients);
-      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
+      this.getResult();
     }
     //add valid value in search area to ingredients and return recipes
     else if (
@@ -76,8 +74,7 @@ export class SearchComponent implements OnInit {
       this.options.includes(this.ingredient)
     ) {
       this.addIngredient();
-      this.getResult(this.ingredients);
-      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
+      this.getResult();
     }
     //if there is nowhere a value or just an invalid value don't search
     else if (
@@ -86,7 +83,7 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
     }
-    console.log(this.recipes);
+    //console.log(this.recipes);
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
