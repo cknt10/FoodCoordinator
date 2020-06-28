@@ -54,7 +54,8 @@ export class SearchComponent implements OnInit {
     );
     this.recipes = this.searchReqService.getUserResults();
     //this.throwError();
-    console.log(this.recipes);
+    //show rating
+    console.log( this.recipes[0].getRatings()[2]);
   }
 
   clearArray(array) {
