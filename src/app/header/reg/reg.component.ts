@@ -37,22 +37,26 @@ export class RegComponent implements OnInit {
   }
 
   async regUser() {
-    console.log(
-      (
-        await this.authenticationReqService.readUserData(
-          this.username,
-          this.password,
-          this.firstname,
-          this.name,
-          this.gender,
-          this.street,
-          this.housenumber.toString(),
-          this.postalcode.toString(),
-          this.city.toString(),
-          this.birthday.toString(),
-          this.email
-        )
-      ).getFirstname()
-    );
+    try {
+      console.log(
+        (
+          await this.authenticationReqService.readUserData(
+            this.username,
+            this.password,
+            this.firstname,
+            this.name,
+            this.gender,
+            this.street,
+            this.housenumber.toString(),
+            this.postalcode.toString(),
+            this.city.toString(),
+            this.birthday.toString(),
+            this.email
+          )
+        ).getFirstname()
+      );
+    } catch {
+      window.alert("Bitte füllen Sie alle Felder aus!");
+    }
   }
 }
