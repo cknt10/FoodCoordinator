@@ -57,11 +57,23 @@ mat-icon{
   height: 0.5em;
 }
 
-.Suchergebnisse{
-  display: block;
-  float: left;
-  border: solid;
-  width:25%;
+.result{
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 5%;
+  background-color: white;
+  width:90%;
   height: auto;
 }
 
+.cb-btn{
+  width: 10%;
+  margin-left: 2%;
+}
+
+.result-img, .result-title, .result-descr, .result-rating, .certi{
+  width:15%;
+  margin-left: 2%;
+}

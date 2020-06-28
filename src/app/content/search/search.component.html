@@ -18,8 +18,7 @@
   <button id="find" mat-raised-button (click)="search()">let's go</button>
 </div>
 
-<div class="Suchergebnisse" *ngFor="let recipe of recipes">
-  <div class="result">
+  <div class="result" *ngFor="let recipe of recipes">
    <div>{{recipe.id}}</div>
   <div class="cb-btn">Zum Kochbuch hinzuzufügen
     <!-- img-tag for logo (?)-->
@@ -36,12 +35,16 @@
      <p>Beschreibung {{ recipe.description }} </p>
   </div>
   <div class="result-rating">
-    <!-- Questioning if ratings is "Note" or "Bewertungen"-->
-     <p> Note: {{ recipe.ratings }} <!--Bewertungen: {{ ratingCount }}--> </p>
+    <p> Note: {{ recipe.ratings }} </p>
   </div>
-  <div class="zerti">Zertifikat
+  <div class="result-rating-count">
+    <p> Anzahl Bewertungen: {{ countRating }} </p>
+ </div>
+  <div class="certi">Zertifikat
     <!-- img-tag for logo (?)-->
       <img src="">
      <p>{{recipe.certified}}</p>
   </div>
-</div></div>
+</div>
+
+

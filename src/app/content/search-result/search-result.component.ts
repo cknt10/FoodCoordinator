@@ -11,14 +11,7 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
   styleUrls: ['./search-result.component.scss']
 })
 export class SearchResultComponent implements OnInit {
-  @Input() recipes: Recipe;
-  results: [];
-  title: string;
-  description: string;
-  ratings: number;
-  ratingCount: number;
-  imgSrc: string;
-  certified: boolean;
+  results: Recipe[];
 
   constructor(
     private route: ActivatedRoute,

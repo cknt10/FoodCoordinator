@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
-import { title } from 'process';
-import { count } from 'rxjs/operators';
+
 
 @Component({
   selector: 'app-search',
@@ -19,6 +18,8 @@ export class SearchComponent implements OnInit {
   options: string[] = [];
   recipes: Recipe[] = [];
   drop = new FormControl();
+  rating: number;
+  countRating: number;
 
   constructor(private searchReqService: SearchReqService) {}
 
@@ -35,6 +36,7 @@ export class SearchComponent implements OnInit {
     if (this.options.includes(this.ingredient)) {
       this.ingredients.push(this.ingredient);
     } else {
+      this.throwError();
       window.alert('Wähle bitte einen gültigen Suchbegriff');
     }
     this.ingredient = '';
@@ -46,19 +48,20 @@ export class SearchComponent implements OnInit {
     this.ingredients.splice(i, 1);
   }
 
-  async getResult(){
+  async getResult() {
     console.log(
-        await this.searchReqService.getUserServerResult(this.ingredients)
-      );
-      this.recipes = this.searchReqService.getUserResults();
-      console.log(this.recipes);
-    }
+      await this.searchReqService.getUserServerResult(this.ingredients)
+    );
+    this.recipes = this.searchReqService.getUserResults();
+    //this.throwError();
+    console.log(this.recipes);
+  }
 
-    clearArray(array){
-      while (array.length !== 0) {
-        array.shift();
-      }
+  clearArray(array) {
+    while (array.length !== 0) {
+      array.shift();
     }
+  }
 
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search() {
@@ -83,7 +86,7 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
     }
-    //console.log(this.recipes);
+    console.log(this.countRating)
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
@@ -104,7 +107,15 @@ export class SearchComponent implements OnInit {
   }
 
   throwError() {
-    console.log(this.searchReqService.getErrorMessage());
-    //window.alert(this.error);
+    window.alert
+    (this.searchReqService.getErrorMessage());
+  }
+
+  setCountRating(number){
+    this.countRating = this.recipes.length["rating"];
+  }
+
+  getCountRating(): number{
+    return this.countRating;
   }
 }

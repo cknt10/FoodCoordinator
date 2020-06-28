@@ -8,10 +8,9 @@ import { SearchParameter } from 'src/app/searchParameter';
 @Component({
   selector: 'app-create-recipe',
   templateUrl: './create-recipe.component.html',
-  styleUrls: ['./create-recipe.component.scss']
+  styleUrls: ['./create-recipe.component.scss'],
 })
 export class CreateRecipeComponent implements OnInit {
-
   title: string;
   shortDescription: string;
   keyword: string;
@@ -29,14 +28,13 @@ export class CreateRecipeComponent implements OnInit {
 
   serverIngredients: SearchParameter[] = [];
   serverKeywords: SearchParameter[] = [];
-  allParamsOfIngredient:Ingredient;
-
+  allParamsOfIngredient: Ingredient;
 
   constructor(
-    private recipeAdministrationReqService: RecipeAdministrationReqService, 
-    private searchReqService: SearchReqService, 
+    private recipeAdministrationReqService: RecipeAdministrationReqService,
+    private searchReqService: SearchReqService,
     private authenticationService: AuthenticationService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     await Promise.all([
@@ -44,71 +42,77 @@ export class CreateRecipeComponent implements OnInit {
       this.searchReqService.getServerKeywords(),
     ]).then((data) => {
       this.serverIngredients = data['0'];
-        this.serverKeywords = data['1'];
+      this.serverKeywords = data['1'];
     });
-    
+
     console.log(this.serverIngredients);
     console.log(this.serverKeywords);
 
-    //funktioniert nicht beim neuladen der seite 
- /*this.serverIngredients = this.searchReqService.getIngredients();
+    //funktioniert nicht beim neuladen der seite
+    /*this.serverIngredients = this.searchReqService.getIngredients();
       this.serverKeywords = this.searchReqService.getKeywords();
       console.log(this.serverIngredients);
   console.log(this.serverKeywords);*/
   }
 
-  addIngredient(){
+  addIngredient() {
     let idIngredient: number;
-    if (this.ingredient != null && this.amount != null && this.unit != null){
-      idIngredient = this.recipeAdministrationReqService.convertRecipeIngredient(this.ingredient);
+    if (this.ingredient != null && this.amount != null && this.unit != null) {
+      idIngredient = this.recipeAdministrationReqService.convertRecipeIngredient(
+        this.ingredient
+      );
       this.allParamsOfIngredient = new Ingredient(
-        idIngredient, 
-        this.ingredient, 
-        this.amount, 
-        this.unit, 
-        null)
-       this.ingredient = null;
-       this.amount = null;
-       this.unit = null;
+        idIngredient,
+        this.ingredient,
+        this.amount,
+        this.unit,
+        null
+      );
+      this.ingredient = null;
+      this.amount = null;
+      this.unit = null;
 
-       this.ingredients.push(this.allParamsOfIngredient);
-       this.allParamsOfIngredient= null;
-     }
-     else {
-       window.alert("Bitte füge eine Zutat hinzu!");
-     }
-   }
+      this.ingredients.push(this.allParamsOfIngredient);
+      this.allParamsOfIngredient = null;
+    } else {
+      window.alert('Bitte füge eine Zutat hinzu!');
+    }
+  }
 
-   addKeyword(){
-     if(this.keyword != null){
+  addKeyword() {
+    if (this.keyword != null) {
       this.keywords.push(this.keyword);
-      this.keyword = "";
-     }else {
-       window.alert("Bitte füge ein Stichwort hinzu!");
-     }
-   }
+      this.keyword = '';
+    } else {
+      window.alert('Bitte füge ein Stichwort hinzu!');
+    }
+  }
 
-   async createRecipe(){
-     this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
-     try{
-     console.log(await this.recipeAdministrationReqService.getCreateRecipe(
-      this.title,
-      //this.picture,
-       this.servings,
-       this.shortDescription,
-       this.description,
-       this.duration,
-       this.difficulty,
-       this.authenticationService.getUser().getId(),
-       this.keywords,
-       this.ingredients)
-     )}catch{
-      window.alert("Bitte füllen Sie alle Felder aus!");
-   }
+  async createRecipe() {
+    this.recipeAdministrationReqService.convertRecipeKeywordsArray(
+      this.keywords
+    );
+    try {
+      console.log(
+        await this.recipeAdministrationReqService.getCreateRecipe(
+          this.title,
+          //this.picture,
+          this.servings,
+          this.shortDescription,
+          this.description,
+          this.duration,
+          this.difficulty,
+          this.authenticationService.getUser().getId(),
+          this.keywords,
+          this.ingredients
+        )
+      );
+    } catch {
+      window.alert('Bitte füllen Sie alle Felder aus!');
+    }
   }
   throwError() {
     console.log(this.recipeAdministrationReqService.getErrorMessage());
     //window.alert(this.error);
   }
-
 }
