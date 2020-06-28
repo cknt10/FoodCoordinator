@@ -9,6 +9,7 @@ import { SearchParameter } from './searchParameter';
 
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Ingredient } from './ingredient';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,8 @@ export class SearchReqService {
   private serverIngredients: SearchParameter[];
   private serverKeywords: SearchParameter[];
   private filteredKeywords: string[] = [];
+  private userInputForSearch: string[] = [];
+  private userRecipes: Recipe[] = [];
 
   private errorValue: string;
 
@@ -41,6 +44,14 @@ export class SearchReqService {
   /////////////////////////////////method to display ingredients with id///////////////////////////
   getIngredients(): SearchParameter[] {
     return this.serverIngredients;
+  }
+
+  userInput(): string[]{
+    return this.userInputForSearch;
+  }
+
+  getUserResults(){
+    return this.userRecipes;
   }
 
   /////////////////////////////////method to filter duplicate keywords///////////////////////////
@@ -94,18 +105,20 @@ export class SearchReqService {
   }
 
   /////////////////////////////////Http-Request method to get ingredients as proposition///////////////////////////
-  async fetchServerSearchPropositionForIngredients() {
-    const requestLink = 'http://xcsd.ddns.net/api/backend/search/getingredients.php';
+  async fetchServerSearchPropositionForIngredients(): Promise<Ingredient> {
+    const requestLink =
+      'http://xcsd.ddns.net/api/backend/search/getingredients.php';
 
     return this.http
-      .get<string>(requestLink)
+      .get<Ingredient>(requestLink)
       .pipe(catchError(this.handleError))
       .toPromise();
   }
 
   /////////////////////////////////Http-Request method to get keywords as proposition///////////////////////////
   async fetchServerSearchPropositionForKeywords(): Promise<string> {
-    const requestLink = 'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
+    const requestLink =
+      'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
 
     return this.http
       .get<string>(requestLink)
@@ -114,10 +127,10 @@ export class SearchReqService {
   }
 
   /////////////////////////////////Http-Request method to send keywords and get results of the search//////////////////////////
-  async getUserResults(userSearchInputs: string[]): Promise<Recipe> {
+  async fetchUserServerResults(userSearchInputs: string[]): Promise<Recipe> {
     console.log('server request with keywords');
 
-   // console.log(userSearchInputs);
+    // console.log(userSearchInputs);
 
     let params = new HttpParams().set('keys', userSearchInputs.join('|'));
 
@@ -133,10 +146,26 @@ export class SearchReqService {
       .toPromise();
   }
 
+  async getUserServerResult(userSearchInputs: string[]){
+    await this.fetchUserServerResults(userSearchInputs).then((data) => {
+      data['recipe'].forEach((value: Recipe) =>{
+      this.userRecipes.push(new Recipe(value));
+      }) 
+    });
+    return this.serverIngredients;
+  }
+
+  ///////////////////////////////save User search Params//////////////////////////
+ /* saveUserInput(value: string[]){
+    this.userInputForSearch = value;
+  }*/
+
   /////////////////////////////////analyze kind of error//////////////////////////
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unbekannter Fehler!';
     if (error.error instanceof ErrorEvent) {
+
+
       // Client-side errors
       errorMessage = `Error: ${error.error.message}`;
     } else {

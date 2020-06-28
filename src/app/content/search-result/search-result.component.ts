@@ -25,8 +25,11 @@ export class SearchResultComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-
   }
+  /*async ngOnInit() {
+    //console.log(await this.searchReqService.getUserResults());
+    console.log(this.searchReqService.getUserResults());
+  }*/
 
 /*getRecipe(): void {
     const title = map.get('title');

@@ -146,6 +146,22 @@ class Premium{
 
         return $this;
     }
+
+    /**
+     * Returns this Objekt as Array
+     * 
+     * @return array
+     */
+    public function getObjectAsArray()
+    {
+        return array(
+            "id" => $this->id,
+            "description" => $this->description,
+            "duration" => $this->duration,
+            "netprice" => $this->netprice,
+            "startDate" => $this->startDate,
+        );
+    }
 }
 
 ?>

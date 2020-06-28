@@ -168,12 +168,27 @@ class Format{
                     "title" => $Designtitle,
                     "format" => $Format,
                     "pages" => $Pagenumber,
-                    "price" => $price;
+                    "price" => $price
                 ));
 
             }
         }
         return empty($_result) ? null : $_result;
+    }
+
+    /**
+     * Returns this Object as Array
+     * 
+     * @return array
+     */
+    public function getObjectAsArray()
+    {
+        return array(
+            "id" => $this->id,
+            "format" => $this->format,
+            "pageNumber" => $this->pageNumber,
+            "title" => $this->designTitle
+        );
     }
 }
 

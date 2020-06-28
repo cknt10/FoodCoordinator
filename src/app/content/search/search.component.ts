@@ -22,8 +22,7 @@ export class SearchComponent implements OnInit {
   drop = new FormControl();
 
   constructor(
-    private searchReqService: SearchReqService,
-    private recipeAdministrationReqService: RecipeAdministrationReqService
+    private searchReqService: SearchReqService
   ) {}
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
@@ -53,9 +52,9 @@ export class SearchComponent implements OnInit {
   }
 
   async getResult(parameter: string[]){
-    this.result = await this.searchReqService.getUserResults(
+    /*this.result = await this.searchReqService.getUserResults(
       parameter
-    );
+    );*/
     for (let key in this.result['recipe']) {
       if (this.result['recipe'].hasOwnProperty(key)) {
         this.recipes.push(this.result['recipe'][key]);
@@ -69,6 +68,7 @@ export class SearchComponent implements OnInit {
     if (this.ingredients.length > 0 && this.ingredient.length == 0) {
       //getUserResults returns all recipes which include the stored ingredients
       this.getResult(this.ingredients);
+      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
     }
     //add valid value in search area to ingredients and return recipes
     else if (
@@ -77,6 +77,7 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
       this.getResult(this.ingredients);
+      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
     }
     //if there is nowhere a value or just an invalid value don't search
     else if (

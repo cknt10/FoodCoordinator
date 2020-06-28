@@ -5,22 +5,22 @@ header("Content-Type: application/json; charset=UTF-8");
   
 // include database and object files
 include_once '../sql/coni.php';
-include_once '../../classes/reguser.php';
+include_once '../../classes/favourite.php';
 
 $database = new Connection();
 $db = $database->connection();
 
 
-$postcode = "35510";
-
-$user = new RegUser();
+$user = new Favourite();
 $user->connection($db);
+
+
 $result = array();
 $result["message"] = "";
-$result["cities"] = array();
+$result["favourites"] = array();
 
 if($postcode != ""){
-    $result["cities"] = $user->fetchLocations($postcode);
+    $result["favourites"] = $user->fetchLocations($postcode);
     
     if($result["cities"] != null){
         // set response code - 200 OK

@@ -1,19 +1,24 @@
+import { Ingredient } from './ingredient';
+import { Ratings } from './ratings';
+import { Nutrient } from './nutrient';
+
 export class Recipe {
-  id: number;
-  title: string;
-  picture: File;
-  servings: number;
-  description: string;
-  instruction: string;
-  createionDate: Date;
-  duration: number;
-  difficulty: string;
-  certified: boolean;
-  lastChangeDate: Date;
-  userId: number;
-  keywords: string[];
-  ratings: number;
-  ingredients: string[];
+  private id: number;
+  private title: string;
+  private picture: File;
+  private servings: number;
+  private description: string;
+  private instruction: string;
+  private createionDate: Date;
+  private duration: number;
+  private difficulty: string;
+  private certified: boolean;
+  private lastChangeDate: Date;
+  private userId: number;
+  private keywords: string[];
+  private ratings: Ratings[];
+  private ingredients: Ingredient[];
+  private nutrients: Nutrient[];
 
   constructor(recipe: Recipe) {
     this.id = recipe.id;
@@ -31,126 +36,143 @@ export class Recipe {
     this.keywords = recipe.keywords;
     this.ratings = recipe.ratings;
     this.ingredients = recipe.ingredients;
+    this.nutrients = recipe.nutrients;
   }
 
-  getId() {
+  getId(): number {
     return this.id;
   }
 
-  getTitle() {
+  getTitle(): string {
     return this.title;
   }
 
-  getPicture() {
+  getPicture(): File {
     return this.picture;
   }
 
-  getServings() {
+  getServings(): number {
     return this.servings;
   }
 
-  getDescription() {
+  getDescription(): string {
     return this.description;
   }
 
-  getInstruction() {
+  getInstruction(): string {
     return this.instruction;
   }
 
-  getCreateionDate() {
+  getCreateionDate(): Date {
     return this.createionDate;
   }
 
-  getDuration() {
+  getDuration(): number {
     return this.duration;
   }
 
-  getDifficulty() {
+  getDifficulty(): string {
     return this.difficulty;
   }
 
-  getCertified() {
-    return this.certified;
+  getCertified(): number {
+    if (this.certified == true){
+      return 1;
+    }else{
+      return 0;
+    }
   }
 
-  getLastChangeDate() {
+  getLastChangeDate(): Date {
     return this.lastChangeDate;
   }
 
-  getUserId() {
+  getUserId(): number {
     return this.userId;
   }
 
-  getKeywords() {
+  getKeywords(): string[] {
     return this.keywords;
   }
 
-  getRatings() {
+  getRatings(): Ratings[] {
     return this.ratings;
   }
 
-  getIngredients() {
+  getIngredients(): Ingredient[] {
     return this.ingredients;
+  }
+
+  getNutrients(): Nutrient[] {
+    return this.nutrients;
   }
 
   setId( id: number) {
-    return this.id;
+     this.id = id;
   }
 
   setTitle(title: string) {
-    return this.title;
+    this.title = title;
   }
 
   setPicture(picture: File) {
-    return this.picture;
+     this.picture = picture;
   }
 
   setServings(servings: number) {
-    return this.servings;
+   this.servings = servings;
   }
 
   setDescription(description: string) {
-    return this.description;
+    this.description = description;
   }
 
   setInstruction(instruction: string) {
-    return this.instruction;
+    this.instruction = instruction;
   }
 
   setCreateionDate(createionDate: Date) {
-    return this.createionDate;
+    this.createionDate = createionDate;
   }
 
   setDuration(duration: number) {
-    return this.duration;
+    this.duration = duration;
   }
 
   setDifficulty(difficulty: string) {
-    return this.difficulty;
+    this.difficulty = difficulty;
   }
 
   setCertified(certified: number) {
-    return this.certified;
+    if(certified == 1){
+      this.certified = true;
+    }else{
+      this.certified = false;
+    }
   }
 
   setLastChangeDate(lastChangeDate: Date) {
-    return this.lastChangeDate;
+     this.lastChangeDate = lastChangeDate;
   }
 
   setUserId(userId: number) {
-    return this.userId;
+     this.userId = userId;
   }
 
   setKeywords(keywords: string) {
-    return this.keywords;
+     this.keywords.push(keywords);
   }
 
-  setRatings(ratings: number) {
-    return this.ratings;
+  setRatings(ratings: Ratings) {
+     this.ratings.push(ratings);
   }
 
-  setIngredients( ingredients: string) {
-    return this.ingredients;
+  setIngredients( ingredients: Ingredient[]) {
+    this.ingredients = ingredients;
+  }
+
+  setNutrient(nutrient: Nutrient[]){
+    this.nutrients = nutrient;
   }
 
   cleanRecipe() {
@@ -169,5 +191,6 @@ export class Recipe {
     this.keywords = null;
     this.ratings = null;
     this.ingredients = null;
+    this.nutrients = null;
   }
 }
