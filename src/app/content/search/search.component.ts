@@ -18,10 +18,8 @@ export class SearchComponent implements OnInit {
   allKeywords: string[] = [];
   options: string[] = [];
   recipes: Recipe[] = [];
-  recipe: Recipe[] = [];
   result: Recipe;
   drop = new FormControl();
-  error: string;
 
   constructor(
     private searchReqService: SearchReqService,
@@ -54,19 +52,23 @@ export class SearchComponent implements OnInit {
     this.ingredients.splice(i, 1);
   }
 
+  async getResult(parameter: string[]){
+    this.result = await this.searchReqService.getUserResults(
+      parameter
+    );
+    for (let key in this.result['recipe']) {
+      if (this.result['recipe'].hasOwnProperty(key)) {
+        this.recipes.push(this.result['recipe'][key]);
+      }
+    }
+  }
+
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search() {
     //search recipes if there is one or more values in ingredients and the search area is empty
     if (this.ingredients.length > 0 && this.ingredient.length == 0) {
       //getUserResults returns all recipes which include the stored ingredients
-      this.result = await this.searchReqService.getUserResults(
-        this.ingredients
-      );
-      for (let key in this.result['recipe']) {
-        if (this.result['recipe'].hasOwnProperty(key)) {
-          this.recipes.push(this.result['recipe'][key]);
-        }
-      }
+      this.getResult(this.ingredients);
     }
     //add valid value in search area to ingredients and return recipes
     else if (
@@ -74,15 +76,7 @@ export class SearchComponent implements OnInit {
       this.options.includes(this.ingredient)
     ) {
       this.addIngredient();
-      this.result = await this.searchReqService.getUserResults(
-        this.ingredients
-      );
-
-      for (let key in this.result['recipe']) {
-        if (this.result['recipe'].hasOwnProperty(key)) {
-          this.recipes.push(this.result['recipe'][key]);
-        }
-      }
+      this.getResult(this.ingredients);
     }
     //if there is nowhere a value or just an invalid value don't search
     else if (
@@ -91,7 +85,6 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
     }
-
     console.log(this.recipes);
   }
 
@@ -110,10 +103,5 @@ export class SearchComponent implements OnInit {
         this.options.splice(i);
       }
     }
-  }
-
-  throwError() {
-    console.log(this.searchReqService.getErrorMessageUser());
-    //window.alert(this.error);
   }
 }
