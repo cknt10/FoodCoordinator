@@ -19,5 +19,9 @@ export class MyRecipesComponent implements OnInit {
     await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
   }
 
+  throwError() {
+    console.log(this.recipeAdministrationService.getErrorMessage());
+    //window.alert(this.error);
+  }
 
 }

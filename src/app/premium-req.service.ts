@@ -4,10 +4,7 @@ import { DatePipe } from '@angular/common';
 import {
   HttpClient,
   HttpParams,
-  HttpErrorResponse,
 } from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { AuthenticationService } from './authentication.service';
 import { User } from './User';
@@ -26,8 +23,11 @@ export class PremiumReqService {
     private datePipe: DatePipe
   ) { }
 
+  getErrorMessage(){
+    return this.errorValue;
+  }
+
   redeemGift(gift: string){
-      console.log('server request with keywords');
   
       let params = new HttpParams()
         .set('gift', this.authenticationReqService.getUser().toString());
@@ -36,11 +36,9 @@ export class PremiumReqService {
   
       const requestLink = '';
   
-      console.log('request finished');
-  
       return this.http
         .get<User>(requestLink, { params: params })
-        .pipe(catchError(this.handleError))
+        //.pipe(catchError(this.handleError))
         .toPromise();
     }
 
@@ -53,7 +51,9 @@ export class PremiumReqService {
    async getServerGift(): Promise<string[]> {
     await this.fetchServerGift().then((data) => {
       this.gift = data['gift'];
-    });
+    }).catch (error => {
+      this.handleErrorGift(error);
+      });
     return this.gift;
   }
 
@@ -63,33 +63,31 @@ export class PremiumReqService {
 
     return this.http
       .get<string>(requestLink)
-      .pipe(catchError(this.handleError))
+      //.pipe(catchError(this.handleError))
       .toPromise();
   }
 
-
-  handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unbekannter Fehler!';
-    if (error.error instanceof ErrorEvent) {
+  ///////////////////////////////////////method to handle error for cities//////////////////////////////////////////////////////////////////
+  handleErrorGift(error: Response) {
+    if (error instanceof ErrorEvent) {
       // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
     } else {
       // Server-side errors
-      if (error.status == 401) {
+      if (error.status === 401) {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
-      if (error.status == 403) {
-        this.errorValue = `Keine Ahnung.`;
+      if (error.status === 403) {
+        this.errorValue = `Es tut uns leid, ${this.authenticationReqService.getUser().getUsername()}, das Geschenk kann nicht ausgestellt werden`;
       }
-      if (error.status == 404) {
-        this.errorValue = `Leider wurden keine Geschenke gefunden.`;
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, ${this.authenticationReqService.getUser().getUsername()}, das Geschenk wurde nicht gefunden`;
       }
-      if (error.status == 500) {
-        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
       }
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    return throwError(errorMessage);
+    return this.errorValue;
   }
 
 

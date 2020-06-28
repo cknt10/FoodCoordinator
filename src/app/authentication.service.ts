@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoginReqService } from './login-req.service';
-import { throwError } from 'rxjs';
 import { User } from './User';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,8 +11,7 @@ export class AuthenticationService {
   private errorValue: string;
 
   constructor(
-    private reqService: LoginReqService,
-    private http: HttpClient
+    private reqService: LoginReqService
   ) {}
 
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////
@@ -24,7 +20,7 @@ export class AuthenticationService {
     password: string
     ) {
     if (this.UserData == null) {
-      await this.setUserData(
+      await this.readUserData(
         username,
         password
         );
@@ -40,27 +36,6 @@ export class AuthenticationService {
   //////////////////////////////////////////////////display error message for the user/////////////////////////////////////////////////////////
   getErrorMessage(){
     return this.errorValue;
-  }
-
- ///////////////////////////////////////////////////////////set user data////////////////////////////////////////////////////////////////////////////
-  async setUserData(
-    username: string,
-    password: string
-    ): Promise<User> {
-    await this.reqService.getServerLoginData(
-      username,
-      password
-      ).then((data: User) => {
-      this.UserData = new User(data['user']);
-      console.log(data['user']);
-    }),
-      (error => {
-        console.log('Auslesen gescheitert');
-        return this.handleError(error);
-      });
-
-
-    return this.UserData;
   }
 
   ///////////////////////////////////////////////////get user data with login and registration////////////////////////////////////////////////////////
@@ -92,14 +67,12 @@ export class AuthenticationService {
     await this.reqService.getServerLoginData(
       username,
       password
-      ).then((data: User) => {
+      )
+      .then((data: User) => {
       this.UserData = new User(data['user']);
-
-      console.log(this.UserData);
-    }),
-      (error => {
-        console.log('Auslesen gescheitert');
-        return this.handleError(error);
+    })
+    .catch (error => {
+      this.handleErrorLogin(error);
       });
 
     }else{
@@ -117,44 +90,57 @@ export class AuthenticationService {
         email
         ).then((data: User) => {
         this.UserData = new User(data['user']);
-
-        console.log(this.UserData);
-
-    }),
-
-    (error => {
-      console.log('Auslesen gescheitert');
-      return this.handleError(error);
-    });
+    }).catch (error => {
+      this.handleErrorLogin(error);
+      });
+    }
 
     return this.UserData;
-  }
+
 }
 
-/////////////////////////////////////////////analize server Errors////////////////////////////////////
-handleError(error: HttpErrorResponse) {
-  let errorMessage = 'Unknown error!';
-  if (error.error instanceof ErrorEvent) {
+/////////////////////////////////////////////analize server Errors for login////////////////////////////////////
+handleErrorLogin(error: Response) {
+  if (error instanceof ErrorEvent) {
     // Client-side errors
-    errorMessage = `Error: ${error.error.message}`;
-  } else {
+   this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+  }
     // Server-side errors
-    if (error.status == 401) {
+    if (error.status === 401) {
       this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
     }
-    if (error.status == 403) {
+    if (error.status === 403) {
       this.errorValue = `Der Benutzername exisitert bereits.`;
     }
-    if (error.status == 404) {
+    if (error.status === 404) {
       this.errorValue = `Falscher Benutzername oder falsches Passwort`;
     }
-    if (error.status == 500) {
-      this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+    if (error.status === 500) {
+      this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
     }
-    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
-  }
-  return throwError(errorMessage);
+  return this.errorValue;
 }
 
+/////////////////////////////////////////////analize server Errors for registration////////////////////////////////////
+handleErrorRegistration(error: Response) {
+  if (error instanceof ErrorEvent) {
+    // Client-side errors
+   this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+  }
+  // Server-side errors
+  if (error.status === 401) {
+    this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+  }
+  if (error.status === 403) {
+    this.errorValue = `Der Benutzername oder  Email-Adresse ist bereits vergeben.`;
+  }
+  if (error.status === 404) {
+    this.errorValue = `Registirerung fehlgeschalgen. Bitte versuchen Sie es später noch mal`;
+  }
+  if (error.status === 500) {
+    this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+  }
+return this.errorValue;
+}
 
 }

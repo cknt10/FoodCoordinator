@@ -90,6 +90,7 @@ export class CreateRecipeComponent implements OnInit {
 
    async createRecipe(){
      this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
+     try{
      console.log(await this.recipeAdministrationReqService.getCreateRecipe(
       this.title,
       //this.picture,
@@ -101,8 +102,13 @@ export class CreateRecipeComponent implements OnInit {
        this.authenticationService.getUser().getId(),
        this.keywords,
        this.ingredients)
-     );
-  
+     )}catch{
+      window.alert("Bitte füllen Sie alle Felder aus!");
    }
+  }
+  throwError() {
+    console.log(this.recipeAdministrationReqService.getErrorMessage());
+    //window.alert(this.error);
+  }
 
 }

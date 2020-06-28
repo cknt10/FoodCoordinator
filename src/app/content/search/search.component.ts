@@ -89,7 +89,7 @@ export class SearchComponent implements OnInit {
   }
 
   throwError() {
-    console.log(this.searchReqService.getErrorMessageUser());
+    console.log(this.searchReqService.getErrorMessage());
     //window.alert(this.error);
   }
 }
