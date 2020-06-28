@@ -59,4 +59,13 @@ export class RegComponent implements OnInit {
       window.alert("Bitte füllen Sie alle Felder aus!");
     }
   }
+
+  throwError() {
+    console.log(this.authenticationReqService.getErrorMessage());
+    //window.alert(this.error);
+
+    //for cities if there don't display
+    console.log(this.loginReqService.getErrorMessage());
+    //window.alert(this.error);
+  }
 }

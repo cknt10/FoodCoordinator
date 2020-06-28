@@ -16,7 +16,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService, 
-    private loginReqService: LoginReqService
     ) { }
 
   ngOnInit(): void {
@@ -28,8 +27,6 @@ export class LoginComponent implements OnInit {
     console.log('start logging...');
     //add parameter username and password
     console.log((await this.authenticationService.readUserData(this.username, this.password)));
-    //return user?
-    console.log(this.authenticationService.getErrorMessage());
 
     this.loggedIn = true;
 
@@ -39,6 +36,11 @@ export class LoginComponent implements OnInit {
     else{
       this.log = "Login";
     }
+  }
+
+  throwError() {
+    console.log(this.authenticationService.getErrorMessage());
+    //window.alert(this.error);
   }
 
 }

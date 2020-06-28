@@ -106,5 +106,9 @@ export class CreateRecipeComponent implements OnInit {
       window.alert("Bitte füllen Sie alle Felder aus!");
    }
   }
+  throwError() {
+    console.log(this.recipeAdministrationReqService.getErrorMessage());
+    //window.alert(this.error);
+  }
 
 }
