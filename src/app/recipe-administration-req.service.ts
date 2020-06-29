@@ -183,7 +183,9 @@ export class RecipeAdministrationReqService {
       ingredients
     )
       .then((data: Recipe) => {
-        this.userRecipe = data['recipe'];
+        data['recipe'].forEach((value: Recipe) => {
+          this.userRecipes.push(new Recipe(value));
+        });
       })
       .catch((error) => {
         this.handleErrorCreateRecipe(error);
@@ -196,7 +198,9 @@ export class RecipeAdministrationReqService {
   async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
     await this.getServerChangeRecipe(recipe)
       .then((data: Recipe) => {
-        this.userRecipe = new Recipe(data['recipe']);
+        data['recipe'].forEach((value: Recipe) => {
+          this.userRecipes.push(new Recipe(value));
+        });
       })
       .catch((error) => {
         this.handleErrorChangeRecipe(error);

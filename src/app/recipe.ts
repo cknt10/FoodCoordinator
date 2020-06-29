@@ -1,6 +1,6 @@
 import { Ingredient } from './ingredient';
 import { Ratings } from './ratings';
-import { Nutrient } from './nutrient';
+
 
 export class Recipe {
   private id: number;
@@ -16,10 +16,9 @@ export class Recipe {
   private lastChangeDate: Date;
   private userId: number;
   private keywords: string[];
-  private rating: number;
+  private rating: Float32Array;
   private ratings: Ratings[];
   private ingredients: Ingredient[];
-  private nutrients: Nutrient[];
 
   constructor(recipe: Recipe) {
     this.id = recipe.id;
@@ -38,7 +37,6 @@ export class Recipe {
     this.rating = recipe.rating;
     this.ratings = recipe.ratings;
     this.ingredients = recipe.ingredients;
-    this.nutrients = recipe.nutrients;
   }
 
   getId(): number {
@@ -97,7 +95,7 @@ export class Recipe {
     return this.keywords;
   }
 
-  getRating(): number{
+  getRating(): Float32Array{
     return this.rating;
   }
 
@@ -107,10 +105,6 @@ export class Recipe {
 
   getIngredients(): Ingredient[] {
     return this.ingredients;
-  }
-
-  getNutrients(): Nutrient[] {
-    return this.nutrients;
   }
 
   setId( id: number) {
@@ -177,10 +171,6 @@ export class Recipe {
     this.ingredients = ingredients;
   }
 
-  setNutrient(nutrient: Nutrient[]){
-    this.nutrients = nutrient;
-  }
-
   cleanRecipe() {
     this.id = null;
     this.title = '';
@@ -198,6 +188,5 @@ export class Recipe {
     this.rating = null;
     this.ratings = null;
     this.ingredients = null;
-    this.nutrients = null;
   }
 }
