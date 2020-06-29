@@ -5,13 +5,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { User } from './User';
 import { Recipe } from './recipe';
+import { Gift } from './gift';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PremiumReqService {
   errorValue: string;
-  gift: string[];
+  gift: Gift[];
   favouriteRecipe: Recipe[] = [];
   premiumUser: User = null;
 
@@ -51,7 +52,7 @@ export class PremiumReqService {
     return startDay;
   }
   /////////////////////////////////method to get keywords as proposition///////////////////////////
-  async getServerGift(): Promise<string[]> {
+  async getServerGift(): Promise<Gift[]> {
     await this.fetchServerGift()
       .then((data) => {
         this.gift = data['gift'];
@@ -63,28 +64,45 @@ export class PremiumReqService {
   }
 
   /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
-  async getServerFavoriteRecipe(): Promise<Recipe[]> {
+  async getServerFavouriteRecipe(): Promise<Recipe[]> {
     await this.fetchServerFavouriteRecipe()
       .then((data: Recipe) => {
         //have to controle !
-        data['recipes'].forEach((value: Recipe) => {
+        data['favourites'].forEach((value: Recipe) => {
           this.favouriteRecipe.push(new Recipe(value));
         });
       })
       .catch((error) => {
-        this.handleErrorFavoriteRecipe(error);
+        this.handleErrorFavouriteRecipe(error);
       });
     console.log(this.favouriteRecipe);
     return this.favouriteRecipe;
   }
 
+   /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
+   async getServerSetFavouriteRecipe(recipe: Recipe): Promise<Recipe[]> {
+    await this.fetchServerSetFavouriteRecipe(recipe)
+      .then((data: Recipe) => {
+        //have to controle !
+        data['favourites'].forEach((value: Recipe) => {
+          this.favouriteRecipe.push(new Recipe(value));
+        });
+      })
+      .catch((error) => {
+        this.handleErrorSetFavouriteRecipe(error);
+      });
+    console.log(this.favouriteRecipe);
+    return this.favouriteRecipe;
+  }
+
+
   /////////////////////////////////Http-Request method to get ingredients as proposition///////////////////////////
-  async fetchServerGift() {
+  async fetchServerGift(): Promise<Gift> {
     const requestLink = ''; //noch kein link
 
     return (
       this.http
-        .get<string>(requestLink)
+        .get<Gift>(requestLink)
         //.pipe(catchError(this.handleError))
         .toPromise()
     );
@@ -101,6 +119,28 @@ export class PremiumReqService {
 
     const requestLink =
       'http://xcsd.ddns.net/api/backend/recipe/favourites.php';
+
+    console.log('request finished');
+
+    return (
+      this.http
+        .get<Recipe>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
+
+  /////////////////////////////////Http-Request to get favourite recipe///////////////////////////
+  fetchServerSetFavouriteRecipe(recipe: Recipe): Promise<Recipe> {
+    console.log('server request with keywords');
+
+    let params = new HttpParams()
+    /*.set('id', recipe.getId()*/;
+
+    console.log(params);
+
+    const requestLink =
+      'http://xcsd.ddns.net/api/backend/recipe/setfavourites.php';
 
     console.log('request finished');
 
@@ -136,7 +176,7 @@ export class PremiumReqService {
   }
 
   ///////////////////////////////////////method to handle error for favourite recipe//////////////////////////////////////////////////////////////////
-  handleErrorFavoriteRecipe(error: Response) {
+  handleErrorFavouriteRecipe(error: Response) {
     if (error instanceof ErrorEvent) {
       // Client-side errors
       this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
@@ -146,10 +186,33 @@ export class PremiumReqService {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
       if (error.status === 403) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, das Geschenk kann nicht ausgestellt werden`;
+        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, unerwarter Fehler `;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, das Geschenk wurde nicht gefunden`;
+        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, die Rezepte wurden nicht gefunden`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+      }
+    }
+    return this.errorValue;
+  }
+
+   ///////////////////////////////////////method to handle error for set favourite recipe//////////////////////////////////////////////////////////////////
+   handleErrorSetFavouriteRecipe(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, das Rezept kann nicht hinzugefügt werden`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, die Rezept wurde nicht gefunden`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
