@@ -90,7 +90,15 @@ export class CreateRecipeComponent implements OnInit {
 
    async createRecipe(){
      this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
-     try{
+     this.addIngredient();
+     this.addKeyword();
+     if (this.title != null
+     && this.servings != null 
+     && this.shortDescription != null 
+     && this.description != null
+     && this.duration != null
+     && this.difficulty != null 
+     && this.ingredients != null){
      console.log(await this.recipeAdministrationReqService.getCreateRecipe(
       this.title,
       //this.picture,
@@ -101,11 +109,12 @@ export class CreateRecipeComponent implements OnInit {
        this.difficulty,
        this.authenticationService.getUser().getId(),
        this.keywords,
-       this.ingredients)
-     )}catch{
+       this.ingredients))
+     }else{
       window.alert("Bitte füllen Sie alle Felder aus!");
-   }
+     }
   }
+
   throwError() {
     console.log(this.recipeAdministrationReqService.getErrorMessage());
     //window.alert(this.error);
