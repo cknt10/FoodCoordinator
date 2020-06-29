@@ -11,10 +11,10 @@ import { Gift } from './gift';
   providedIn: 'root',
 })
 export class PremiumReqService {
-  errorValue: string;
-  gift: Gift[];
-  favouriteRecipe: Recipe[] = [];
-  premiumUser: User = null;
+  private errorValue: string;
+  private gift: Gift[];
+  private favouriteRecipe: Recipe[] = [];
+  private premiumUser: User = null;
 
   constructor(
     private http: HttpClient,
@@ -23,6 +23,10 @@ export class PremiumReqService {
 
   getErrorMessage() {
     return this.errorValue;
+  }
+
+  getPremiumUser(){
+    return this.premiumUser;
   }
 
   /////////////////////save premium user after login////////////////////////

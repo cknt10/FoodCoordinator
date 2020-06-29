@@ -62,7 +62,7 @@ export class AuthenticationService {
       await this.LoginReqService.getServerLoginData(username, password)
         .then((data: User) => {
          if ((data['isPremium'] = true)) {
-         console.log( this.premiumReqService.getServerPremiumUser(data['user']));
+         this.premiumReqService.getServerPremiumUser(data['user']);
           } else {
             this.UserData = new User(data['user']);
           }
