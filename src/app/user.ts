@@ -68,6 +68,14 @@ export class User {
     return this.houseNumber;
   }
 
+  setId(id: number){
+    this.id = id;
+  }
+
+  setStreet(street: string){
+    this.street = street;
+  }
+
   //////////////////////////////////////clean User Object//////////////////////////////////
   cleanUser() {
     this.id = null;

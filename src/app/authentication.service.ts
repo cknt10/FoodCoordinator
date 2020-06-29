@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoginReqService } from './login-req.service';
 import { User } from './User';
+import { PremiumReqService } from './premium-req.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,30 +12,25 @@ export class AuthenticationService {
   private errorValue: string;
 
   constructor(
-    private reqService: LoginReqService
-  ) {}
+    private LoginReqService: LoginReqService,
+    private premiumReqService: PremiumReqService
+    ) {}
 
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////
-  async getDataUser(
-    username: string,
-    password: string
-    ) {
+  async getDataUser(username: string, password: string) {
     if (this.UserData == null) {
-      await this.readUserData(
-        username,
-        password
-        );
+      await this.readUserData(username, password);
     }
     return this.UserData;
   }
 
   /////////////////////////////////////////////////////////////get User without params/////////////////////////////////////////////////////////////////////////////
-  getUser(): User{
-  return this.UserData;
+  getUser(): User {
+    return this.UserData;
   }
 
   //////////////////////////////////////////////////display error message for the user/////////////////////////////////////////////////////////
-  getErrorMessage(){
+  getErrorMessage() {
     return this.errorValue;
   }
 
@@ -50,33 +46,32 @@ export class AuthenticationService {
     postalCode?: string,
     city?: string,
     birthday?: string,
-    email?: string,
-    ): Promise<User> {
-
-      if (
-        firstname == null
-        && name == null
-        && gender == null
-        && street == null
-        && houseNumber == null
-        && postalCode == null
-        && city == null
-        && birthday == null
-        && email == null
-        ){
-    await this.reqService.getServerLoginData(
-      username,
-      password
-      )
-      .then((data: User) => {
-      this.UserData = new User(data['user']);
-    })
-    .catch (error => {
-      this.handleErrorLogin(error);
-      });
-
-    }else{
-      await this.reqService.getServerRegistrationData(
+    email?: string
+  ): Promise<User> {
+    if (
+      firstname == null &&
+      name == null &&
+      gender == null &&
+      street == null &&
+      houseNumber == null &&
+      postalCode == null &&
+      city == null &&
+      birthday == null &&
+      email == null
+    ) {
+      await this.LoginReqService.getServerLoginData(username, password)
+        .then((data: User) => {
+         if ((data['isPremium'] = true)) {
+         console.log( this.premiumReqService.getServerPremiumUser(data['user']));
+          } else {
+            this.UserData = new User(data['user']);
+          }
+        })
+        .catch((error) => {
+          this.handleErrorLogin(error);
+        });
+    } else {
+      await this.LoginReqService.getServerRegistrationData(
         username,
         password,
         firstname,
@@ -88,23 +83,24 @@ export class AuthenticationService {
         city,
         birthday,
         email
-        ).then((data: User) => {
-        this.UserData = new User(data['user']);
-    }).catch (error => {
-      this.handleErrorLogin(error);
-      });
+      )
+        .then((data: User) => {
+          this.UserData = new User(data['user']);
+        })
+        .catch((error) => {
+          this.handleErrorLogin(error);
+        });
     }
 
     return this.UserData;
-
-}
-
-/////////////////////////////////////////////analize server Errors for login////////////////////////////////////
-handleErrorLogin(error: Response) {
-  if (error instanceof ErrorEvent) {
-    // Client-side errors
-   this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
   }
+
+  /////////////////////////////////////////////analize server Errors for login////////////////////////////////////
+  handleErrorLogin(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    }
     // Server-side errors
     if (error.status === 401) {
       this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
@@ -118,29 +114,28 @@ handleErrorLogin(error: Response) {
     if (error.status === 500) {
       this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
     }
-  return this.errorValue;
-}
+    return this.errorValue;
+  }
 
-/////////////////////////////////////////////analize server Errors for registration////////////////////////////////////
-handleErrorRegistration(error: Response) {
-  if (error instanceof ErrorEvent) {
-    // Client-side errors
-   this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+  /////////////////////////////////////////////analize server Errors for registration////////////////////////////////////
+  handleErrorRegistration(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    }
+    // Server-side errors
+    if (error.status === 401) {
+      this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+    }
+    if (error.status === 403) {
+      this.errorValue = `Der Benutzername oder  Email-Adresse ist bereits vergeben.`;
+    }
+    if (error.status === 404) {
+      this.errorValue = `Registirerung fehlgeschalgen. Bitte versuchen Sie es später noch mal`;
+    }
+    if (error.status === 500) {
+      this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+    }
+    return this.errorValue;
   }
-  // Server-side errors
-  if (error.status === 401) {
-    this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
-  }
-  if (error.status === 403) {
-    this.errorValue = `Der Benutzername oder  Email-Adresse ist bereits vergeben.`;
-  }
-  if (error.status === 404) {
-    this.errorValue = `Registirerung fehlgeschalgen. Bitte versuchen Sie es später noch mal`;
-  }
-  if (error.status === 500) {
-    this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
-  }
-return this.errorValue;
-}
-
 }
