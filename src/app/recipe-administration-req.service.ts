@@ -1,14 +1,8 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import {formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 
-import {
-  HttpClient,
-  HttpParams,
-  HttpErrorResponse,
-} from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
@@ -27,7 +21,7 @@ export class RecipeAdministrationReqService {
   constructor(
     private http: HttpClient,
     private searchRequestService: SearchReqService,
-    private datePipe: DatePipe, 
+    private datePipe: DatePipe,
     private authenticationService: AuthenticationService
   ) {}
 
@@ -75,12 +69,12 @@ export class RecipeAdministrationReqService {
 
     console.log(modifiedIngredients);
 
-    let haha: any = {};
-    haha.myArray = JSON.stringify(modifiedIngredients);
+    let jsonFormat: any = {};
+    jsonFormat.myArray = JSON.stringify(modifiedIngredients);
     console.log(ingredients);
-    console.log(haha.myArray);
+    console.log(jsonFormat.myArray);
 
-    params = params.append('ingredients', haha.myArray);
+    params = params.append('ingredients', jsonFormat.myArray);
 
     console.log(params);
 
@@ -161,7 +155,6 @@ export class RecipeAdministrationReqService {
     );
   }
 
-
   ///////////////////////////////////////////////save created recipe from response //////////////////////////////////
   async getNewServerRecipe(
     title: string,
@@ -175,7 +168,6 @@ export class RecipeAdministrationReqService {
     keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
-    
     await this.getCreateRecipe(
       title,
       //picture,
@@ -189,7 +181,7 @@ export class RecipeAdministrationReqService {
       ingredients
     )
       .then((data: Recipe) => {
-          this.userRecipe = data['recipe'];
+        this.userRecipe = data['recipe'];
       })
       .catch((error) => {
         this.handleErrorCreateRecipe(error);
@@ -200,11 +192,10 @@ export class RecipeAdministrationReqService {
 
   /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
   async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
-    
     await this.getServerChangeRecipe(recipe)
       .then((data: Recipe) => {
-          this.userRecipe = new Recipe(data['recipe']);
-        })
+        this.userRecipe = new Recipe(data['recipe']);
+      })
       .catch((error) => {
         this.handleErrorChangeRecipe(error);
       });
@@ -339,10 +330,14 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
       if (error.status === 403) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService.getUser().getUsername()}, das Rezept kann nicht erstellt werden`;
+        this.errorValue = `Es tut uns leid, ${this.authenticationService
+          .getUser()
+          .getUsername()}, das Rezept kann nicht erstellt werden`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService.getUser().getUsername()}, leider gibt es das Rezept bereits.`;
+        this.errorValue = `Es tut uns leid, ${this.authenticationService
+          .getUser()
+          .getUsername()}, leider gibt es das Rezept bereits.`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
@@ -365,7 +360,9 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Das Rezept exisitert bereits.`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService.getUser().getUsername()}, leider haben wir das Rezept nicht gefunden.} `;
+        this.errorValue = `Es tut uns leid, ${this.authenticationService
+          .getUser()
+          .getUsername()}, leider haben wir das Rezept nicht gefunden.} `;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
@@ -388,7 +385,9 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Die Recepte existieren bereits.`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService.getUser().getUsername()}, leider haben wir keine eigenen Rezepte gefunden.}`;
+        this.errorValue = `Es tut uns leid, ${this.authenticationService
+          .getUser()
+          .getUsername()}, leider haben wir keine eigenen Rezepte gefunden.}`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
