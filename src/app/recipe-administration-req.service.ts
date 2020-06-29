@@ -7,7 +7,7 @@ import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
 import { User } from './User';
-import { AuthenticationService } from './authentication.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -21,12 +21,15 @@ export class RecipeAdministrationReqService {
     private http: HttpClient,
     private searchRequestService: SearchReqService,
     private datePipe: DatePipe,
-    private authenticationService: AuthenticationService
   ) {}
 
   /////////////////////////////////method to display error message to user///////////////////////////
   getErrorMessage(): string {
     return this.errorValue;
+  }
+
+  getRecipeDetails(): Recipe {
+    return this.userRecipe;
   }
 
   /////////////////////////////////Http-Request to send new recipe///////////////////////////
@@ -302,13 +305,46 @@ export class RecipeAdministrationReqService {
     return this.userRecipes;
   }
 
-  /////////////////////////////////Http-Request to get all Cities///////////////////////////
+  /////////////////////////////////Http-Request to get all user recipes///////////////////////////
   async fetchServerUserRecipe(user: User): Promise<Recipe> {
     let params = new HttpParams().set('userId', user.getId().toString());
 
     console.log(params);
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/myrecipes.php';
+
+    return (
+      this.http
+        .get<Recipe>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
+
+  /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
+  async getServerRecipeDetails(recipe: Recipe): Promise<Recipe> {
+    await this.fetchServerRecipeDetails(recipe)
+      .then((data: Recipe) => {
+        
+        data['recipe'].forEach((value) =>{
+          this.userRecipe = new Recipe(value);
+        })
+        console.log(data['recipe']);
+      })
+      .catch((error) => {
+        this.handleErrorRecipeDetails(error);
+      });
+    console.log(this.userRecipe);
+    return this.userRecipe;
+  }
+
+  /////////////////////////////////Http-Request to get recipe details///////////////////////////
+  async fetchServerRecipeDetails(recipe: Recipe): Promise<Recipe> {
+    let params = new HttpParams().set('id', recipe.getId().toString());
+
+    console.log(params);
+
+    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/getrecipe.php';
 
     return (
       this.http
@@ -329,14 +365,10 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
       if (error.status === 403) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService
-          .getUser()
-          .getUsername()}, das Rezept kann nicht erstellt werden`;
+        this.errorValue = `Es tut uns leid, das Rezept kann nicht erstellt werden`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService
-          .getUser()
-          .getUsername()}, leider gibt es das Rezept bereits.`;
+        this.errorValue = `Es tut uns leid, leider gibt es das Rezept bereits.`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
@@ -359,9 +391,7 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Das Rezept exisitert bereits.`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService
-          .getUser()
-          .getUsername()}, leider haben wir das Rezept nicht gefunden.} `;
+        this.errorValue = `Es tut uns leid, leider haben wir das Rezept nicht gefunden. `;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
@@ -384,9 +414,30 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Die Recepte existieren bereits.`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.authenticationService
-          .getUser()
-          .getUsername()}, leider haben wir keine eigenen Rezepte gefunden.}`;
+        this.errorValue = `Es tut uns leid, leider haben wir keine eigenen Rezepte gefunden.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+      }
+    }
+    return this.errorValue;
+  }
+
+  ///////////////////////////////////////method to handle error for recipe details//////////////////////////////////////////////////////////////////
+  handleErrorRecipeDetails(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Leider kein Zugriff.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider wurde das Rezept nicht gefunden.`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;

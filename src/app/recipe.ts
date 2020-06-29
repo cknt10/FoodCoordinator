@@ -16,6 +16,7 @@ export class Recipe {
   private lastChangeDate: Date;
   private userId: number;
   private keywords: string[];
+  private rating: number;
   private ratings: Ratings[];
   private ingredients: Ingredient[];
   private nutrients: Nutrient[];
@@ -34,6 +35,7 @@ export class Recipe {
     this.lastChangeDate = recipe.lastChangeDate;
     this.userId = recipe.userId;
     this.keywords = recipe.keywords;
+    this.rating = recipe.rating;
     this.ratings = recipe.ratings;
     this.ingredients = recipe.ingredients;
     this.nutrients = recipe.nutrients;
@@ -93,6 +95,10 @@ export class Recipe {
 
   getKeywords(): string[] {
     return this.keywords;
+  }
+
+  getRating(): number{
+    return this.rating;
   }
 
   getRatings(): Ratings[] {
@@ -189,6 +195,7 @@ export class Recipe {
     this.lastChangeDate = null;
     this.userId = null;
     this.keywords = null;
+    this.rating = null;
     this.ratings = null;
     this.ingredients = null;
     this.nutrients = null;

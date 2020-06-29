@@ -22,7 +22,6 @@ export class MyRecipesComponent implements OnInit {
       await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
     }else{
       await this.recipeAdministrationService.getServerUserRecipe(this.premiumReqService.getPremiumUser());
-
     }
   }
 
