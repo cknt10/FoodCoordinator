@@ -135,7 +135,7 @@ export class PremiumReqService {
     console.log('server request with keywords');
 
     let params = new HttpParams()
-    /*.set('id', recipe.getId()*/;
+    .set('id', recipe.getId().toString());
 
     console.log(params);
 
