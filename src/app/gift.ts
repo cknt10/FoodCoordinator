@@ -29,7 +29,6 @@ export class Gift{
         this.id = id;
     }
 
-
     setReedemDay(reedemDay: Date){
         this.reedemDay = reedemDay;
     }

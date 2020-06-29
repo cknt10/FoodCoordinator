@@ -228,8 +228,9 @@ export class RecipeAdministrationReqService {
       });
     });
     keywordsId.filter((value) => {
-      value !== '';
+      value === value.id;
     });
+    console.log(keywordsId);
     return keywordsId;
   }
 
@@ -247,6 +248,10 @@ export class RecipeAdministrationReqService {
           ingredientsId.push(elem1.id.toString());
         }
       });
+    });
+
+    ingredientsId.filter((value) => {
+      value === value.id;
     });
 
     return ingredientsId;
