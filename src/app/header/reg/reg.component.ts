@@ -33,7 +33,10 @@ export class RegComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    console.log(await this.loginReqService.getServerCities());
+  }
+
+  async getPostcode(){
+    console.log(await this.loginReqService.getServerCities(this.postalcode));
   }
 
   async regUser() {

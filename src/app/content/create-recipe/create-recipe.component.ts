@@ -18,13 +18,16 @@ export class CreateRecipeComponent implements OnInit {
   ingredient: string;
   ingredients: Ingredient[] = [];
   description: string;
-  picture: File;
+  picture: string;
   servings: number;
   duration: number;
   amount: number;
   unit: string;
   difficulty: string;
   options: string[] = [];
+
+  fileToUpload: File = null;
+  imageUrl: string = "/assets/ich.jpg";
 
   serverIngredients: SearchParameter[] = [];
   serverKeywords: SearchParameter[] = [];
@@ -88,29 +91,53 @@ export class CreateRecipeComponent implements OnInit {
     }
   }
 
-  async createRecipe() {
-    this.recipeAdministrationReqService.convertRecipeKeywordsArray(
-      this.keywords
-    );
-    try {
-      console.log(
-        await this.recipeAdministrationReqService.getCreateRecipe(
-          this.title,
-          //this.picture,
-          this.servings,
-          this.shortDescription,
-          this.description,
-          this.duration,
-          this.difficulty,
-          this.authenticationService.getUser().getId(),
-          this.keywords,
-          this.ingredients
-        )
-      );
-    } catch {
-      window.alert('Bitte füllen Sie alle Felder aus!');
+   handleFileInput(file: FileList){
+    this.fileToUpload= file.item(0);
+
+    //Show image preview
+    var reader= new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+    let text = reader;
+    reader.onload = (event:any) =>{
+      console.log(text.result)
+      this.picture = <string>text.result;
+ };
     }
+
+   async createRecipe(){
+
+     this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
+     this.addIngredient();
+     this.addKeyword();
+     console.log(this.picture);
+     if (this.title != null
+     && this.servings != null
+     && this.shortDescription != null
+     && this.description != null
+     && this.duration != null
+     && this.difficulty != null
+     && this.ingredients != null){
+     console.log(await this.recipeAdministrationReqService.getCreateRecipe(
+       this.title,
+       this.picture,
+       this.servings,
+       this.shortDescription,
+       this.description,
+       this.duration,
+       this.difficulty,
+       this.authenticationService.getUser().getId(),
+       this.keywords,
+       this.ingredients))
+     }else{
+      window.alert("Bitte füllen Sie alle Felder aus!");
+     }
+
+    this.picture = null;
+    this.imageUrl = "/assets/ich.jpg";
   }
+
+
+
   throwError() {
     console.log(this.recipeAdministrationReqService.getErrorMessage());
     //window.alert(this.error);
