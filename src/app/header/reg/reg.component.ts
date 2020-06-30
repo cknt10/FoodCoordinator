@@ -36,7 +36,7 @@ export class RegComponent implements OnInit {
   }
 
   async getPostcode(){
-    await this.loginReqService.getServerCities(this.postalcode);
+    console.log(await this.loginReqService.getServerCities(this.postalcode));
   }
 
   async regUser() {
