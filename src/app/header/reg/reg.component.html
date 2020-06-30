@@ -21,7 +21,7 @@
     <label>* Hausnummer:</label>
     <input type="text" [(ngModel)]="housenumber" ><br>
     <label>* Postleitzahl</label>
-    <input type="text" [(ngModel)]="postalcode" ><br>
+    <input type="text" [(ngModel)]="postalcode" (onKeyUp) = "getPostcode()"><br>
     <label>* Wohnort:</label>
     <input type="text" [(ngModel)]="city" ><br>
   </div>

@@ -81,9 +81,9 @@ export class LoginReqService {
   }
 
   /////////////////////////////////save cities from server///////////////////////////
-  async getServerCities(): Promise<Cities[]> {
-    await this.fetchServerCities().then((data: Cities) => {
-      data['cities'].forEach((value) => {
+  async getServerCities(postcode: number): Promise<Cities[]> {
+    await this.fetchServerCities(postcode).then((data: Cities) => {
+      data['cities'].forEach((value: Cities) => {
         this.cities.push(new Cities(value));
       });
     }).catch (error => {
@@ -94,11 +94,14 @@ export class LoginReqService {
   }
 
   /////////////////////////////////Http-Request to get all Cities///////////////////////////
-  async fetchServerCities(): Promise<Cities> {
+  async fetchServerCities(postcode: number): Promise<Cities> {
+
+    let params = new HttpParams()
+    .set('postcode', postcode.toString());
     const requestLink = 'http://xcsd.ddns.net/api/backend/order/getcities.php';
 
     return this.http
-      .get<Cities>(requestLink)
+      .get<Cities>(requestLink, { params: params })
       /*.pipe(
         retry(2),
         catchError(this.handleErrorCities))*/
