@@ -37,7 +37,7 @@ export class RecipeAdministrationReqService {
   /////////////////////////////////Http-Request to send new recipe///////////////////////////
   async getCreateRecipe(
     title: string,
-    //picture: File,
+    picture: string,
     servings: number,
     description: string,
     instruction: string,
@@ -49,7 +49,7 @@ export class RecipeAdministrationReqService {
   ): Promise<Recipe> {
     let params = new HttpParams()
       .set('title', title)
-      //.set('picture', picture.toString())
+      .set('picture', picture)
       .set('servings', servings.toString())
       .set('description', description)
       .set('instruction', instruction)
@@ -162,7 +162,7 @@ export class RecipeAdministrationReqService {
   ///////////////////////////////////////////////save created recipe from response //////////////////////////////////
   async getNewServerRecipe(
     title: string,
-    //picture: File,
+    picture: string,
     servings: number,
     description: string,
     instruction: string,
@@ -174,7 +174,7 @@ export class RecipeAdministrationReqService {
   ): Promise<Recipe> {
     await this.getCreateRecipe(
       title,
-      //picture,
+      picture,
       servings,
       description,
       instruction,

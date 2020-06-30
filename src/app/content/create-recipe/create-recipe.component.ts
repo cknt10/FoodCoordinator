@@ -19,13 +19,16 @@ export class CreateRecipeComponent implements OnInit {
   ingredient: string;
   ingredients: Ingredient[] = [];
   description: string;
-  picture: File;
+  picture: string;
   servings: number;
   duration: number;
   amount: number;
   unit: string;
   difficulty: string;
   options: string[] = [];
+
+  fileToUpload: File = null;
+  imageUrl: string = "/assets/ich.jpg";
 
   serverIngredients: SearchParameter[] = [];
   serverKeywords: SearchParameter[] = [];
@@ -88,10 +91,25 @@ export class CreateRecipeComponent implements OnInit {
      }
    }
 
+   handleFileInput(file: FileList){
+    this.fileToUpload= file.item(0);
+    
+    //Show image preview
+    var reader= new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+    let text = reader;
+    reader.onload = (event:any) =>{
+      console.log(text.result)
+      this.picture = <string>text.result;
+ }; 
+    }
+
    async createRecipe(){
+     
      this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
      this.addIngredient();
      this.addKeyword();
+     console.log(this.picture);
      if (this.title != null
      && this.servings != null 
      && this.shortDescription != null 
@@ -100,8 +118,8 @@ export class CreateRecipeComponent implements OnInit {
      && this.difficulty != null 
      && this.ingredients != null){
      console.log(await this.recipeAdministrationReqService.getCreateRecipe(
-      this.title,
-      //this.picture,
+       this.title,
+       this.picture,
        this.servings,
        this.shortDescription,
        this.description,
@@ -113,7 +131,12 @@ export class CreateRecipeComponent implements OnInit {
      }else{
       window.alert("Bitte füllen Sie alle Felder aus!");
      }
+
+    this.picture = null;
+    this.imageUrl = "/assets/ich.jpg";
   }
+
+
 
   throwError() {
     console.log(this.recipeAdministrationReqService.getErrorMessage());
