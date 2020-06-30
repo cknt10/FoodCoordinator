@@ -17,6 +17,7 @@ export class RecipeAdministrationReqService {
   private errorValue: string;
   private userRecipes: Recipe[] = [];
   private userRecipe: Recipe;
+  private recipeRatings: Ratings[] = []
 
   constructor(
     private http: HttpClient,
@@ -299,6 +300,7 @@ export class RecipeAdministrationReqService {
   async getServerUserRecipe(user: User): Promise<Recipe[]> {
     await this.fetchServerUserRecipe(user)
       .then((data: Recipe) => {
+        console.log(data['recipes']);
         data['recipes'].forEach((value: Recipe) => {
           this.userRecipes.push(new Recipe(value));
         });
@@ -372,9 +374,10 @@ export class RecipeAdministrationReqService {
     await this.fetchServerRecipeRating(recipe, rating)
       .then((data: Ratings[]) => {
 
-        data['ratings'].forEach((value: Ratings[]) =>{
-          this.userRecipe.setRatings(value);
+        data['ratings'].forEach((value: Ratings) =>{
+          this.recipeRatings.push(new Ratings(value));
         })
+        this.userRecipe.setRatings(this.recipeRatings);
         console.log(data['ratings']);
       })
       .catch((error) => {
