@@ -4,6 +4,7 @@ import { PremiumReqService } from './premium-req.service';
 import { Cookbook } from './cookbook';
 import {CookbookFormat} from './cookbookFormat'
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Payment } from './payment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class CookbookReqService {
   private errorValue: string;
   private cookbook: Cookbook;
   private cookbookFormats: CookbookFormat[] = [];
+  private serverPayments: Payment[] = [];
 
   constructor(
     private autenticationReqService: AuthenticationService, 
@@ -47,6 +49,38 @@ export class CookbookReqService {
     return (
       this.http
         .get<CookbookFormat[]>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
+
+   /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
+   async getServerPayment(): Promise<Payment[]> {
+    await this.fetchServerPayment()
+      .then((data: Payment[]) => {
+        data['payment'].forEach((value: Payment) =>{
+          this.serverPayments.push(new Payment(value));
+        })
+        console.log(data['payment']);
+      })
+      .catch((error) => {
+        this.handleErrorCookbookFormats(error);
+      });
+    console.log(this.serverPayments);
+    return this.serverPayments;
+  }
+
+  /////////////////////////////////Http-Request to get recipe details///////////////////////////
+  async fetchServerPayment(): Promise<Payment[]> {
+    let params = new HttpParams();
+
+    console.log(params);
+
+    const requestLink = 'http://xcsd.ddns.net/api/backend/order/payment.php';
+
+    return (
+      this.http
+        .get<Payment[]>(requestLink, { params: params })
         //.pipe(catchError(this.handleError))
         .toPromise()
     );
