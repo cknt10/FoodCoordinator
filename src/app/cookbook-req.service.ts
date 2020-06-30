@@ -5,6 +5,8 @@ import { Cookbook } from './cookbook';
 import {CookbookFormat} from './cookbookFormat'
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Payment } from './payment';
+import { User } from './User';
+import { Recipe } from './recipe';
 
 @Injectable({
   providedIn: 'root'
@@ -64,7 +66,7 @@ export class CookbookReqService {
         console.log(data['payment']);
       })
       .catch((error) => {
-        this.handleErrorCookbookFormats(error);
+        this.handleErrorPayment(error);
       });
     console.log(this.serverPayments);
     return this.serverPayments;
@@ -81,6 +83,39 @@ export class CookbookReqService {
     return (
       this.http
         .get<Payment[]>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
+
+   /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
+   async getServerCreateCookbook(): Promise<Cookbook> {
+    await this.fetchServerPayment()
+      .then((data: Payment[]) => {
+        data['payment'].forEach((value: Payment) =>{
+          this.serverPayments.push(new Payment(value));
+        })
+        console.log(data['payment']);
+      })
+      .catch((error) => {
+        this.handleErrorCookbookFormats(error);
+      });
+    console.log(this.serverPayments);
+    return this.cookbook;
+  }
+
+  /////////////////////////////////Http-Request to get recipe details///////////////////////////
+  async fetchServerCreateCookbook(recipe: Recipe[], user: User, cookbook:Cookbook): Promise<Cookbook[]> {
+    let params = new HttpParams()
+
+
+    console.log(params);
+
+    const requestLink = 'http://xcsd.ddns.net/api/backend/order/createorder.php';
+
+    return (
+      this.http
+        .get<Cookbook[]>(requestLink, { params: params })
         //.pipe(catchError(this.handleError))
         .toPromise()
     );
@@ -125,6 +160,29 @@ export class CookbookReqService {
       }
       if (error.status === 404) {
         this.errorValue = `Es tut uns leid, leider gibt es das Rezept nicht.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+      }
+    }
+    return this.errorValue;
+  }
+
+   ///////////////////////////////////////method to handle error for create cookbook//////////////////////////////////////////////////////////////////
+   handleErrorPayment(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Es tut uns leid, die Zahlungsmethode funktioniert nicht`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider gibt es keine Möglichkeit zu zahlen.`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
