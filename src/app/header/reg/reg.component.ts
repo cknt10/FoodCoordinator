@@ -60,6 +60,10 @@ export class RegComponent implements OnInit {
     }
   }
 
+goBack(){
+  this.router.navigate(['content']);
+}
+
   throwError() {
     console.log(this.authenticationReqService.getErrorMessage());
     //window.alert(this.error);

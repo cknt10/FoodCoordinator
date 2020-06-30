@@ -4,6 +4,7 @@ import { Recipe } from 'src/app/recipe';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 import { Location } from '@angular/common';
+import { Ingredient } from 'src/app/ingredient';
 
 @Component({
   selector: 'app-recipe-details',
@@ -12,6 +13,7 @@ import { Location } from '@angular/common';
 })
 export class RecipeDetailsComponent implements OnInit {
   recipe: Recipe;
+  ingredients: Ingredient[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -32,6 +34,8 @@ export class RecipeDetailsComponent implements OnInit {
     const id = +this.route.snapshot.paramMap.get('id');
     this.searchReqService.getRecipe(id)
       .subscribe(recipe => this.recipe = recipe);
+      console.log(this.recipe);
+      this.setIngredients();
   }
 
   throwError() {
@@ -39,6 +43,10 @@ export class RecipeDetailsComponent implements OnInit {
     //window.alert(this.error);
   }
 
+  setIngredients(){
+    this.ingredients = this.recipe.getIngredients();
+    console.log(this.ingredients);
+  }
 
   goBack(): void {
     this.location.back();
