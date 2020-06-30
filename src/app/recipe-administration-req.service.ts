@@ -327,8 +327,8 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
-  async getServerRecipeDetails(recipe: Recipe): Promise<Recipe> {
-    await this.fetchServerRecipeDetails(recipe)
+  async getServerRecipeDetails(recipe: Recipe, isPremium: boolean): Promise<Recipe> {
+    await this.fetchServerRecipeDetails(recipe, isPremium)
       .then((data: Recipe) => {
         
         data['recipe'].forEach((value) =>{
@@ -344,8 +344,16 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////Http-Request to get recipe details///////////////////////////
-  async fetchServerRecipeDetails(recipe: Recipe): Promise<Recipe> {
-    let params = new HttpParams().set('id', recipe.getId().toString());
+  async fetchServerRecipeDetails(recipe: Recipe, isPremium: boolean): Promise<Recipe> {
+    let premium: number;
+    if(isPremium == true){
+      premium = 1;
+    }else{
+      premium= 0;
+    }
+    let params = new HttpParams()
+    .set('idRecipe', recipe.getId().toString())
+    .set('isPremium', premium.toString());
 
     console.log(params);
 
