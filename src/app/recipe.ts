@@ -163,12 +163,16 @@ export class Recipe {
      this.keywords.push(keywords);
   }
 
-  setRatings(ratings: Ratings) {
-     this.ratings.push(ratings);
+  setRatings(ratings: Ratings[]) {
+    ratings.forEach((value) => {
+      this.ratings.push(value);
+    });
   }
 
   setIngredients( ingredients: Ingredient[]) {
-    this.ingredients = ingredients;
+    ingredients.forEach((value) => {
+      this.ingredients.push(value);
+    })
   }
 
   cleanRecipe() {

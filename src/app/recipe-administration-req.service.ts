@@ -7,6 +7,7 @@ import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
 import { User } from './User';
+import { Ratings } from './ratings';
 
 
 @Injectable({
@@ -358,6 +359,44 @@ export class RecipeAdministrationReqService {
     );
   }
 
+   /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
+   async getServerRecipeRating(recipe: Recipe, rating: Ratings): Promise<Recipe> {
+    await this.fetchServerRecipeRating(recipe, rating)
+      .then((data: Ratings[]) => {
+
+        data['ratings'].forEach((value: Ratings[]) =>{
+          this.userRecipe.setRatings(value);
+        })
+        console.log(data['ratings']);
+      })
+      .catch((error) => {
+        this.handleErrorRecipeRating(error);
+      });
+    console.log(this.userRecipe);
+    return this.userRecipe;
+  }
+
+  /////////////////////////////////Http-Request to get recipe details///////////////////////////
+  async fetchServerRecipeRating(recipe: Recipe, rating: Ratings): Promise<Ratings[]> {
+    let params = new HttpParams()
+    .set('recipeId', recipe.getId().toString())
+    .set('userId', rating.getUserId().toString())
+    .set('comment', rating.getComment())
+    .set('rating', rating.getRating().toString());
+
+    console.log(params);
+
+    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/setrating.php';
+
+    return (
+      this.http
+        .get<Ratings[]>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
+
+
   ///////////////////////////////////////method to handle error for create recipe//////////////////////////////////////////////////////////////////
   handleErrorCreateRecipe(error: Response) {
     if (error instanceof ErrorEvent) {
@@ -412,7 +451,7 @@ export class RecipeAdministrationReqService {
     } else {
       // Server-side errors
       if (error.status === 401) {
-        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
       }
       if (error.status === 403) {
         this.errorValue = `Die Recepte existieren bereits.`;
@@ -421,7 +460,7 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Es tut uns leid, leider haben wir keine eigenen Rezepte gefunden.`;
       }
       if (error.status === 500) {
-        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
       }
     }
     return this.errorValue;
@@ -435,7 +474,7 @@ export class RecipeAdministrationReqService {
     } else {
       // Server-side errors
       if (error.status === 401) {
-        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
       }
       if (error.status === 403) {
         this.errorValue = `Leider kein Zugriff.`;
@@ -444,7 +483,30 @@ export class RecipeAdministrationReqService {
         this.errorValue = `Es tut uns leid, leider wurde das Rezept nicht gefunden.`;
       }
       if (error.status === 500) {
-        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
+      }
+    }
+    return this.errorValue;
+  }
+
+   ///////////////////////////////////////method to handle error for set rating in a recipe//////////////////////////////////////////////////////////////////
+   handleErrorRecipeRating(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Tut uns leid, Sie können das Rezept nicht bewerten.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider wurde das Rezept nicht gefunden.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
       }
     }
     return this.errorValue;
