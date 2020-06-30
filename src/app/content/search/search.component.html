@@ -18,8 +18,8 @@
   <button id="find" mat-raised-button (click)="search()">let's go</button>
 </div>
 
-  <div class="result" *ngFor="let recipe of recipes">
-   <div>{{recipe.id}}</div>
+  <div class="result" *ngFor="let recipe of recipes" routerLink="/detail/{{recipe.getId()}}">
+    <a routerLink="/detail/{{recipe.getId()}}">
   <div class="cb-btn">Zum Kochbuch hinzuzufügen
     <!-- img-tag for logo (?)-->
     <img src="">
@@ -29,13 +29,13 @@
       <img src="">
   </div>
   <div class="result-title">
-   <p>Titel: {{ recipe.title }} </p>
+   <p>Titel: {{ recipe.getTitle() }} </p>
   </div>
   <div class="result-descr">
-     <p>Beschreibung {{ recipe.description }} </p>
+     <p>Beschreibung {{ recipe.getDescription() }} </p>
   </div>
   <div class="result-rating">
-    <p> Note: {{ recipe.ratings }} </p>
+    <p> Note: {{ recipe.getRatings() }} </p>
   </div>
   <div class="result-rating-count">
     <p> Anzahl Bewertungen: {{ countRating }} </p>
@@ -43,8 +43,8 @@
   <div class="certi">Zertifikat
     <!-- img-tag for logo (?)-->
       <img src="">
-     <p>{{recipe.certified}}</p>
+     <p>{{recipe.getCertified()}}</p>
   </div>
+</a>
 </div>
-
 

@@ -4,7 +4,7 @@ import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
-
+import { Ratings } from 'src/app/ratings';
 
 @Component({
   selector: 'app-search',
@@ -19,6 +19,7 @@ export class SearchComponent implements OnInit {
   recipes: Recipe[] = [];
   drop = new FormControl();
   rating: number;
+  ratings: Ratings[] = [];
   countRating: number;
 
   constructor(private searchReqService: SearchReqService) {}
@@ -55,7 +56,20 @@ export class SearchComponent implements OnInit {
     this.recipes = this.searchReqService.getUserResults();
     //this.throwError();
     //show rating
-    console.log( this.recipes[0].getRatings()[2]);
+    this.setRatings();
+    //console.log( this.recipes[0].getRatings()[2]);
+  }
+
+  setRatings() {
+    for (let i = 0; i < this.recipes.length; i++) {
+      if (this.recipes[i].getRatings() == null) {
+        console.log("No");
+      } else {
+        this.ratings = this.recipes[i].getRatings();
+        this.countRating = this.ratings.length;
+
+      }
+    }console.log(this.ratings, this.countRating);
   }
 
   clearArray(array) {
@@ -87,7 +101,7 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
     }
-    console.log(this.countRating)
+    //console.log(this.countRating)
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
@@ -108,15 +122,14 @@ export class SearchComponent implements OnInit {
   }
 
   throwError() {
-    window.alert
-    (this.searchReqService.getErrorMessage());
+    window.alert(this.searchReqService.getErrorMessage());
   }
 
-  setCountRating(number){
-    this.countRating = this.recipes.length["rating"];
+  /*setCountRating(rating: Ratings[]){
+    this.countRating = rating.length;
   }
 
   getCountRating(): number{
     return this.countRating;
-  }
+  }*/
 }

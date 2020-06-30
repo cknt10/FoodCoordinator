@@ -7,6 +7,7 @@ import { Recipe } from './recipe';
 import { SearchParameter } from './searchParameter';
 
 import { Ingredient } from './ingredient';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +46,11 @@ export class SearchReqService {
   /////////////////////////////////method to get results of recipes from searcher///////////////////////////
   getUserResults() {
     return this.userRecipes;
+  }
+
+  getRecipe(id: number): Observable<Recipe> {
+    // TODO: send the message _after_ fetching the hero
+    return of(this.getUserResults().find(recipe => recipe.getId() === id));
   }
 
     /////////////////////////////////Http-Request get results of the search//////////////////////////

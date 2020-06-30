@@ -1,0 +1,36 @@
+<div class="detail" *ngIf="recipe">
+<div>
+<button (click)="goBack()">go back</button>
+</div>
+  <div class="left">
+    <div id="title">
+      <p id="titleText">{{ recipe.getTitle() }}</p>
+    </div>
+    <div class="leftInner">
+    <div id="ingredients">
+      <p>Zutaten</p>
+      <p>{{ recipe.getIngredients() }}</p>
+    </div>
+    <div id="duration">
+      <p>{{ recipe.getDuration() }}</p>
+    </div>
+  </div>
+</div>
+  <div class="middle">
+    <div id="servings">
+      <p>Anzahl Portionen: {{ recipe.getServings() }}</p>
+    </div>
+    <div id="instruction">
+      <p>{{ recipe.getInstruction() }}</p>
+    </div>
+  </div>
+  <div class="right">
+    <div id="image">Bild:<img src="" /></div>
+    <div class="result-rating">
+      <p>Note: {{ recipe.getRatings() }}</p>
+    </div>
+    <div class="result-rating-count">
+      <!--<p> Anzahl Bewertungen: {{ countRating }} </p>-->
+    </div>
+  </div>
+</div>
