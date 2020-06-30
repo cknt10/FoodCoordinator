@@ -16,7 +16,7 @@ export class Recipe {
   private lastChangeDate: Date;
   private userId: number;
   private keywords: string[];
-  private rating: Float32Array;
+  private rating: number;
   private ratings: Ratings[];
   private ingredients: Ingredient[];
 
@@ -95,7 +95,7 @@ export class Recipe {
     return this.keywords;
   }
 
-  getRating(): Float32Array{
+  getRating(): number{
     return this.rating;
   }
 
