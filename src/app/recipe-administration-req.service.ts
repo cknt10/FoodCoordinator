@@ -53,7 +53,7 @@ export class RecipeAdministrationReqService {
       .set('servings', servings.toString())
       .set('description', description)
       .set('instruction', instruction)
-      .set('createionDate', this.Date())
+      .set('createionDate', this.date())
       .set('duration', duration.toString())
       .set('difficulty', difficulty)
       .set('certified', '0')
@@ -289,7 +289,7 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////method for current date///////////////////////////
-  Date() {
+  date() {
     let creation: string;
     creation = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
     console.log(creation);
