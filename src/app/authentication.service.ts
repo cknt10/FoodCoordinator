@@ -29,6 +29,11 @@ export class AuthenticationService {
     return this.UserData;
   }
 
+
+  setUser(newUser: User): User {
+    this.UserData=newUser;
+    return this.UserData;
+  }
   //////////////////////////////////////////////////display error message for the user/////////////////////////////////////////////////////////
   getErrorMessage() {
     return this.errorValue;
