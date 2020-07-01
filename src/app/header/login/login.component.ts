@@ -29,15 +29,14 @@ export class LoginComponent implements OnInit {
     console.log('start logging...');
     //add parameter username and password
     console.log((await this.authenticationService.readUserData(this.username, this.password)));
-
     this.loggedIn = true;
-
     if (this.loggedIn){
       this.log = "Logout";
     }
     else{
       this.log = "Login";
     }
+    this.router.navigate(['content']);
   }
 
 goBack(){

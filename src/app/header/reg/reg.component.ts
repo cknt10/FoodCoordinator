@@ -58,6 +58,7 @@ export class RegComponent implements OnInit {
           )
         ).getFirstname()
       );
+      this.router.navigate(['login']);
     } catch {
       window.alert("Bitte füllen Sie alle Felder aus!");
     }
