@@ -33,26 +33,46 @@ export class RegComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    console.log(await this.loginReqService.getServerCities());
+  }
+
+  async getPostcode(){
+    console.log(await this.loginReqService.getServerCities(this.postalcode));
   }
 
   async regUser() {
-    console.log(
-      (
-        await this.authenticationReqService.readUserData(
-          this.username,
-          this.password,
-          this.firstname,
-          this.name,
-          this.gender,
-          this.street,
-          this.housenumber.toString(),
-          this.postalcode.toString(),
-          this.city.toString(),
-          this.birthday.toString(),
-          this.email
-        )
-      ).getFirstname()
-    );
+    try {
+      console.log(
+        (
+          await this.authenticationReqService.readUserData(
+            this.username,
+            this.password,
+            this.firstname,
+            this.name,
+            this.gender,
+            this.street,
+            this.housenumber.toString(),
+            this.postalcode.toString(),
+            this.city.toString(),
+            this.birthday.toString(),
+            this.email
+          )
+        ).getFirstname()
+      );
+    } catch {
+      window.alert("Bitte füllen Sie alle Felder aus!");
+    }
+  }
+
+goBack(){
+  this.router.navigate(['content']);
+}
+
+  throwError() {
+    console.log(this.authenticationReqService.getErrorMessage());
+    //window.alert(this.error);
+
+    //for cities if there don't display
+    console.log(this.loginReqService.getErrorMessage());
+    //window.alert(this.error);
   }
 }

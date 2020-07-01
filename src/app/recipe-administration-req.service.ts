@@ -1,50 +1,43 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-import {
-  HttpClient,
-  HttpParams,
-  HttpErrorResponse,
-} from '@angular/common/http';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
 
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
 import { User } from './User';
+import { Ratings } from './ratings';
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeAdministrationReqService {
   private errorValue: string;
-  private userRecipe: Recipe[] = [];
+  private userRecipes: Recipe[] = [];
+  private userRecipe: Recipe;
+  private recipeRatings: Ratings[] = []
 
   constructor(
     private http: HttpClient,
     private searchRequestService: SearchReqService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
   ) {}
 
   /////////////////////////////////method to display error message to user///////////////////////////
-  getErrorMessageUser(): string {
+  getErrorMessage(): string {
     return this.errorValue;
   }
 
-  /////////////////////////////////method for current date///////////////////////////
-  Date() {
-    let creation: string;
-    creation = this.datePipe.transform(new Date(), 'yyyy-MM-dd  h:mm:ss');
-    console.log(creation);
-    return creation;
-    
+  getRecipeDetails(): Recipe {
+    return this.userRecipe;
   }
 
   /////////////////////////////////Http-Request to send new recipe///////////////////////////
   async getCreateRecipe(
     title: string,
-    //picture: File,
+    picture: string,
     servings: number,
     description: string,
     instruction: string,
@@ -54,10 +47,9 @@ export class RecipeAdministrationReqService {
     keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
-
     let params = new HttpParams()
       .set('title', title)
-      //.set('picture', picture.toString())
+      .set('picture', picture)
       .set('servings', servings.toString())
       .set('description', description)
       .set('instruction', instruction)
@@ -68,30 +60,25 @@ export class RecipeAdministrationReqService {
       .set('lastChange', null)
       .set('userId', userId.toString())
       .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'));
-    /*keywords.forEach((key) => {
-      params = params.append('keywords', this.convertRecipeKeyword(key));
-    });*/
-    //.set('ingredients', ingredientsDescription.join('|'));
 
-    let modifiedIngredients: Object[]=[];
-    ingredients.forEach((value,index) => {
-      modifiedIngredients[index]=new Object();
-      modifiedIngredients[index]={id: value.getId().toString(),amount: value.getAmount().toString(), unit: value.getUnit()};
+    let modifiedIngredients: Object[] = [];
+    ingredients.forEach((value, index) => {
+      modifiedIngredients[index] = new Object();
+      modifiedIngredients[index] = {
+        id: value.getId().toString(),
+        amount: value.getAmount().toString(),
+        unit: value.getUnit(),
+      };
     });
-  
+
     console.log(modifiedIngredients);
 
-    // modifiedIngredients.forEach((value, i) => {
-    //   params = params.append('ingredients', value.join(|));
-    // })
+    let jsonFormat: any = {};
+    jsonFormat.myArray = JSON.stringify(modifiedIngredients);
+    console.log(ingredients);
+    console.log(jsonFormat.myArray);
 
-     let haha: any = {};
-     haha.myArray = JSON.stringify(modifiedIngredients);
-     console.log(ingredients);
-     console.log(haha.myArray);
-    
-     
-      params = params.append('ingredients', haha.myArray);
+    params = params.append('ingredients', jsonFormat.myArray);
 
     console.log(params);
 
@@ -99,17 +86,17 @@ export class RecipeAdministrationReqService {
 
     console.log('request finished');
 
-    return this.http
-      .get<Recipe>(requestLink, { params: params })
-      .pipe(catchError(this.handleError))
-      .toPromise();
-}
+    return (
+      this.http
+        .get<Recipe>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
 
   /////////////////////////////////Http-Request to change recipe///////////////////////////
   getServerChangeRecipe(recipe: Recipe): Promise<Recipe> {
     console.log('server request with keywords');
-
-    //console.log(recipe);
 
     let ingredientsID = new Array<string>();
     let ingredientsAmount = new Array<string>();
@@ -164,15 +151,18 @@ export class RecipeAdministrationReqService {
 
     console.log('request finished');
 
-    return this.http
-      .get<Recipe>(requestLink, { params: params })
-      .pipe(catchError(this.handleError))
-      .toPromise();
+    return (
+      this.http
+        .get<Recipe>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
   }
 
-  async getServerRecipe(
+  ///////////////////////////////////////////////save created recipe from response //////////////////////////////////
+  async getNewServerRecipe(
     title: string,
-    //picture: File,
+    picture: string,
     servings: number,
     description: string,
     instruction: string,
@@ -181,9 +171,10 @@ export class RecipeAdministrationReqService {
     userId: number,
     keywords: string[],
     ingredients: Ingredient[]
-  ): Promise<Recipe[]> {
-    await this.getCreateRecipe(title,
-      //picture,
+  ): Promise<Recipe> {
+    await this.getCreateRecipe(
+      title,
+      picture,
       servings,
       description,
       instruction,
@@ -191,11 +182,31 @@ export class RecipeAdministrationReqService {
       difficulty,
       userId,
       keywords,
-      ingredients).then((data: Recipe) => {
-      data['recipes'].forEach((value: Recipe) => {
-        this.userRecipe.push(new Recipe(value));
+      ingredients
+    )
+      .then((data: Recipe) => {
+        data['recipe'].forEach((value: Recipe) => {
+          this.userRecipes.push(new Recipe(value));
+        });
+      })
+      .catch((error) => {
+        this.handleErrorCreateRecipe(error);
       });
-    });
+    console.log(this.userRecipe);
+    return this.userRecipe;
+  }
+
+  /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
+  async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
+    await this.getServerChangeRecipe(recipe)
+      .then((data: Recipe) => {
+        data['recipe'].forEach((value: Recipe) => {
+          this.userRecipes.push(new Recipe(value));
+        });
+      })
+      .catch((error) => {
+        this.handleErrorChangeRecipe(error);
+      });
     console.log(this.userRecipe);
     return this.userRecipe;
   }
@@ -206,8 +217,6 @@ export class RecipeAdministrationReqService {
     let keywordsId = [];
     let serverKeywords = this.searchRequestService.getKeywords();
 
-    //console.log("you're at convert to keywordsId...");
-
     serverKeywords.forEach((elem1) => {
       elem1;
       tempRecipe.forEach((elem2) => {
@@ -217,10 +226,10 @@ export class RecipeAdministrationReqService {
         }
       });
     });
-    keywordsId.filter((value) =>{
-      value !== ""
-    })
-    //console.log(keywordsId);
+    keywordsId.filter((value) => {
+      value === value.id;
+    });
+    console.log(keywordsId);
     return keywordsId;
   }
 
@@ -229,8 +238,6 @@ export class RecipeAdministrationReqService {
     let tempRecipe = keywords;
     let ingredientsId = [];
     let serverKeywords = this.searchRequestService.getIngredients();
-
-    //console.log("you're at convert to ingredientsId...");
 
     serverKeywords.forEach((elem1) => {
       elem1;
@@ -242,7 +249,10 @@ export class RecipeAdministrationReqService {
       });
     });
 
-    //console.log(ingredientsId);
+    ingredientsId.filter((value) => {
+      value === value.id;
+    });
+
     return ingredientsId;
   }
 
@@ -251,15 +261,13 @@ export class RecipeAdministrationReqService {
     let keywordsId: string = '';
     let serverKeywords = this.searchRequestService.getKeywords();
 
-    //console.log("you're at convert to keywordsId...");
-
     serverKeywords.forEach((elem1) => {
       elem1;
       if (elem1.name === keywords) {
         keywordsId = elem1.id.toString();
       }
     });
-    //console.log(keywordsId);
+
     return keywordsId;
   }
 
@@ -269,8 +277,6 @@ export class RecipeAdministrationReqService {
     let ingredientsId = 0;
     let serverKeywords = this.searchRequestService.getIngredients();
 
-    //console.log("you're at convert to ingredientsId...");
-
     serverKeywords.forEach((elem1) => {
       elem1;
 
@@ -279,62 +285,241 @@ export class RecipeAdministrationReqService {
       }
     });
 
-    //console.log(ingredientsId);
     return ingredientsId;
   }
 
+  /////////////////////////////////method for current date///////////////////////////
+  Date() {
+    let creation: string;
+    creation = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
+    console.log(creation);
+    return creation;
+  }
+
   /////////////////////////////////////////get from Server user recipes///////////////////////////////////////////
- async getServerUserRecipe(user: User): Promise<Recipe[]> {
-    await this.fetchServerUserRecipe(user).then((data: Recipe) => {
-      data['recipes'].forEach((value: Recipe) => {
-        this.userRecipe.push(new Recipe(value));
+  async getServerUserRecipe(user: User): Promise<Recipe[]> {
+    await this.fetchServerUserRecipe(user)
+      .then((data: Recipe) => {
+        console.log(data['recipes']);
+        data['recipes'].forEach((value: Recipe) => {
+          this.userRecipes.push(new Recipe(value));
+        });
+      })
+      .catch((error) => {
+        this.handleErrorUserRecipe(error);
       });
-    });
+    console.log(this.userRecipes);
+    return this.userRecipes;
+  }
+
+  /////////////////////////////////Http-Request to get all user recipes///////////////////////////
+  async fetchServerUserRecipe(user: User): Promise<Recipe> {
+    let params = new HttpParams().set('userId', user.getId().toString());
+
+    console.log(params);
+
+    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/myrecipes.php';
+
+    return (
+      this.http
+        .get<Recipe>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
+
+  /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
+  async getServerRecipeDetails(recipe: Recipe, isPremium: boolean): Promise<Recipe> {
+    await this.fetchServerRecipeDetails(recipe, isPremium)
+      .then((data: Recipe) => {
+        
+        data['recipe'].forEach((value) =>{
+          this.userRecipe = new Recipe(value);
+        })
+        console.log(data['recipe']);
+      })
+      .catch((error) => {
+        this.handleErrorRecipeDetails(error);
+      });
     console.log(this.userRecipe);
     return this.userRecipe;
   }
 
-  /////////////////////////////////Http-Request to get all Cities///////////////////////////
-  async fetchServerUserRecipe(user: User): Promise<Recipe> {
-
+  /////////////////////////////////Http-Request to get recipe details///////////////////////////
+  async fetchServerRecipeDetails(recipe: Recipe, isPremium: boolean): Promise<Recipe> {
+    let premium: number;
+    if(isPremium == true){
+      premium = 1;
+    }else{
+      premium= 0;
+    }
     let params = new HttpParams()
-    .set('userId', user.getId().toString())
+    .set('idRecipe', recipe.getId().toString())
+    .set('isPremium', premium.toString());
 
-  console.log(params);
+    console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/myrecipes.php';
+    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/getrecipe.php';
 
-    return this.http
-      .get<Recipe>(requestLink, { params: params })
-      .pipe(catchError(this.handleError))
-      .toPromise();
+    return (
+      this.http
+        .get<Recipe>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
+  }
+
+   /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
+   async getServerRecipeRating(recipe: Recipe, rating: Ratings): Promise<Recipe> {
+    await this.fetchServerRecipeRating(recipe, rating)
+      .then((data: Ratings[]) => {
+
+        data['ratings'].forEach((value: Ratings) =>{
+          this.recipeRatings.push(new Ratings(value));
+        })
+        this.userRecipe.setRatings(this.recipeRatings);
+        console.log(data['ratings']);
+      })
+      .catch((error) => {
+        this.handleErrorRecipeRating(error);
+      });
+    console.log(this.userRecipe);
+    return this.userRecipe;
+  }
+
+  /////////////////////////////////Http-Request to get recipe details///////////////////////////
+  async fetchServerRecipeRating(recipe: Recipe, rating: Ratings): Promise<Ratings[]> {
+    let params = new HttpParams()
+    .set('recipeId', recipe.getId().toString())
+    .set('userId', rating.getUserId().toString())
+    .set('comment', rating.getComment())
+    .set('rating', rating.getRating().toString());
+
+    console.log(params);
+
+    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/setrating.php';
+
+    return (
+      this.http
+        .get<Ratings[]>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
   }
 
 
-  /////////////////////////////////analyze error and get understanable message to user///////////////////////////
-  handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unbekannter Fehler!';
-    if (error.error instanceof ErrorEvent) {
+  ///////////////////////////////////////method to handle error for create recipe//////////////////////////////////////////////////////////////////
+  handleErrorCreateRecipe(error: Response) {
+    if (error instanceof ErrorEvent) {
       // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
     } else {
       // Server-side errors
-      if (error.status == 401) {
+      if (error.status === 401) {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
-      if (error.status == 403) {
-        this.errorValue = `Keine Suchbegriffe eingegeben.`;
+      if (error.status === 403) {
+        this.errorValue = `Es tut uns leid, das Rezept kann nicht erstellt werden`;
       }
-      if (error.status == 404) {
-        this.errorValue = `Leider wurde das Rezept nicht gefunden.`;
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider gibt es das Rezept bereits.`;
       }
-      if (error.status == 500) {
-        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
       }
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    return throwError(errorMessage);
+    return this.errorValue;
   }
 
+  ///////////////////////////////////////method to handle error for change recipe//////////////////////////////////////////////////////////////////
+  handleErrorChangeRecipe(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Das Rezept exisitert bereits.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider haben wir das Rezept nicht gefunden. `;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+      }
+    }
+    return this.errorValue;
+  }
 
+  ///////////////////////////////////////method to handle error for create recipe//////////////////////////////////////////////////////////////////
+  handleErrorUserRecipe(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Die Recepte existieren bereits.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider haben wir keine eigenen Rezepte gefunden.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
+      }
+    }
+    return this.errorValue;
+  }
+
+  ///////////////////////////////////////method to handle error for recipe details//////////////////////////////////////////////////////////////////
+  handleErrorRecipeDetails(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Leider kein Zugriff.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider wurde das Rezept nicht gefunden.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
+      }
+    }
+    return this.errorValue;
+  }
+
+   ///////////////////////////////////////method to handle error for set rating in a recipe//////////////////////////////////////////////////////////////////
+   handleErrorRecipeRating(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Tut uns leid, Sie können das Rezept nicht bewerten.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Es tut uns leid, leider wurde das Rezept nicht gefunden.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
+      }
+    }
+    return this.errorValue;
+  }
 }

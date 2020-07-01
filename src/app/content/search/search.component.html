@@ -18,4 +18,36 @@
   <button id="find" mat-raised-button (click)="search()">let's go</button>
 </div>
 
-<app-search-result *ngFor="let recipe of recipes"></app-search-result>
+  <div class="result" *ngFor="let recipe of recipes">
+    <a routerLink="/detail/{{recipe.getId()}}">
+  <div class="cookbook">cookbook
+    <!-- img-tag for logo (?)-->
+    <img src="">
+    <button id="addCb">+</button>
+  </div>
+  <div class="image">Bild
+      <img src="">
+  </div>
+  <div class="title">
+   <p>{{ recipe.getTitle() }} </p>
+  </div>
+  <div class="description">
+     <p>{{ recipe.getDescription() }} </p>
+  </div>
+  <div class="rating">
+  <div class="ratingView">
+    <!--Getter Problem wie auch in der recipe-details Komponente-->
+    <p *ngIf="recipe.getRating()"> Note: {{ recipe.getRating() }} </p>
+  </div>
+  <div class="countRating">
+    <p *ngIf="recipe.getRatings()"> Anzahl Bewertungen: {{ recipe.getRatings().length}} </p>
+ </div>
+</div>
+  <div class="certified" *ngIf="recipe.getCertified()">
+    <!-- img-tag for logo (?)-->
+      <img src="">
+     <p>Zertifiziert</p>
+  </div>
+</a>
+</div>
+

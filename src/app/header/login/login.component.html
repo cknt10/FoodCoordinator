@@ -1,7 +1,7 @@
   <div class="container">
   <div class="containerLogin">
     <div class="closeContainer">
-    <button id="close" mat-mini-fab><mat-icon>close</mat-icon></button>
+    <button id="close" mat-mini-fab (click)="goBack()"><mat-icon>close</mat-icon></button>
   </div>
     <div class="login">
       <input type="text" placeholder="Benutzername oder Email" name="username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Benutzername oder Email'" [(ngModel)]="username" required>

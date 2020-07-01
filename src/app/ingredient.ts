@@ -5,7 +5,7 @@ export class Ingredient {
    private description: string;
     private amount: number;
     private unit: string;
-    private nutrients?: Nutrient[];
+    private nutrients: Nutrient[];
 
 
     constructor(

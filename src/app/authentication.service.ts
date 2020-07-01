@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoginReqService } from './login-req.service';
-import { throwError } from 'rxjs';
 import { User } from './User';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { retry, catchError } from 'rxjs/operators';
+import { PremiumReqService } from './premium-req.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,52 +12,26 @@ export class AuthenticationService {
   private errorValue: string;
 
   constructor(
-    private reqService: LoginReqService,
-    private http: HttpClient
-  ) {}
+    private LoginReqService: LoginReqService,
+    private premiumReqService: PremiumReqService
+    ) {}
 
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////
-  async getDataUser(
-    username: string,
-    password: string
-    ) {
+  async getDataUser(username: string, password: string) {
     if (this.UserData == null) {
-      await this.setUserData(
-        username,
-        password
-        );
+      await this.readUserData(username, password);
     }
     return this.UserData;
   }
 
   /////////////////////////////////////////////////////////////get User without params/////////////////////////////////////////////////////////////////////////////
-  getUser(): User{
-  return this.UserData;
+  getUser(): User {
+    return this.UserData;
   }
 
   //////////////////////////////////////////////////display error message for the user/////////////////////////////////////////////////////////
-  getErrorMessage(){
+  getErrorMessage() {
     return this.errorValue;
-  }
-
- ///////////////////////////////////////////////////////////set user data////////////////////////////////////////////////////////////////////////////
-  async setUserData(
-    username: string,
-    password: string
-    ): Promise<User> {
-    await this.reqService.getServerLoginData(
-      username,
-      password
-      ).then((data: User) => {
-      this.UserData = new User(data['user']);
-    }),
-      (error => {
-        console.log('Auslesen gescheitert');
-        return this.handleError(error);
-      });
-
-
-    return this.UserData;
   }
 
   ///////////////////////////////////////////////////get user data with login and registration////////////////////////////////////////////////////////
@@ -74,35 +46,32 @@ export class AuthenticationService {
     postalCode?: string,
     city?: string,
     birthday?: string,
-    email?: string,
-    ): Promise<User> {
-
-      if (
-        firstname == null
-        && name == null
-        && gender == null
-        && street == null
-        && houseNumber == null
-        && postalCode == null
-        && city == null
-        && birthday == null
-        && email == null
-        ){
-    await this.reqService.getServerLoginData(
-      username,
-      password
-      ).then((data: User) => {
-      this.UserData = new User(data['user']);
-
-      console.log(this.UserData);
-    }),
-      (error => {
-        console.log('Auslesen gescheitert');
-        return this.handleError(error);
-      });
-
-    }else{
-      await this.reqService.getServerRegistrationData(
+    email?: string
+  ): Promise<User> {
+    if (
+      firstname == null &&
+      name == null &&
+      gender == null &&
+      street == null &&
+      houseNumber == null &&
+      postalCode == null &&
+      city == null &&
+      birthday == null &&
+      email == null
+    ) {
+      await this.LoginReqService.getServerLoginData(username, password)
+        .then((data: User) => {
+         if ((data['isPremium'] = true)) {
+         this.premiumReqService.getServerPremiumUser(data['user']);
+          } else {
+            this.UserData = new User(data['user']);
+          }
+        })
+        .catch((error) => {
+          this.handleErrorLogin(error);
+        });
+    } else {
+      await this.LoginReqService.getServerRegistrationData(
         username,
         password,
         firstname,
@@ -114,61 +83,59 @@ export class AuthenticationService {
         city,
         birthday,
         email
-        ).then((data: User) => {
-        this.UserData = new User(data['user']);
-
-        console.log(this.UserData);
-
-    }),
-    //comment
-    (error => {
-      console.log('Auslesen gescheitert');
-      return this.handleError(error);
-    });
+      )
+        .then((data: User) => {
+          this.UserData = new User(data['user']);
+        })
+        .catch((error) => {
+          this.handleErrorLogin(error);
+        });
+    }
 
     return this.UserData;
   }
-}
 
-/////////////////////////////////////////////analize server Errors////////////////////////////////////
-handleError(error: HttpErrorResponse) {
-  let errorMessage = 'Unknown error!';
-  if (error.error instanceof ErrorEvent) {
-    // Client-side errors
-    errorMessage = `Error: ${error.error.message}`;
-  } else {
+  /////////////////////////////////////////////analize server Errors for login////////////////////////////////////
+  handleErrorLogin(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    }
     // Server-side errors
-    if (error.status == 401) {
+    if (error.status === 401) {
       this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
     }
-    if (error.status == 403) {
+    if (error.status === 403) {
       this.errorValue = `Der Benutzername exisitert bereits.`;
     }
-    if (error.status == 404) {
+    if (error.status === 404) {
       this.errorValue = `Falscher Benutzername oder falsches Passwort`;
     }
-    if (error.status == 500) {
-      this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+    if (error.status === 500) {
+      this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
     }
-    errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    return this.errorValue;
   }
-  return throwError(errorMessage);
-}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  /////////////////////////////////////////////analize server Errors for registration////////////////////////////////////
+  handleErrorRegistration(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    }
+    // Server-side errors
+    if (error.status === 401) {
+      this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+    }
+    if (error.status === 403) {
+      this.errorValue = `Der Benutzername oder  Email-Adresse ist bereits vergeben.`;
+    }
+    if (error.status === 404) {
+      this.errorValue = `Registirerung fehlgeschalgen. Bitte versuchen Sie es später noch mal`;
+    }
+    if (error.status === 500) {
+      this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+    }
+    return this.errorValue;
+  }
 }

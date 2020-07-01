@@ -1,4 +1,4 @@
-<button class="create" mat-raised-button (click)="createRecipe()">Erstellen</button>
+<button class="create" mat-raised-button (click)="createRecipe()" [disabled]="Image.value==''">Erstellen</button>
 <div class="workspace">
   <div class="left">
     <label for="title">Titel:</label><br />
@@ -26,8 +26,8 @@
         <button id="add" mat-mini-fab (click)="addIngredient()">+</button>
       </div>
       <div id="ingredientTable">
-        <span *ngFor="let ingredient of ingredients">
-          {{ ingredient.getDescription() }} {{ ingredient.getAmount() }} {{ ingredient.getUnit() }}
+        <span *ngFor="let value of ingredients">
+          {{ value.getDescription() }} {{ value.getAmount() }} {{ value.getUnit() }}
           <!--<button id="remove" (click)="removeIngredient()">
             <mat-icon>close</mat-icon>
           </button>-->
@@ -45,7 +45,8 @@
     <input type="text" [(ngModel)]="description" />
   </div>
   <div class="right">
+    <img [src] = "imageUrl">
+    <input type="file" (change)="handleFileInput($event.target.files)" #Image accept="image/*"/>
     <label for="picture">Bild:</label>
-    <input type="file" />
   </div>
 </div>
