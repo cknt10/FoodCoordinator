@@ -55,7 +55,7 @@ getUserData(){
     .set('birthday', birthday)
     .set('email', email);
 
-  const requestLink = 'http://xcsd.ddns.net/api/backend/login/register.php';
+  const requestLink = 'http://xcsd.ddns.net/api/backend/login/usermanagment.php';
 
   await this.http
     .get<User>(requestLink, { params: params })
