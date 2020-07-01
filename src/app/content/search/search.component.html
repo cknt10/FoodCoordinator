@@ -18,32 +18,35 @@
   <button id="find" mat-raised-button (click)="search()">let's go</button>
 </div>
 
-  <div class="result" *ngFor="let recipe of recipes" routerLink="/detail/{{recipe.getId()}}">
+  <div class="result" *ngFor="let recipe of recipes">
     <a routerLink="/detail/{{recipe.getId()}}">
-  <div class="cb-btn">Zum Kochbuch hinzuzufügen
+  <div class="cookbook">cookbook
     <!-- img-tag for logo (?)-->
     <img src="">
-    <button id="addCb">Logo</button>
+    <button id="addCb">+</button>
   </div>
-  <div class="result-img">Bild
+  <div class="image">Bild
       <img src="">
   </div>
-  <div class="result-title">
-   <p>Titel: {{ recipe.getTitle() }} </p>
+  <div class="title">
+   <p>{{ recipe.getTitle() }} </p>
   </div>
-  <div class="result-descr">
-     <p>Beschreibung {{ recipe.getDescription() }} </p>
+  <div class="description">
+     <p>{{ recipe.getDescription() }} </p>
   </div>
-  <div class="result-rating">
-    <p> Note: {{ recipe.getRatings() }} </p>
+  <div class="rating">
+  <div class="ratingView">
+    <!--Getter Problem wie auch in der recipe-details Komponente-->
+    <p *ngIf="recipe.getRating()"> Note: {{ recipe.getRating() }} </p>
   </div>
-  <div class="result-rating-count">
-    <p> Anzahl Bewertungen: {{ countRating }} </p>
+  <div class="countRating">
+    <p *ngIf="recipe.getRatings()"> Anzahl Bewertungen: {{ recipe.getRatings().length}} </p>
  </div>
-  <div class="certi">Zertifikat
+</div>
+  <div class="certified" *ngIf="recipe.getCertified()">
     <!-- img-tag for logo (?)-->
       <img src="">
-     <p>{{recipe.getCertified()}}</p>
+     <p>Zertifiziert</p>
   </div>
 </a>
 </div>

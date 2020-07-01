@@ -49,7 +49,6 @@ export class SearchReqService {
   }
 
   getRecipe(id: number): Observable<Recipe> {
-    // TODO: send the message _after_ fetching the hero
     return of(this.getUserResults().find(recipe => recipe.getId() === id));
   }
 

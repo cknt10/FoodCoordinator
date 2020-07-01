@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 import { Location } from '@angular/common';
 import { Ingredient } from 'src/app/ingredient';
+import { Ratings } from 'src/app/ratings';
 
 @Component({
   selector: 'app-recipe-details',
@@ -14,6 +15,7 @@ import { Ingredient } from 'src/app/ingredient';
 export class RecipeDetailsComponent implements OnInit {
   recipe: Recipe;
   ingredients: Ingredient[] = [];
+  ratings: Ratings[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -24,6 +26,8 @@ export class RecipeDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRecipe();
+    this.setIngredients();
+    this.setRatings();
   }
 
   /*async ngOnInit() {
@@ -35,7 +39,7 @@ export class RecipeDetailsComponent implements OnInit {
     this.searchReqService.getRecipe(id)
       .subscribe(recipe => this.recipe = recipe);
       console.log(this.recipe);
-      this.setIngredients();
+
   }
 
   throwError() {
@@ -46,6 +50,11 @@ export class RecipeDetailsComponent implements OnInit {
   setIngredients(){
     this.ingredients = this.recipe.getIngredients();
     console.log(this.ingredients);
+  }
+
+  setRatings(){
+    this.ratings = this.recipe.getRatings();
+    console.log(this.ratings);
   }
 
   goBack(): void {

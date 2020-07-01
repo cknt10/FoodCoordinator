@@ -5,6 +5,7 @@ import { Recipe } from 'src/app/recipe';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 import { Ratings } from 'src/app/ratings';
+import { count } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -18,7 +19,6 @@ export class SearchComponent implements OnInit {
   options: string[] = [];
   recipes: Recipe[] = [];
   drop = new FormControl();
-  rating: number;
   ratings: Ratings[] = [];
   countRating: number;
 
@@ -30,6 +30,7 @@ export class SearchComponent implements OnInit {
       .fetchSearchKeywords()
       .then((data) => console.log(this.searchReqService.filterKeywords())); // Hier alle Keywords, durch getFilteredKeywords() abrufen
     this.allKeywords = this.searchReqService.getFilteredKeywords();
+    this.clearArray(this.recipes);
   }
 
   ////////////////////////add ingredient to array///////////////////////////////////////////
@@ -37,7 +38,7 @@ export class SearchComponent implements OnInit {
     if (this.options.includes(this.ingredient)) {
       this.ingredients.push(this.ingredient);
     } else {
-      this.throwError();
+      //this.throwError();
       window.alert('Wähle bitte einen gültigen Suchbegriff');
     }
     this.ingredient = '';
@@ -63,13 +64,11 @@ export class SearchComponent implements OnInit {
   setRatings() {
     for (let i = 0; i < this.recipes.length; i++) {
       if (this.recipes[i].getRatings() == null) {
-        console.log("No");
+        console.log("Keine Bewertung");
       } else {
         this.ratings = this.recipes[i].getRatings();
-        this.countRating = this.ratings.length;
-
       }
-    }console.log(this.ratings, this.countRating);
+    }
   }
 
   clearArray(array) {

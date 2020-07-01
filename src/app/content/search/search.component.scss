@@ -62,18 +62,51 @@ mat-icon{
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
+  justify-content: space-evenly;
   margin-left: 5%;
-  background-color: white;
   width:90%;
   height: auto;
 }
 
-.cb-btn{
-  width: 10%;
-  margin-left: 2%;
+a{
+  margin-bottom: 2%;
+  background-color: white;
+  text-decoration: none;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+  width: 100%;
 }
 
-.result-img, .result-title, .result-descr, .result-rating, .certi{
-  width: 13%;
-  margin-left: 2%;
+.cookbook{
+  height: 7em;
+  width: 8%;
+}
+
+.image{
+  height: 7em;
+  width: 22%;
+}
+
+.title{
+  height: 7em;
+  width: 15%;
+}
+
+.description{
+  height: 7em;
+  width: 25%;
+}
+
+.rating{
+  height: 7em;
+  width: 20%;
+}
+
+.certified{
+  justify-content: flex-end;
+  height: 7em;
+  width: 10%;
 }
