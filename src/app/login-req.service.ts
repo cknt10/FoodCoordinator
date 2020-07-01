@@ -5,7 +5,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, retry, map } from 'rxjs/operators';
 
 import { User } from './User';
 import { Cities } from './cites';
@@ -20,7 +20,7 @@ export class LoginReqService {
   constructor(private http: HttpClient) {}
 
   /////////////////////////////////method to display error message to user///////////////////////////
-  getErrorMessageUser(): string {
+  getErrorMessage(): string {
     return this.errorValue;
   }
 
@@ -31,21 +31,16 @@ export class LoginReqService {
 
   ///////////////////////////////////////HTTP-Request method//////////////////////////////////////////////////////////////////
   getServerLoginData(username: string, password: string): Promise<User> {
-    console.log('server request with username and password');
 
     let params = new HttpParams()
       .set('username', username)
       .set('password', password);
 
-    console.log(params);
-
     const requestLink = 'http://xcsd.ddns.net/api/backend/login/login.php';
-
-    console.log('request finished');
 
     return this.http
       .get<User>(requestLink, { params: params })
-      .pipe(catchError(this.handleError))
+      //.pipe(catchError(this.handleError))
       .toPromise();
   }
 
@@ -63,7 +58,6 @@ export class LoginReqService {
     birthday: string,
     email: string
   ): Promise<User> {
-    console.log('Server request with username and password');
 
     let params = new HttpParams()
       .set('username', username)
@@ -77,60 +71,64 @@ export class LoginReqService {
       .set('city', city)
       .set('birthday', birthday)
       .set('email', email);
-    console.log(params);
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/login/register.php';
 
-    console.log('request finished');
-
     return this.http
       .get<User>(requestLink, { params: params })
-      .pipe(catchError(this.handleError))
+      //.pipe(catchError(this.handleError))
       .toPromise();
   }
 
   /////////////////////////////////save cities from server///////////////////////////
-  async getServerCities(): Promise<Cities[]> {
-    await this.fetchServerCities().then((data: Cities) => {
-      data['cities'].forEach((value) => {
+  async getServerCities(postcode: number): Promise<Cities[]> {
+    await this.fetchServerCities(postcode).then((data: Cities) => {
+      data['cities'].forEach((value: Cities) => {
         this.cities.push(new Cities(value));
       });
-    });
+    }).catch (error => {
+      this.handleErrorCities(error);
+      });
+      
     return this.cities;
   }
 
   /////////////////////////////////Http-Request to get all Cities///////////////////////////
-  async fetchServerCities(): Promise<Cities> {
+  async fetchServerCities(postcode: number): Promise<Cities> {
+
+    let params = new HttpParams()
+    .set('postcode', postcode.toString());
     const requestLink = 'http://xcsd.ddns.net/api/backend/order/getcities.php';
 
     return this.http
-      .get<Cities>(requestLink)
-      .pipe(catchError(this.handleError))
+      .get<Cities>(requestLink, { params: params })
+      /*.pipe(
+        retry(2),
+        catchError(this.handleErrorCities))*/
+        .pipe(retry(2))
       .toPromise();
   }
 
-  ///////////////////////////////////////method to handle error//////////////////////////////////////////////////////////////////
-  handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unknown error!';
-    if (error.error instanceof ErrorEvent) {
+  ///////////////////////////////////////method to handle error for cities//////////////////////////////////////////////////////////////////
+  handleErrorCities(error: Response) {
+    if (error instanceof ErrorEvent) {
       // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
     } else {
       // Server-side errors
-      if (error.status == 401) {
+      if (error.status === 401) {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
-      if (error.status == 403) {
-        this.errorValue = `Der Benutzername exisitert bereits.`;
+      if (error.status === 403) {
+        this.errorValue = `Die Stadt exisitert bereits.`;
       }
-      if (error.status == 404) {
-        this.errorValue = `Falscher Benutzername oder falsches Passwort`;
+      if (error.status === 404) {
+        this.errorValue = `Falsche Postleitzahl oder die Stadt wurde nicht richtig geschrieben.`;
       }
-      if (error.status == 500) {
-        this.errorValue = `Die Verbindung zum Server wurde fehlgeschlagen`;
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
       }
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    return throwError(errorMessage);
+    return this.errorValue;
   }
 }

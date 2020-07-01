@@ -1,6 +1,6 @@
 import { Ingredient } from './ingredient';
 import { Ratings } from './ratings';
-import { Nutrient } from './nutrient';
+
 
 export class Recipe {
   private id: number;
@@ -16,9 +16,9 @@ export class Recipe {
   private lastChangeDate: Date;
   private userId: number;
   private keywords: string[];
+  private rating: number;
   private ratings: Ratings[];
   private ingredients: Ingredient[];
-  private nutrients: Nutrient[];
 
   constructor(recipe: Recipe) {
     this.id = recipe.id;
@@ -34,9 +34,9 @@ export class Recipe {
     this.lastChangeDate = recipe.lastChangeDate;
     this.userId = recipe.userId;
     this.keywords = recipe.keywords;
+    this.rating = recipe.rating;
     this.ratings = recipe.ratings;
     this.ingredients = recipe.ingredients;
-    this.nutrients = recipe.nutrients;
   }
 
   getId(): number {
@@ -95,16 +95,16 @@ export class Recipe {
     return this.keywords;
   }
 
+  getRating(): number{
+    return this.rating;
+  }
+
   getRatings(): Ratings[] {
     return this.ratings;
   }
 
   getIngredients(): Ingredient[] {
     return this.ingredients;
-  }
-
-  getNutrients(): Nutrient[] {
-    return this.nutrients;
   }
 
   setId( id: number) {
@@ -163,16 +163,16 @@ export class Recipe {
      this.keywords.push(keywords);
   }
 
-  setRatings(ratings: Ratings) {
-     this.ratings.push(ratings);
+  setRatings(ratings: Ratings[]) {
+    ratings.forEach((value) => {
+      this.ratings.push(value);
+    });
   }
 
   setIngredients( ingredients: Ingredient[]) {
-    this.ingredients = ingredients;
-  }
-
-  setNutrient(nutrient: Nutrient[]){
-    this.nutrients = nutrient;
+    ingredients.forEach((value) => {
+      this.ingredients.push(value);
+    })
   }
 
   cleanRecipe() {
@@ -189,8 +189,8 @@ export class Recipe {
     this.lastChangeDate = null;
     this.userId = null;
     this.keywords = null;
+    this.rating = null;
     this.ratings = null;
     this.ingredients = null;
-    this.nutrients = null;
   }
 }

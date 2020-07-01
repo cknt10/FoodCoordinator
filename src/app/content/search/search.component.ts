@@ -1,7 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, Validator, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
+
+import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
+import { Ratings } from 'src/app/ratings';
+import { count } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',
@@ -15,11 +19,10 @@ export class SearchComponent implements OnInit {
   options: string[] = [];
   recipes: Recipe[] = [];
   drop = new FormControl();
-  error: string;
+  ratings: Ratings[] = [];
+  countRating: number;
 
-  constructor(
-    private searchReqService: SearchReqService
-  ) {}
+  constructor(private searchReqService: SearchReqService) {}
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
   async ngOnInit() {
@@ -27,6 +30,7 @@ export class SearchComponent implements OnInit {
       .fetchSearchKeywords()
       .then((data) => console.log(this.searchReqService.filterKeywords())); // Hier alle Keywords, durch getFilteredKeywords() abrufen
     this.allKeywords = this.searchReqService.getFilteredKeywords();
+    this.clearArray(this.recipes);
   }
 
   ////////////////////////add ingredient to array///////////////////////////////////////////
@@ -34,12 +38,11 @@ export class SearchComponent implements OnInit {
     if (this.options.includes(this.ingredient)) {
       this.ingredients.push(this.ingredient);
     } else {
+      //this.throwError();
       window.alert('Wähle bitte einen gültigen Suchbegriff');
     }
     this.ingredient = '';
-    while (this.options.length !== 0) {
-      this.options.shift();
-    }
+    this.clearArray(this.options);
   }
 
   // remove added ingredient in array ingredients at index where the user clicks
@@ -47,12 +50,40 @@ export class SearchComponent implements OnInit {
     this.ingredients.splice(i, 1);
   }
 
+  async getResult() {
+    console.log(
+      await this.searchReqService.getUserServerResult(this.ingredients)
+    );
+    this.recipes = this.searchReqService.getUserResults();
+    //this.throwError();
+    //show rating
+    this.setRatings();
+    //console.log( this.recipes[0].getRatings()[2]);
+  }
+
+  setRatings() {
+    for (let i = 0; i < this.recipes.length; i++) {
+      if (this.recipes[i].getRatings() == null) {
+        console.log("Keine Bewertung");
+      } else {
+        this.ratings = this.recipes[i].getRatings();
+      }
+    }
+  }
+
+  clearArray(array) {
+    while (array.length !== 0) {
+      array.shift();
+    }
+  }
+
   ////////////////////////Http-Request to get user searched recipes///////////////////////////////////////////
   async search() {
+    this.clearArray(this.recipes);
     //search recipes if there is one or more values in ingredients and the search area is empty
     if (this.ingredients.length > 0 && this.ingredient.length == 0) {
       //getUserResults returns all recipes which include the stored ingredients
-      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
+      this.getResult();
     }
     //add valid value in search area to ingredients and return recipes
     else if (
@@ -60,7 +91,7 @@ export class SearchComponent implements OnInit {
       this.options.includes(this.ingredient)
     ) {
       this.addIngredient();
-      console.log(await this.searchReqService.getUserServerResult(this.ingredients));
+      this.getResult();
     }
     //if there is nowhere a value or just an invalid value don't search
     else if (
@@ -69,6 +100,7 @@ export class SearchComponent implements OnInit {
     ) {
       this.addIngredient();
     }
+    //console.log(this.countRating)
   }
 
   ////////////////////////suggestions for search///////////////////////////////////////////
@@ -89,7 +121,14 @@ export class SearchComponent implements OnInit {
   }
 
   throwError() {
-    console.log(this.searchReqService.getErrorMessageUser());
-    //window.alert(this.error);
+    window.alert(this.searchReqService.getErrorMessage());
   }
+
+  /*setCountRating(rating: Ratings[]){
+    this.countRating = rating.length;
+  }
+
+  getCountRating(): number{
+    return this.countRating;
+  }*/
 }
