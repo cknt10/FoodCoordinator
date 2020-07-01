@@ -61,11 +61,13 @@ getUserData(){
     .get<User>(requestLink, { params: params })
     .toPromise().then((data: User) => {
       this.UserData = new User(data['user']);
+      this.userAuthentication.setUser(this.UserData);
     })
     .catch((error) => {
       this.handleErrorUserChange(error);
+
     });
-    this.userAuthentication.setUser(this.UserData);
+
     return this.UserData;
   }
 
