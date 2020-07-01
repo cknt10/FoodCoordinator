@@ -106,7 +106,6 @@ export class CreateRecipeComponent implements OnInit {
 
    async createRecipe(){
      
-     this.recipeAdministrationReqService.convertRecipeKeywordsArray(this.keywords);
      this.addIngredient();
      this.addKeyword();
      console.log(this.picture);
@@ -117,7 +116,7 @@ export class CreateRecipeComponent implements OnInit {
      && this.duration != null
      && this.difficulty != null 
      && this.ingredients != null){
-     console.log(await this.recipeAdministrationReqService.getCreateRecipe(
+     console.log(await this.recipeAdministrationReqService.getNewServerRecipe(
        this.title,
        this.picture,
        this.servings,
