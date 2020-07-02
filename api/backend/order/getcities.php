@@ -11,7 +11,7 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$postcode = "35510";
+$postcode = $GET['postcode'];
 
 $user = new RegUser();
 $user->connection($db);
