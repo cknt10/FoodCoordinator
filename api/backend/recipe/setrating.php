@@ -13,10 +13,10 @@ $db = $database->connection();
 
 
 //Incomming data DUMMY
-$userID = "15";
-$recipeID = "1";
-$comment = "Super gericht, immer wieder gerne";
-$rating = "2";
+$userID = $_GET['userId'];
+$recipeID = $_GET['recipeId'];
+$comment = $_GET['comment'];
+$rating = $_GET['rating'];
 
 
 
