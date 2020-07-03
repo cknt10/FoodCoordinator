@@ -13,18 +13,22 @@ $db = $database->connection();
 
 
 //Input needed from Angular
-$userId = 15;
-$cbId = 4; //need Select for get Cookbooks
-$cbTitle = "Test Cookbook";
-$cbDedication = "for tests";
-$giftStatus = true; //0 or 1 (false or true)
-$amount = 2;
-$orderStatus = "created";
-$timestamp = "2020-06-11 15:16:00";
-$recipient = "Natalia Pfening";
-$street = "Städter Weg 12";
-$cityId = 27834; //with api getcitties.php
-$paymentMethodId = 4; //with api payment.php
+$userId = $_GET['userId'];
+$cbId = $_GET['cbId']; //need Select for get Cookbooks
+$cbTitle = $_GET['title'];
+$cbDedication = $_GET['dedication'];
+$giftStatus = $_GET['giftstatus'] === "0" ? false : true; //0 or 1 (false or true)
+$amount = $_GET['amount'];
+$orderStatus = $_GET['orderStatus'];
+$timestamp = $_GET['creationDate'];
+$recipient = $_GET['recipient'];
+$street = $_GET['street'] . ' ' . $_GET['housenumber'];
+$cityId = $_GET['cityId']; //with api getcitties.php
+$paymentMethodId = $_GET['paymentMethod']; //with api payment.php
+
+
+$recipeIds = explode("|", $_GET["recipeId"]);
+
 
 //create objects for response
 $resultArr = array();
@@ -39,9 +43,23 @@ if(strcmp($result, "200") == 0){
     // set response code - 200 OK
     http_response_code(200);
 
-    // show result data in json format
-    $resultArr["message"] = "Creation done";
+    $orderId = $order->fetchOrder($timestamp, $userId);
+
+    $orderRecipe = $order->createOrderRecipe($orderId, $recipeIds);
+    
+    if($orderRecipe === "200"){
+        http_response_code(200);
+        // show result data in json format
+        $resultArr["message"] = "Creation done";
     echo json_encode($resultArr);
+    }else{
+        http_response_code(404);
+        // show result data in json format
+        $resultArr["message"] = "Cant create recipe to order";
+        echo json_encode($resultArr);
+    }
+
+
 }else if(strcmp($result, "403") == 0){
     // set response code - 403 Not found
     http_response_code(403);
