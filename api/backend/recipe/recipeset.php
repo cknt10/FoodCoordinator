@@ -40,30 +40,24 @@ $dummyarray = array(
     "ingredients" => ""
 );
 
-$singlearray = array(
-    "f_id" => "2",
-    "r_id" => "1",
-    "amount" => "3",
-    "unit" => "Stk"
-);
+//Get data from frontend
 
-$multiarray = array();
-
-array_push($multiarray, array(
-    "f_id" => "3",
-    "amount" => "4",
-    "unit" => "Stk"
-));
-array_push($multiarray, array(
-    "f_id" => "4",
-    "amount" => "1",
-    "unit" => "Stk"
-));
+$dummyarray['title'] = $_GET['title'];
+$dummyarray['picture'] = $_GET['picture'];
+$dummyarray['servings'] = $_GET['servings'];
+$dummyarray['description'] = $_GET['description'];
+$dummyarray['instruction'] = $_GET['instruction'];
+$dummyarray['creationDate'] = $_GET['creationDate'];
+$dummyarray['duration'] = $_GET['duration'];
+$dummyarray['difficulty'] = $_GET['difficulty'];
+$dummyarray['certified'] = $_GET['cirtified'];
+$dummyarray['lastChange'] = $_GET['lastChangen'] === "null" ? null : $_GET['lastChangen'];
+$dummyarray['userId'] = $_GET['userId'];
 
 
-$dummyarray['ingredients'] = $ingredinetsFrontend == "" ? $multiarray : $ingredinetsFrontend;
+$dummyarray['ingredients'] = $ingredinetsFrontend === "" ? aray() : $ingredinetsFrontend;
 
-$dummyarray['keywords'] = empty($keywordsFrontend) ? array("3", "4") : $keywordsFrontend;
+$dummyarray['keywords'] = empty($keywordsFrontend) ? array() : $keywordsFrontend;
 
 
 //Create return 
@@ -131,9 +125,10 @@ if($checkRecipe == -1){
     }
 }else{
    // set response code - 404
-   //http_response_code(404);
-   $recipeArray["keywords"] = $keywordsFrontend;
-   $recipeArray["ingredients"] = $ingredinetsFrontend;
+   http_response_code(404);
+//    $recipeArray["data"] = $dummyarray;
+//    $recipeArray["keywords"] = $keywordsFrontend;
+//    $recipeArray["ingredients"] = $ingredinetsFrontend;
    $recipeArray["message"] = "Recipe allready exits";
    echo json_encode($recipeArray);
 }
