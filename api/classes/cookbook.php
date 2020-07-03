@@ -115,9 +115,20 @@ class Cookbook extends Format{
      * 
      * @param Recipe $recipe
      */
-    public function addRecipe(Recipe $recipe)
+    public function addRecipe($_recipe)
     {
-        $this->recipes.push($recipe);
+        $_unique = true;
+        if(count($this->recipes) > 0){
+            for($_i = 0; $_i < count($this->recipes); $_i++){
+                if($this->recipes[$_i]["id"] == $_recipe["id"] && $_recipe["id"] != null){
+                    $_unique = false;
+                }
+            }
+        }
+
+        if($_unique){
+            array_push($this->recipes, $_recipe);
+        }
     }
 
     /**
@@ -128,12 +139,23 @@ class Cookbook extends Format{
      * @return self
      */
 
-     public function removeRecipe(Recipe $recipe)
+     public function removeRecipe($_recipe)
      {
-        $key= array_search($recipe, $this->recipes);
-        if ($key !== false) {
-            unset($this->recipes[$key]);
-        };
+        $_recipies = array();
+        $_changes = false;
+
+        if(count($this->recipes) > 0){
+            for($_i = 0; $_i < count($this->recipes); $_i++){
+                if($this->recipes[$_i]["id"] != $_recipe["id"] && $_recipe["id"] != null){
+                    array_push($_recipies, $this->recipes[$_i]);
+                    $_changes = true;
+                }
+            }
+        }
+
+        if($_changes){
+            $this->ingredients = $_recipies;
+        }
 
         return $this;
      }
