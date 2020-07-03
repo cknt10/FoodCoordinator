@@ -733,6 +733,70 @@ class RegUser{
     }
 
     /**
+     * Insert a Location to Database
+     * 
+     * @param int $_userId
+     * @param string $_mail
+     * @param string $_username
+     * @param string $_firstname
+     * @param string $_name
+     * @param string $_gender
+     * @param string $_street
+     * @param date $_birthday
+     * @param int $_cityId
+     *
+     * @return string
+     */
+    public function changeUser(
+        $_userId,
+        $_mail,
+        $_username,
+        $_firstname,
+        $_name,
+        $_gender,
+        $_street,
+        $_birthday,
+        $_cityId,
+        $_userImg
+        )
+    {
+        $result = "";
+        try{
+            $_sql = "UPDATE user SET Mail = :Mail, Username = :Username, FirstName = :FirstName, Name = :Name, Gender = :Gender, Street = :Street, Birthday = :Birthday, C_ID = :C_ID, U_Img = :U_Img WHERE U_ID = :U_ID";
+            $_stmt= $this->conn->prepare($_sql);
+
+            // sanitize
+            $_mail=htmlspecialchars(strip_tags($_mail));
+            $_username=htmlspecialchars(strip_tags($_username));
+            $_firstname=htmlspecialchars(strip_tags($_firstname));
+            $_name=htmlspecialchars(strip_tags($_name));
+            $_gender=htmlspecialchars(strip_tags($_gender));
+            $_street=htmlspecialchars(strip_tags($_street));
+
+
+            // bind values
+            $_stmt->bindParam(":U_ID", $_userId);
+            $_stmt->bindParam(":Mail", $_mail);
+            $_stmt->bindParam(":Username", $_username);
+            $_stmt->bindParam(":FirstName", $_firstname);
+            $_stmt->bindParam(":Name", $_name);
+            $_stmt->bindParam(":Gender", $_gender);
+            $_stmt->bindParam(":Street", $_street);
+            $_stmt->bindParam(":Birthday", $_birthday);
+            $_stmt->bindParam(":C_ID", $_cityId);
+            $_stmt->bindParam(":U_Img", $_userImg);
+
+            $_stmt->execute();
+            $_result = "200";
+        }catch(Eception $_e){
+            $_result = $_e->getMessage();
+        }
+
+        $this->login($_username);
+        return $_result;
+    }
+
+    /**
      *Clear the User
      */
     public function clearUser()
