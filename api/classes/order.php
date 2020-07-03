@@ -86,7 +86,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setOrdernumber(int $ordernumber)
+    public function setOrdernumber($ordernumber)
     {
         $this->ordernumber = $ordernumber;
 
@@ -110,7 +110,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setAmount(int $amount)
+    public function setAmount($amount)
     {
         $this->amount = $amount;
 
@@ -134,7 +134,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setGift(bool $gift)
+    public function setGift($gift)
     {
         $this->gift = $gift;
 
@@ -158,7 +158,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setStatus(string $status)
+    public function setStatus($status)
     {
         $this->status = $status;
 
@@ -182,7 +182,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setRecipient(string $recipient)
+    public function setRecipient($recipient)
     {
         $this->recipient = $recipient;
 
@@ -206,7 +206,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setStreet(string $street)
+    public function setStreet($street)
     {
         $this->street = $street;
 
@@ -230,7 +230,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setPostcode(int $postcode)
+    public function setPostcode($postcode)
     {
         $this->postcode = $postcode;
 
@@ -254,7 +254,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setLocation(string $location)
+    public function setLocation($location)
     {
         $this->location = $location;
 
@@ -288,7 +288,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setPayment(PaymentMethod $payment)
+    public function setPayment($payment)
     {
         $this->payment = $payment;
 
@@ -312,7 +312,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setUnitPrice(float $unitPrice)
+    public function setUnitPrice($unitPrice)
     {
         $this->unitPrice = $unitPrice;
 
@@ -336,7 +336,7 @@ class Order{
      *
      * @return  self
      */ 
-    public function setTimestamp(date $timestamp)
+    public function setTimestamp($timestamp)
     {
         $this->timestamp = $timestamp;
 
@@ -349,7 +349,7 @@ class Order{
      * @param Cookbook $cookbook
      * 
      */
-    public function addCookbook(Cookbook $cookbook)
+    public function addCookbook($cookbook)
     {
         $this->cookbook.push($cookbook);
     }
@@ -359,7 +359,7 @@ class Order{
      * 
      * @param Cookbook $cookbook
      */
-    public function removeCookbook(Cookbook $cookbook)
+    public function removeCookbook($cookbook)
     {
         $key= array_search($cookbook, $this->cookbook);
         if ($key !== false) {
@@ -376,7 +376,7 @@ class Order{
      * 
      * @return string
      */
-    public function updateStatus(string $name)
+    public function updateStatus($name)
     {
         
         //TODO
@@ -543,6 +543,32 @@ class Order{
         return $_result;
     }
 
+        /**
+     * Get this Object as Array for JSON import
+     *
+     * @return array
+     */
+    public function getObjectAsArray()
+    {
+        //TODOs
+        //order ratings by Creation Date
+        //order keywords
+        //calculate ratins for this recipe
+        return array(
+            "ordernumber" => $this->ordernumber,
+            "amount" => $this->amount,
+            "gift" => $this->gift,
+            "status" => $this->status,
+            "recipient" => $this->recipient,
+            "street" => $this->street,
+            "postcode" => $this->postcode,
+            "location" => $this->location,
+            "cookbook" => $empty($this->cookbook) ? null : $this->cookbook,
+            "payment" => $this->payment,
+            "unitPrice" => $this->unitPrice,
+            "timestamp" => $this->timestamp
+          );
+    }
 }
 
 
