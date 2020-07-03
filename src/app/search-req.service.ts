@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import {
   HttpClient,
   HttpParams,
-  HttpErrorResponse,
 } from '@angular/common/http';
 import { Recipe } from './recipe';
 import { SearchParameter } from './searchParameter';
 
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Ingredient } from './ingredient';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +17,7 @@ export class SearchReqService {
   private serverIngredients: SearchParameter[];
   private serverKeywords: SearchParameter[];
   private filteredKeywords: string[] = [];
+  private userRecipes: Recipe[] = [];
 
   private errorValue: string;
 
@@ -29,7 +29,7 @@ export class SearchReqService {
   }
 
   /////////////////////////////////method to display error message to user///////////////////////////
-  getErrorMessageUser(): string {
+  getErrorMessage(): string {
     return this.errorValue;
   }
 
@@ -42,6 +42,27 @@ export class SearchReqService {
   getIngredients(): SearchParameter[] {
     return this.serverIngredients;
   }
+
+  /////////////////////////////////method to get results of recipes from searcher///////////////////////////
+  getUserResults() {
+    return this.userRecipes;
+  }
+
+  getRecipe(id: number): Observable<Recipe> {
+    return of(this.getUserResults().find(recipe => recipe.getId() === id));
+  }
+
+    /////////////////////////////////Http-Request get results of the search//////////////////////////
+    async getUserServerResult(userSearchInputs: string[]) {
+      await this.fetchUserServerResults(userSearchInputs).then((data) => {
+        data['recipe'].forEach((value: Recipe) => {
+          this.userRecipes.push(new Recipe(value));
+        });
+      }).catch (error => {
+        this.handleErrorSearchResults(error);
+        });
+      return this.userRecipes;
+    }
 
   /////////////////////////////////method to filter duplicate keywords///////////////////////////
   filterKeywords(): string[] {
@@ -81,7 +102,9 @@ export class SearchReqService {
   async getServerIngredients(): Promise<SearchParameter[]> {
     await this.fetchServerSearchPropositionForIngredients().then((data) => {
       this.serverIngredients = data['ingredients'];
-    });
+    }).catch (error => {
+      this.handleErrorIngredients(error);
+      });
     return this.serverIngredients;
   }
 
@@ -89,72 +112,120 @@ export class SearchReqService {
   async getServerKeywords(): Promise<SearchParameter[]> {
     await this.fetchServerSearchPropositionForKeywords().then((data) => {
       this.serverKeywords = data['keywords'];
-    });
+    }).catch (error => {
+      this.handleErrorKeywords(error);
+      });
     return this.serverKeywords;
   }
 
   /////////////////////////////////Http-Request method to get ingredients as proposition///////////////////////////
-  async fetchServerSearchPropositionForIngredients() {
-    const requestLink = 'http://xcsd.ddns.net/api/backend/search/getingredients.php';
+  async fetchServerSearchPropositionForIngredients(): Promise<Ingredient> {
+    const requestLink =
+      'http://xcsd.ddns.net/api/backend/search/getingredients.php';
 
-    return this.http
-      .get<string>(requestLink)
-      .pipe(catchError(this.handleError))
-      .toPromise();
+    return (
+      this.http
+        .get<Ingredient>(requestLink)
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
   }
 
   /////////////////////////////////Http-Request method to get keywords as proposition///////////////////////////
   async fetchServerSearchPropositionForKeywords(): Promise<string> {
-    const requestLink = 'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
+    const requestLink =
+      'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
 
-    return this.http
-      .get<string>(requestLink)
-      .pipe(catchError(this.handleError))
-      .toPromise();
+    return (
+      this.http
+        .get<string>(requestLink)
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
   }
 
   /////////////////////////////////Http-Request method to send keywords and get results of the search//////////////////////////
-  async getUserResults(userSearchInputs: string[]): Promise<Recipe> {
-    console.log('server request with keywords');
-
-   // console.log(userSearchInputs);
+  async fetchUserServerResults(userSearchInputs: string[]): Promise<Recipe> {
 
     let params = new HttpParams().set('keys', userSearchInputs.join('|'));
 
-    //console.log(params);
-
     const requestLink = 'http://xcsd.ddns.net/api/backend/search/search.php';
 
-    console.log('request finished');
-
-    return this.http
-      .get<Recipe>(requestLink, { params: params })
-      .pipe(catchError(this.handleError))
-      .toPromise();
+    return (
+      this.http
+        .get<Recipe>(requestLink, { params: params })
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    );
   }
 
-  /////////////////////////////////analyze kind of error//////////////////////////
-  handleError(error: HttpErrorResponse) {
-    let errorMessage = 'Unbekannter Fehler!';
-    if (error.error instanceof ErrorEvent) {
+
+  ///////////////////////////////////////method to handle error for search results//////////////////////////////////////////////////////////////////
+  handleErrorSearchResults(error: Response) {
+    if (error instanceof ErrorEvent) {
       // Client-side errors
-      errorMessage = `Error: ${error.error.message}`;
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
     } else {
       // Server-side errors
-      if (error.status == 401) {
-        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
       }
-      if (error.status == 403) {
-        this.errorValue = `Keine Suchbegriffe eingegeben.`;
+      if (error.status === 403) {
+        this.errorValue = `Die Suchbegriffe wurden nicht korrekt eingegeben.`;
       }
-      if (error.status == 404) {
-        this.errorValue = `Leider haben wir noch keine Rezepte zu diesem Suchbegriff.`;
+      if (error.status === 404) {
+        this.errorValue = `Leider wurden keine passenden Rezepte gefunden.`;
       }
-      if (error.status == 500) {
-        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen.`;
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
       }
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
-    return throwError(errorMessage);
+    return this.errorValue;
+  }
+
+  ///////////////////////////////////////method to handle error for ingredients //////////////////////////////////////////////////////////////////
+  handleErrorIngredients(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Die Zutaten wurden nicht korrekt eingegeben.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Leider wurden keine Zutaten gefunden.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+      }
+    }
+    return this.errorValue;
+  }
+
+  ///////////////////////////////////////method to handle error for cities//////////////////////////////////////////////////////////////////
+  handleErrorKeywords(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden.`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Die Stichwörter wurden nicht korrekt eingegeben.`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Leider wurden keine Suchbegriffe gefunden.`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+      }
+    }
+    return this.errorValue;
   }
 }
