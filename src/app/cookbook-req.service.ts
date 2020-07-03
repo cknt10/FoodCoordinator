@@ -5,22 +5,23 @@ import { Cookbook } from './cookbook';
 import {CookbookFormat} from './cookbookFormat'
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Payment } from './payment';
-import { User } from './User';
 import { Recipe } from './recipe';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CookbookReqService {
   private errorValue: string;
-  private cookbook: Cookbook;
+  private cookbook: Cookbook[] = [];
   private cookbookFormats: CookbookFormat[] = [];
   private serverPayments: Payment[] = [];
 
   constructor(
     private autenticationReqService: AuthenticationService, 
     private premiumReqService: PremiumReqService, 
-    private http: HttpClient
+    private http: HttpClient, 
+    private datePipe: DatePipe
   ) { }
 
   
@@ -89,13 +90,13 @@ export class CookbookReqService {
   }
 
    /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
-   async getServerCreateCookbook(): Promise<Cookbook> {
-    await this.fetchServerPayment()
-      .then((data: Payment[]) => {
-        data['payment'].forEach((value: Payment) =>{
-          this.serverPayments.push(new Payment(value));
+   async getServerCreateCookbook(recipe: Recipe[], cookbook:Cookbook): Promise<Cookbook[]> {
+    await this.fetchServerCreateCookbook(recipe, cookbook)
+      .then((data: Cookbook[]) => {
+        data['cookbook'].forEach((value: Cookbook) =>{
+          this.cookbook.push(new Cookbook(value));
         })
-        console.log(data['payment']);
+        console.log(data['cookbook']);
       })
       .catch((error) => {
         this.handleErrorCookbookFormats(error);
@@ -105,9 +106,41 @@ export class CookbookReqService {
   }
 
   /////////////////////////////////Http-Request to get recipe details///////////////////////////
-  async fetchServerCreateCookbook(recipe: Recipe[], user: User, cookbook:Cookbook): Promise<Cookbook[]> {
-    let params = new HttpParams()
+  async fetchServerCreateCookbook(recipe: Recipe[], cookbook:Cookbook): Promise<Cookbook[]> {
 
+    let giftStatus: number;
+    if(cookbook.getGiftStatus() == true){
+      giftStatus = 1;
+    }else{
+      giftStatus = 0;
+    }
+
+    let recipeId: string[] = [];
+
+    recipe.forEach(value => {
+      recipeId.push(value.getId().toString())
+    });
+
+
+    let params: HttpParams;
+
+
+    params.set('userId', cookbook.getUserId().toString())
+          .set('cbId', cookbook.getId().toString())
+          .set('title', cookbook.getDesigntitle())
+          .set('dedication', cookbook.getDediction())
+          .set('giftstatus', giftStatus.toString())
+          .set('amount', cookbook.getAmount().toString())
+          .set('orderStatus', cookbook.getOrderStatus())
+          .set('creationDate', this.date())
+          .set('recipient', cookbook.getRecipient())
+          .set('street', cookbook.getStreet())
+          .set('housenumber', cookbook.getHouseNumber().toString())
+          .set('cityId', cookbook.getCityId().toString())
+          .set('paymentMethod', cookbook.getPaymentMethod().toString())
+          .set('recipeId', recipeId.join('|'));
+  
+  
 
     console.log(params);
 
@@ -119,6 +152,13 @@ export class CookbookReqService {
         //.pipe(catchError(this.handleError))
         .toPromise()
     );
+  }
+
+  /////////////////////////////get current day and time//////////////////////////////////////////////////////
+  date(): string {
+    let startDay: string;
+    startDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
+    return startDay;
   }
 
 
