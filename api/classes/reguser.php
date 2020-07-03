@@ -733,7 +733,7 @@ class RegUser{
     }
 
     /**
-     * Insert a Location to Database
+     * Update user data
      * 
      * @param int $_userId
      * @param string $_mail
@@ -785,6 +785,39 @@ class RegUser{
             $_stmt->bindParam(":Birthday", $_birthday);
             $_stmt->bindParam(":C_ID", $_cityId);
             $_stmt->bindParam(":U_Img", $_userImg);
+
+            $_stmt->execute();
+            $_result = "200";
+        }catch(Eception $_e){
+            $_result = $_e->getMessage();
+        }
+
+        $this->login($_username);
+        return $_result;
+    }
+
+    /**
+     * Change password
+     * 
+     * @param int $_userId
+     * @param string $_password
+     *
+     * @return string
+     */
+    public function changePassword($_userId, $_password)
+    {
+        $result = "";
+        try{
+            $_sql = "UPDATE user SET Password = :Password WHERE U_ID = :U_ID";
+            $_stmt= $this->conn->prepare($_sql);
+
+            //Hash Password
+            $_passwort_hash = password_hash($_password, PASSWORD_DEFAULT);
+
+            // bind values
+            $_stmt->bindParam(":U_ID", $_userId);
+            $_stmt->bindParam(":Password", $_passwort_hash);
+
 
             $_stmt->execute();
             $_result = "200";
