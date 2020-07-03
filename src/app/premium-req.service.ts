@@ -21,10 +21,12 @@ export class PremiumReqService {
     private datePipe: DatePipe
   ) {}
 
+  /////////////////////////////////errror Message to display on user///////////////////////
   getErrorMessage() {
     return this.errorValue;
   }
 
+///////////////////////////get premium user///////////////////////////////////
   getPremiumUser(){
     return this.premiumUser;
   }
@@ -35,6 +37,7 @@ export class PremiumReqService {
     return this.premiumUser;
   }
 
+  ////////////////////////////HTTP-Request to redeem gift/////////////////////////////////
   redeemGift(gift: string) {
     let params = new HttpParams().set('gift', this.premiumUser.getId().toString());
 
@@ -50,7 +53,8 @@ export class PremiumReqService {
     );
   }
 
-  Date(): string {
+  /////////////////////////////get current day and time//////////////////////////////////////////////////////
+  date(): string {
     let startDay: string;
     startDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
     return startDay;

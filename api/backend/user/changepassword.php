@@ -11,29 +11,37 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$postcode = $GET['postcode'];
-
 $user = new RegUser();
 $user->connection($db);
+
+
 $result = array();
 $result["message"] = "";
-$result["cities"] = array();
+$result["user"] = array();
 
-if($postcode != ""){
-    $result["cities"] = $user->fetchLocations($postcode);
+
+//DUMMY data
+
+//user
+$userId = "15";
+$password = "123456";
+
+
+if($userId != "" || $password != ""){
+    $result["user"] = $user->changePassword($userId, $password);
     
-    if($result["cities"] != null){
+    if($result["user"] === "200"){
         // set response code - 200 OK
         http_response_code(200);
 
         // show result data in json format
         echo json_encode($result);
     }else{
-        // set response code - 404 Not found
-        http_response_code(404);
+        // set response code - 500 Not found
+        http_response_code(500);
 
         // tell the user no result found
-        $result["message"] = "City not exits";
+        $result["message"] = "Cant change password";
         echo json_encode($result);
     }
 
@@ -43,7 +51,7 @@ if($postcode != ""){
         http_response_code(404);
 
         // tell the user no result found
-        $result["message"] = "City not exits";
+        $result["message"] = "Missing password";
         echo json_encode($result);
 }
 

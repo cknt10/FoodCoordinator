@@ -393,6 +393,53 @@ class Order{
         # code...
     }
 
+        /**
+     * Gets an recipe and sets the data to this object
+     *
+     * @param $_date creation date of this recipe
+     * @param $_userId id from creation user
+     * @param $_lastChange an optinal parameter
+     * 
+     * @return int the id of this recipe
+     */
+    public function fetchOrder($_date, $_userId)
+    {
+        $_result = -1;
+
+        $_sql = "SELECT OrderNo FROM cBorder WHERE Timestamp = :Timestamp AND U_ID = :U_ID";
+
+        $_stmt= $this->conn->prepare($_sql);
+
+        // sanitize
+        //$_date=htmlspecialchars(strip_tags($_date));
+
+        // bind values
+        $_stmt->bindParam(":Timestamp", $_date);
+        $_stmt->bindParam(":U_ID", $_userId);
+
+        $_stmt->execute();
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+
+                $_result = $OrderNo;
+
+            }
+        }
+
+        return $_result;
+    }
+
     /**
      * Insert an order into db
      * 
@@ -452,6 +499,48 @@ class Order{
        }
        
        return $_result;
+    }
+
+
+    /**
+     * Create an connection from recipe to ingredients
+     * 
+     * @param int $_orderNumber
+     * @param array $_multiarray input for ingredients
+     * 
+     * 
+     */
+    public function createOrderRecipe($_orderNumber, $_multiarray)
+    {
+        $_result = "";
+        $_sql = null;
+        $_stmt = null;
+        try{
+            //first entry
+            $_sql='INSERT INTO orderRecipeList (OrderNo, R_ID) VALUES (:OrderNo0, :R_ID0)';
+
+            //Add new values
+            if(count($_multiarray)>1){
+                for($_i = 1; $_i < count($_multiarray); $_i++){
+                    $_sql = $_sql . ', (:OrderNo' .strval($_i). ', :R_ID'.strval($_i).')';
+                }    
+            }
+
+            $_stmt= $this->conn->prepare($_sql);
+
+            //bind params
+            for($_i=0; $_i<count($_multiarray); $_i++){
+                $_stmt->bindParam(":OrderNo".strval($_i), $_orderNumber);
+                $_stmt->bindParam(":R_ID".strval($_i), $_multiarray[$_i]);
+            }     
+            
+            $_stmt->execute();
+            $_result = "200";
+        }catch(Eception $_e){
+            $_result = $_e->getMessage();
+        }
+
+        return $_result;
     }
 
 }

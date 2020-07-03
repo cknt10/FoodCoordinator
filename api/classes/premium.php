@@ -2,6 +2,11 @@
 
 class Premium{
     /**
+     * @var PDO
+     */
+    private $conn;
+
+    /**
      * @var int
      */
     private $id;
@@ -25,7 +30,16 @@ class Premium{
      */
     private $startDate;
 
-    
+    /**
+     * creates connection in class to database
+     * 
+     * @param $conn PDO
+     */
+    public function connection($_conn)
+    {
+        $this->conn = $_conn;
+    }
+
 
     /**
      * Get the value of id
@@ -145,6 +159,48 @@ class Premium{
         $this->startDate = $startDate;
 
         return $this;
+    }
+
+        /**
+     * Get load all formats
+     *
+     * @return array
+     */
+    public function fetchPremium()
+    {
+        $_result = array();
+
+        $_query = "SELECT * FROM premium";
+
+        // prepare query statement
+        $_stmt = $this->conn->prepare($_query);
+
+        // execute query
+        $_stmt->execute();
+
+        $_num = $_stmt->rowCount();
+
+        //If entry exists then Error
+        if($_num > 0) {
+            // retrieve our table contents
+            // fetch() is faster than fetchAll()
+            // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
+                // extract row
+                // this will make $row['name'] to
+                // just $name only
+                extract($_row);
+                array_push($_result, array(
+                    "id" => $Premium_ID,
+                    "description" => $Premium_Descr,
+                    "duration" => $Duration,
+                    "netprice" => $Price,
+                    "startDate" => $StartingDate
+                ));
+
+            }
+        }
+        return empty($_result) ? null : $_result;
     }
 
     /**
