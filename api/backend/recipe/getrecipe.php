@@ -16,7 +16,7 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$recipeID = "1";
+$recipeID = $_GET['recipeId'];
 
 if($recipeID != ""){
 function fetchRecipe($_id, $_conn)

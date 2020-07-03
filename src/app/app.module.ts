@@ -24,7 +24,7 @@ import { SearchComponent } from './content/search/search.component';
 import { CreateRecipeComponent } from './content/create-recipe/create-recipe.component';
 import { MenuComponent } from './content/menu/menu.component';
 import { MyRecipesComponent } from './content/my-recipes/my-recipes.component';
-import { SearchResultComponent } from './content/search-result/search-result.component';
+import { RecipeDetailsComponent } from './content/recipe-details/recipe-details.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,7 @@ import { SearchResultComponent } from './content/search-result/search-result.com
     CreateRecipeComponent,
     MenuComponent,
     MyRecipesComponent,
-    SearchResultComponent,
+    RecipeDetailsComponent,
 
   ],
   imports: [
@@ -63,6 +63,7 @@ import { SearchResultComponent } from './content/search-result/search-result.com
       { path: 'myrecipes', component: MyRecipesComponent },
       { path: 'benefits', component: BenefitsComponent },
       { path: 'impressum', component: ImpressumComponent },
+      { path: 'detail/:id', component: RecipeDetailsComponent },
       { path: 'datenschutz', component: DatenschutzComponent }
     ]),
   ],

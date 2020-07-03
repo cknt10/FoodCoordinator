@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
 import { LoginReqService } from 'src/app/login-req.service';
+import { Router } from '@angular/router';
+import { User } from 'src/app/User';
 
 @Component({
   selector: 'app-login',
@@ -8,14 +10,14 @@ import { LoginReqService } from 'src/app/login-req.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   username: string;
   password: string;
   loggedIn: boolean = false;
   log: string = "Login";
 
   constructor(
-    private authenticationService: AuthenticationService, 
+    private router: Router,
+    private authenticationService: AuthenticationService,
     ) { }
 
   ngOnInit(): void {
@@ -37,6 +39,10 @@ export class LoginComponent implements OnInit {
       this.log = "Login";
     }
   }
+
+goBack(){
+  this.router.navigate(['content']);
+}
 
   throwError() {
     console.log(this.authenticationService.getErrorMessage());
