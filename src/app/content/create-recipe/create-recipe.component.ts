@@ -4,6 +4,8 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
 import { SearchReqService } from 'src/app/search-req.service';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { SearchParameter } from 'src/app/searchParameter';
+import { Recipe } from 'src/app/recipe';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-create-recipe',
@@ -36,10 +38,12 @@ export class CreateRecipeComponent implements OnInit {
   constructor(
     private recipeAdministrationReqService: RecipeAdministrationReqService,
     private searchReqService: SearchReqService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
   ) {}
 
   async ngOnInit() {
+
     await Promise.all([
       this.searchReqService.getServerIngredients(),
       this.searchReqService.getServerKeywords(),
@@ -47,7 +51,6 @@ export class CreateRecipeComponent implements OnInit {
       this.serverIngredients = data['0'];
       this.serverKeywords = data['1'];
     });
-
     console.log(this.serverIngredients);
     console.log(this.serverKeywords);
 
@@ -105,7 +108,7 @@ export class CreateRecipeComponent implements OnInit {
     }
 
    async createRecipe(){
-     
+
      this.addIngredient();
      this.addKeyword();
      console.log(this.picture);
@@ -134,8 +137,6 @@ export class CreateRecipeComponent implements OnInit {
     this.picture = null;
     this.imageUrl = "/assets/ich.jpg";
   }
-
-
 
   throwError() {
     console.log(this.recipeAdministrationReqService.getErrorMessage());

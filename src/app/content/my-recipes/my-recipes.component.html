@@ -1,5 +1,30 @@
-<div>
-  <button mat-raised-button routerLink="/createrecipe">
-    Rezept erstellen
-  </button>
+<button mat-raised-button routerLink="/createrecipe">
+  Rezept erstellen
+</button>
+<div class="container">
+  <div class="border" *ngFor="let recipe of recipes, let i = index;">
+    <div class="edit">
+      <button id="change" mat-mini-fab><mat-icon>edit</mat-icon></button>
+      </div>
+     <div class="delete">
+      <button id="delete" mat-mini-fab disabled><mat-icon>delete_outline</mat-icon></button>
+    </div>
+    <a routerLink="/detail/{{recipe.getId()}}">
+    <div class="recipe">
+      <div id="picture">
+        Bild
+      </div>
+      <div id="title">
+        {{recipe.getTitle()}}
+      </div>
+      <div id="descr">
+        {{recipe.getDescription()}}
+      </div>
+      <div id="rating">
+        <p *ngIf="recipe.getRatings()"> Note: {{ recipe.getRating() }} Bewertung: {{recipe.getRatings().length}}</p>
+        <p *ngIf="!recipe.getRatings()"> Noch keine Bewertung vorhanden </p>
+      </div>
+    </div>
+  </a>
+  </div>
 </div>

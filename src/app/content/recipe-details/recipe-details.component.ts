@@ -32,10 +32,6 @@ export class RecipeDetailsComponent implements OnInit {
     this.setRatings();*/
   }
 
-  /*async ngOnInit() {
-    this.recipe = this.searchReqService.getUserResults();
-  }*/
-
   async getRecipe(): Promise<Recipe> {
     const id = +this.route.snapshot.paramMap.get('id');
     await this.recipeAdministrationReqService.getServerRecipeDetails(id).then ((data: Recipe) => {
