@@ -77,6 +77,7 @@ export class AuthenticationService {
           }else{
             this.UserData = new User(data['user']);
           }
+            console.log(this.UserData.convertAdress());
 
         })
         .catch((error) => {

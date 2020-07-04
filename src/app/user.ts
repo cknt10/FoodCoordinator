@@ -84,6 +84,25 @@ export class User{
     this.street = street;
   }
 
+  convertAdress(){
+    var adress = this.street;
+    let nr: string='';
+var splitted = adress.split(" ");
+for(var i=splitted.length-1;i>=0;i--){
+  if(Number(splitted[i])>=0){
+    console.log(splitted[i]);
+    nr.concat(splitted[i]);
+    /*for(var j=i;j<=adress.length-1;j++){
+      console.log(splitted[i]);
+      //nr.concat(splitted[j]);
+    }*/
+  }
+
+}
+console.log(splitted);
+return nr;
+  }
+
   //////////////////////////////////////clean User Object//////////////////////////////////
   cleanUser() {
     this.id = null;
