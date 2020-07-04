@@ -13,16 +13,12 @@ export class MyRecipesComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private recipeAdministrationService: RecipeAdministrationReqService, 
+    private recipeAdministrationService: RecipeAdministrationReqService,
     private premiumReqService: PremiumReqService
   ) { }
 
   async ngOnInit() {
-    if (this.authenticationService.getUser() != null){
       await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
-    }else{
-      await this.recipeAdministrationService.getServerUserRecipe(this.premiumReqService.getPremiumUser());
-    }
   }
 
   throwError() {

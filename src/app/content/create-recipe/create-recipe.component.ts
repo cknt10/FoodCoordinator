@@ -105,7 +105,7 @@ export class CreateRecipeComponent implements OnInit {
     }
 
    async createRecipe(){
-     
+
      this.addIngredient();
      this.addKeyword();
      console.log(this.picture);
@@ -124,7 +124,7 @@ export class CreateRecipeComponent implements OnInit {
        this.description,
        this.duration,
        this.difficulty,
-       this.authenticationService.getUser().getId(),
+      this.authenticationService.getUser().getId(),
        this.keywords,
        this.ingredients))
      }else{

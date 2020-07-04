@@ -5,7 +5,9 @@
   <div id="closeContainer">
   <button id="close" mat-raised-button><mat-icon>close</mat-icon></button>
 </div>
-  <div id="benefits">
+
+
+  <div id="benefits" *ngIf="!checkStatus">
     <h2> Ihre Vorteile </h2>
     <p>
       Rezepte selbst erstellen und verwalten. <br>
@@ -16,4 +18,13 @@
     <button id="goReg" mat-raised-button routerLink="/reg">Registrieren</button>
   </div>
   </div>
+
+  <div id="benefits" *ngIf="checkStatus">
+    <h2> Wähle dein Premium-Packet </h2>
+    <div class="offer" *ngFor="let value of premium">
+      <h2>{{value.getDescription()}}</h2><div>{{value.getDuration()}}</div><div>{{value.geNetPrice()}}€</div>
+    </div>
+  </div>
+
+
 </div>

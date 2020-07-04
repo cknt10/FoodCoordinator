@@ -1,4 +1,6 @@
-export class User {
+import { Premium } from './premium';
+
+export class User{
   private id: number;
   private username: String;
   private email: String;
@@ -12,20 +14,26 @@ export class User {
   private city: String;
   private isPremium: boolean;
   private picture: String;
+  private premiumUser: Premium;
 
-  constructor(user: User) {
-    this.id = user.id;
-    this.username = user.username;
-    this.email = user.email;
-    this.firstname = user.firstname;
-    this.name = user.name;
-    this.birthday = user.birthday;
-    this.gender = user.gender;
-    this.street = user.street;
-    this.postcode = user.postcode;
-    this.city = user.city;
-    this.isPremium = user.isPremium;
-    this.picture = user.picture;
+  constructor(user: User, premium?: Premium) {
+      this.id = user.id;
+      this.username = user.username;
+      this.email = user.email;
+      this.firstname = user.firstname;
+      this.name = user.name;
+      this.birthday = user.birthday;
+      this.gender = user.gender;
+      this.street = user.street;
+      this.postcode = user.postcode;
+      this.city = user.city;
+      this.isPremium = user.isPremium;
+      this.picture = user.picture;
+      this.premiumUser = premium;
+  }
+
+  getPremiumUser(): Premium{
+    return this.premiumUser;
   }
 
   getId(): number {
