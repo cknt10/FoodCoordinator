@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { LoginReqService } from './login-req.service';
 import { User } from './User';
-import { PremiumReqService } from './premium-req.service';
+import {PremiumModel} from './premiumModel';
+import { Premium } from './premium';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,6 @@ export class AuthenticationService {
 
   constructor(
     private LoginReqService: LoginReqService,
-    private premiumReqService: PremiumReqService
     ) {}
 
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////
@@ -26,13 +26,12 @@ export class AuthenticationService {
 
   /////////////////////////////////////////////////////////////get User without params/////////////////////////////////////////////////////////////////////////////
   getUser(): User {
-    if(this.UserData != null){
       return this.UserData;
-    }else{
-      return  this.premiumReqService.getPremiumUser();
-    }
   }
 
+  /*setPremium(premiumModel: PremiumModel){
+   this.UserData.set
+  }*/
 
   setUser(newUser: User): User {
     this.UserData=newUser;
@@ -42,6 +41,7 @@ export class AuthenticationService {
   getErrorMessage() {
     return this.errorValue;
   }
+
 
   ///////////////////////////////////////////////////get user data with login and registration////////////////////////////////////////////////////////
   async readUserData(
@@ -70,15 +70,19 @@ export class AuthenticationService {
     ) {
       await this.LoginReqService.getServerLoginData(username, password)
         .then((data: User) => {
-         if ((data['isPremium'] = true)) {
-         this.premiumReqService.getServerPremiumUser(data['user']);
-          } else {
+          console.log(data['user']);
+          console.log(data['premium']);
+          if(data['user'].isPremium){
+            this.UserData = new User(data['user'], data['premium']);
+          }else{
             this.UserData = new User(data['user']);
           }
+
         })
         .catch((error) => {
           this.handleErrorLogin(error);
         });
+        console.log(this.UserData);
     } else {
       await this.LoginReqService.getServerRegistrationData(
         username,

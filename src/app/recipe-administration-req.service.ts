@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
@@ -47,19 +47,6 @@ export class RecipeAdministrationReqService {
     keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
-    let params = new HttpParams()
-      .set('title', title)
-      //.set('picture', picture)
-      .set('servings', servings.toString())
-      .set('description', description)
-      .set('instruction', instruction)
-      .set('creationDate', this.date())
-      .set('duration', duration.toString())
-      .set('difficulty', difficulty)
-      .set('certified', '0')
-      .set('lastChange', 'null')
-      .set('userId', userId.toString())
-      .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'));
 
     let modifiedIngredients: Object[] = [];
     ingredients.forEach((value, index) => {
@@ -78,9 +65,34 @@ export class RecipeAdministrationReqService {
     console.log(ingredients);
     console.log(jsonFormat.myArray);
 
-    params = params.append('ingredients', jsonFormat.myArray);
+      let values = {
+        'title': title,
+        'picture': picture,
+        'servings': servings.toString(),
+        'description': description,
+        'instruction': instruction,
+        'creationDate': this.date(),
+        'duration': duration.toString(),
+        'difficulty': difficulty,
+        'certified': '0',
+        'lastChange': 'null',
+        'userId': userId.toString(),
+        'keywords': this.convertRecipeKeywordsArray(keywords).join('|'),
+        'ingredients': JSON.stringify(modifiedIngredients)
+      }
 
-    console.log(params);
+
+   /*   let headers = new HttpHeaders();
+
+      headers.append("Access-Control-Allow-Origin", "*");
+      headers.append("Access-Control-Allow-Methods", "POST,OPTIONS");
+
+      let options = {
+        headers: headers,
+
+     }*/
+
+
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/recipeset.php';
 
@@ -88,7 +100,7 @@ export class RecipeAdministrationReqService {
 
     return (
       this.http
-        .get<Recipe>(requestLink, { params: params })
+        .post<Recipe>(requestLink, values)
         //.pipe(catchError(this.handleErrorCreateRecipe()))
         .toPromise()
     );
@@ -132,7 +144,7 @@ export class RecipeAdministrationReqService {
 
     params = params.append('ingredients', jsonFormat.myArray);
 
-    
+
     //console.log(params);
 
     const requestLink =
@@ -288,7 +300,7 @@ export class RecipeAdministrationReqService {
   async getServerRecipeDetails(id: number/*, user: User*/): Promise<Recipe> {
     await this.fetchServerRecipeDetails(id)
       .then((data: Recipe) => {
-        
+
         data['recipe'].forEach((value) =>{
           this.userRecipe = new Recipe(value);
         })
@@ -301,7 +313,7 @@ export class RecipeAdministrationReqService {
         console.log(this.userRecipe);
     return this.userRecipe;
       }else{
-        
+
       }*/
     console.log(this.userRecipe);
     return this.userRecipe;
