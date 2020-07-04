@@ -1,7 +1,7 @@
 export class Ratings{
-    private userId: number;
-    private comment: string;
-    private rating: number;
+    public userId: number;
+    public comment: string;
+    public rating: number;
     
     constructor(rating: Ratings){
         this.userId = rating.userId;

@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 import { ActivatedRoute } from '@angular/router';
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
@@ -14,20 +13,23 @@ import { Ratings } from 'src/app/ratings';
 })
 export class RecipeDetailsComponent implements OnInit {
   recipe: Recipe;
-  ingredients: Ingredient[] = [];
+  spezingredients: Ingredient[] = [];
   ratings: Ratings[] = [];
+
+  amount: number[]=[];
+  unit: string[]=[];
+  description: string[]=[];
 
   constructor(
     private route: ActivatedRoute,
-    private searchReqService: SearchReqService,
     private recipeAdministrationReqService: RecipeAdministrationReqService,
     private location: Location
   ) { }
 
   async ngOnInit() {
     await this.getRecipe();
-    this.ingredients=this.recipe.getIngredients();
-    console.log(this.ingredients);
+    this.spezingredients=this.recipe.getIngredients();
+    console.log(this.spezingredients);
     /*this.setIngredients();
     this.setRatings();*/
   }
@@ -54,7 +56,7 @@ export class RecipeDetailsComponent implements OnInit {
 
   setIngredients(){
     //this.ingredients = this.recipe.getIngredients();
-    console.log(this.ingredients);
+    console.log(this.spezingredients);
   }
 
   setRatings(){
