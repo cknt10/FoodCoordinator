@@ -90,16 +90,17 @@ export class User{
 var splitted = adress.split(" ");
 for(var i=splitted.length-1;i>=0;i--){
   if(Number(splitted[i])>=0){
-    console.log(splitted[i]);
-    nr.concat(splitted[i]);
-    /*for(var j=i;j<=adress.length-1;j++){
-      console.log(splitted[i]);
-      //nr.concat(splitted[j]);
-    }*/
+   // console.log(splitted[i]);
+   // nr.concat(splitted[i]);
+    for(var j=i;j<=splitted.length-1;j++){
+
+      console.log(splitted[j]);
+      nr= splitted[i].concat(splitted[j]);
+    }
   }
 
 }
-console.log(splitted);
+console.log(nr);
 return nr;
   }
 
