@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
 import { RecipeAdministrationReqService } from '../../recipe-administration-req.service';
 import {PremiumReqService} from '../../premium-req.service'
+import { Recipe } from 'src/app/recipe';
 
 @Component({
   selector: 'app-my-recipes',
@@ -10,6 +11,7 @@ import {PremiumReqService} from '../../premium-req.service'
   styleUrls: ['./my-recipes.component.scss']
 })
 export class MyRecipesComponent implements OnInit {
+  recipes: Recipe[] = [];
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -18,12 +20,18 @@ export class MyRecipesComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-      await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
+    //if (this.authenticationService.getUser() != null){
+      this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
+    /*}else{
+      this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.premiumReqService.getPremiumUser());
+    }*/
+    console.log(this.recipes);
   }
 
   throwError() {
     console.log(this.recipeAdministrationService.getErrorMessage());
     //window.alert(this.error);
   }
+
 
 }

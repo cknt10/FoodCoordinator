@@ -13,15 +13,12 @@ import { User } from 'src/app/User';
 export class LoginComponent implements OnInit {
   username: string;
   password: string;
-  loggedIn: boolean = false;
-  log: string = "Login";
-
   user: User;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
-    private premiumReqServic: PremiumReqService
+    private premiumReqService: PremiumReqService,
     ) { }
 
   ngOnInit(): void {
@@ -38,19 +35,12 @@ export class LoginComponent implements OnInit {
     if(this.user.getIsPremium()){
       this.authenticationService.getUser();
     }
-    this.loggedIn = true;
-    if (this.loggedIn){
-      this.log = "Logout";
-    }
-    else{
-      this.log = "Login";
-    }
     this.router.navigate(['content']);
   }
 
-goBack(){
-  this.router.navigate(['content']);
-}
+  goBack(){
+    this.router.navigate(['content']);
+  }
 
   throwError() {
     console.log(this.authenticationService.getErrorMessage());

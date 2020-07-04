@@ -268,7 +268,7 @@ export class RecipeAdministrationReqService {
   async getServerUserRecipe(user: User): Promise<Recipe[]> {
     await this.fetchServerUserRecipe(user)
       .then((data: Recipe) => {
-        console.log(data['recipes']);
+        //console.log(data['recipes']);
         data['recipes'].forEach((value: Recipe) => {
           this.userRecipes.push(new Recipe(value));
         });
@@ -276,7 +276,7 @@ export class RecipeAdministrationReqService {
       .catch((error) => {
         this.handleErrorUserRecipe(error);
       });
-    console.log(this.userRecipes);
+    //console.log(this.userRecipes);
     return this.userRecipes;
   }
 
