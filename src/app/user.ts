@@ -58,7 +58,7 @@ export class User {
   getCity(): String {
     return this.city;
   }
-  getIsPremum(): boolean {
+  getIsPremium(): boolean {
     return this.isPremium;
   }
   getPicture(): String {

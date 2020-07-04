@@ -321,6 +321,40 @@ class PremiumUser extends RegUser{
     }
 
     /**
+     * Make an user a premiumu user
+     * 
+     * @param int $_premiumId from premium options
+     * @param int $_userId 
+     * @param int $_paymentMethodId
+     * @param dat $_date start date
+     * 
+     * @return string
+     */
+    public function createPremium($_premiumId, $_userId, $_paymentMethodId, $_date)
+    {
+        $result = "";
+        try{
+            $_sql = "INSERT INTO premiumUser (Premium_ID, U_ID, PM_ID, StartingDate) VALUES (:Premium_ID, :U_ID, :PM_ID, :StartingDate)";
+            $_stmt= $this->conn->prepare($_sql);
+
+            // bind values
+            $_stmt->bindParam(":Premium_ID", $_premiumId);
+            $_stmt->bindParam(":U_ID", $_userId);
+            $_stmt->bindParam(":PM_ID", $_paymentMethodId);
+            $_stmt->bindParam(":StartingDate", $_date);
+
+            $_stmt->execute();
+            $_result = "201";
+        }catch(Eception $_e){
+            $_result = $_e->getMessage();
+        }
+
+        return $_result;
+    }
+
+
+
+    /**
      *Clear the User
      */
     public function clearUser()
