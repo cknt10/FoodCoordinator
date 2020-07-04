@@ -6,7 +6,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from './User';
 import { Recipe } from './recipe';
 import { Gift } from './gift';
-import { PremiumModel } from './PremiumModel';
+import { PremiumModel } from './premiumModel';
 import {AuthenticationService} from '././authentication.service';
 
 @Injectable({
