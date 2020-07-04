@@ -24,21 +24,26 @@ export class RecipeDetailsComponent implements OnInit {
     private location: Location
   ) { }
 
-  ngOnInit(): void {
-    this.getRecipe();
-    this.setIngredients();
-    this.setRatings();
+  async ngOnInit() {
+    await this.getRecipe();
+    this.ingredients=this.recipe.getIngredients();
+    console.log(this.ingredients);
+    /*this.setIngredients();
+    this.setRatings();*/
   }
 
   /*async ngOnInit() {
     this.recipe = this.searchReqService.getUserResults();
   }*/
 
-  getRecipe(): void {
+  async getRecipe(): Promise<Recipe> {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.searchReqService.getRecipe(id)
-      .subscribe(recipe => this.recipe = recipe);
+    await this.recipeAdministrationReqService.getServerRecipeDetails(id).then ((data: Recipe) => {
+      this.recipe = data;
+    })
+      //.subscribe(recipe => this.recipe = recipe);
       console.log(this.recipe);
+      return this.recipe;
 
   }
 
@@ -48,7 +53,7 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   setIngredients(){
-    this.ingredients = this.recipe.getIngredients();
+    //this.ingredients = this.recipe.getIngredients();
     console.log(this.ingredients);
   }
 

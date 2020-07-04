@@ -11,8 +11,29 @@ export class Cookbook{
     private orderDate: Date;
     private recipient: string;
     private street: string;
+    private cityid: number;
+    private paymentmethod: number;
     private orderStatus: string;
-    private giftStatus: string;
+    private giftStatus: boolean;
+    private housenumber: number;
+
+    constructor (cookbook: Cookbook){
+        this.id = cookbook.id;
+        this.designtitle = cookbook.designtitle;
+        this.format = cookbook.format;
+        this.orderNr = cookbook.orderNr;
+        this.userId = cookbook.userId;
+        this.dediction = cookbook.dediction;
+        this.amount = cookbook.amount;
+        this.orderDate = cookbook.orderDate;
+        this.recipient = cookbook.recipient;
+        this.street = cookbook.street;
+        this.cityid = cookbook.cityid;
+        this.paymentmethod = cookbook.paymentmethod;
+        this.orderStatus = cookbook.orderStatus;
+        this.giftStatus = cookbook.giftStatus;
+        this.housenumber = cookbook.housenumber;
+    }
 
     getId(): number{
         return this.id;
@@ -54,12 +75,24 @@ export class Cookbook{
         return this.street;
     }
 
+    getCityId(): number{
+        return this.cityid;
+    }
+
+    getPaymentMethod(): number{
+        return this.paymentmethod;
+    }
+
     getOrderStatus(): string{
         return this.orderStatus;
     }
 
-    getGiftStatus(): string{
+    getGiftStatus(): boolean{
         return this.giftStatus;
+    }
+
+    getHouseNumber(): number{
+        return this.housenumber;
     }
 
     setDesigntitle(designtitle: string){
@@ -77,10 +110,38 @@ export class Cookbook{
     setDediction(dediction: string){
         this.dediction = dediction;
     }
-    /*setAmount(amount: number);
-    setOrderDate(orderDate: Date);
-    setRecipient(recipient: string);
-    setStreet(street: string);
-    setOrderStatus(orderStatus: string);
-    setGiftStatus(giftStatus: string);*/
+    setAmount(amount: number){
+        this.amount = amount;
+    }
+    setOrderDate(orderDate: Date){
+        this.orderDate = orderDate;
+    }
+
+    setRecipient(recipient: string){
+        this.recipient = recipient;
+    }
+
+    setStreet(street: string){
+        this.street = street;
+    }
+
+    setCityId(cityid: number){
+        this.cityid = cityid;
+    }
+
+    setPaymentMethod(paymentmethod: number){
+        this.paymentmethod = paymentmethod;
+    }
+
+    setHousenumber(housenumber: number){
+        this.housenumber = housenumber;
+    }
+
+    setOrderStatus(orderStatus: string){
+        this.orderStatus = orderStatus;
+    }
+
+    setGiftStatus(giftStatus: boolean){
+        this.giftStatus = giftStatus;
+    }
 }

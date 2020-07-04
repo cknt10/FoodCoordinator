@@ -47,7 +47,7 @@ class PaymentMethod{
     /**
      * Set $id
      *
-     * @param  int  $id  $id
+     * @param  int  $id
      *
      * @return  self
      */ 
@@ -129,7 +129,7 @@ class PaymentMethod{
             // retrieve our table contents
             // fetch() is faster than fetchAll()
             // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-            while ($_row = $stmt->fetch(PDO::FETCH_ASSOC)){
+            while ($_row = $_stmt->fetch(PDO::FETCH_ASSOC)){
                 // extract row
                 // this will make $row['name'] to
                 // just $name only

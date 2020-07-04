@@ -26,7 +26,11 @@ export class AuthenticationService {
 
   /////////////////////////////////////////////////////////////get User without params/////////////////////////////////////////////////////////////////////////////
   getUser(): User {
-    return this.UserData;
+    if(this.UserData != null){
+      return this.UserData;
+    }else{
+      return  this.premiumReqService.getPremiumUser();
+    }
   }
 
 
