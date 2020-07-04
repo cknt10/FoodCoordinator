@@ -9,10 +9,10 @@
     <div class="leftInner">
     <div id="ingredients">
       <p>Zutaten</p>
-      <div *ngFor="let ingredient of ingredients">
+      <div *ngFor="let ingredient of spezingredients">
         <!--die getter Funktionen bereiten Schwierigkeiten, es wird nichts angezeigt
         wenn ich direkt auf das attribut zugreife (was ja nicht erlaubt ist, zeigt es alles an-->
-      <p>{{ ingredient.getAmount() }}{{ ingredient.getUnit() }} {{ ingredient.getDescription() }}</p>
+      <p>{{ ingredient.amount }} {{ ingredient.unit}} {{ ingredient.description}}</p>
     </div>
   </div>
     <div id="duration">
