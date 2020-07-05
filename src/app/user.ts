@@ -9,7 +9,7 @@ export class User{
   private birthday: Date;
   private gender: String;
   private street: String;
-  private houseNumber: number;
+  private houseNumber: string;
   private postcode: number;
   private city: String;
   private isPremium: boolean;
@@ -72,7 +72,7 @@ export class User{
   getPicture(): String {
     return this.picture;
   }
-  getHouseNumber(): number {
+  getHouseNumber(): string {
     return this.houseNumber;
   }
 
@@ -82,6 +82,54 @@ export class User{
 
   setStreet(street: string){
     this.street = street;
+  }
+
+  convertAdress(): string{
+    var adress = this.street;
+    // let nr: string='';
+var splitted = adress.split(" ");
+// for(var i=splitted.length-1;i>=0;i--){
+//   if(Number(splitted[i])>=0){
+//    // console.log(splitted[i]);
+//    // nr.concat(splitted[i]);
+//     for(var j=i;j<=splitted.length-1;j++){
+
+//       console.log(splitted[j]);
+//       nr= splitted[i].concat(splitted[j]);
+
+//     }
+//   }
+
+
+// console.log(nr);
+// return nr;
+//   }
+
+
+var homenumber: string[]=[];
+var homestreet: string[]=[];
+let mark: number;
+
+  for(var i=splitted.length-1;i>=0;i--){
+    if(Number(splitted[i])>=0){
+     // console.log(splitted[i]);
+     // nr.concat(splitted[i]);
+     mark=i-1;
+      for(var j=i;j<=splitted.length-1;j++){
+        homenumber.push(splitted[j]);
+
+      }
+    }
+
+}
+
+for(var i=0;i<=mark;i++){
+  homestreet.push(splitted[i]);
+}
+
+this.houseNumber=homenumber.join(" ");
+this.street=homestreet.join(" ");
+return this.street + ' ' + this.houseNumber;
   }
 
   //////////////////////////////////////clean User Object//////////////////////////////////
