@@ -14,7 +14,17 @@ $database = new Connection();
 $db = $database->connection();
 
 
-$oldRecipeId = "11";
+$postdata = file_get_contents("php://input");
+
+
+// Extract the data.
+$request = json_decode($postdata);
+$request1 = $request->picture;
+
+$ingredinetsFrontend = $request->ingredients;
+$keywordsFrontend =  explode("|", $request->keywords);
+
+$oldRecipeId = $request->id;
 $recipeId = -1;
 $recipeStatus = "";
 $recipe = new Recipe();
@@ -131,30 +141,26 @@ $dummyarray = array(
     "ingredients" => ""
 );
 
-$singlearray = array(
-    "f_id" => "2",
-    "r_id" => "1",
-    "amount" => "3",
-    "unit" => "Stk"
-);
 
-$multiarray = array();
+//Get data from frontend
 
-array_push($multiarray, array(
-    "f_id" => "3",
-    "amount" => "4",
-    "unit" => "Stk"
-));
-array_push($multiarray, array(
-    "f_id" => "4",
-    "amount" => "1",
-    "unit" => "Stk"
-));
+$dummyarray['title'] =  $request->title;
+$dummyarray['picture'] =  $request->picture === null ? "no pic" : $request->picture;
+$dummyarray['servings'] = $request->servings;
+$dummyarray['description'] = $request->description;
+$dummyarray['instruction'] = $request->instruction;
+$dummyarray['creationDate'] = $request->creationDate;
+$dummyarray['duration'] = $request->duration;
+$dummyarray['difficulty'] = $request->difficulty;
+$dummyarray['certified'] = $request->certified;
+$dummyarray['lastChange'] = $request->lastChangen === "null" ? null :$request->lastChangen;
+$dummyarray['userId'] = $request->userId;
 
 
-$dummyarray['ingredients'] = $multiarray;
+$dummyarray['ingredients'] = $ingredinetsFrontend === "" ? aray() : $ingredinetsFrontend;
 
-$dummyarray['keywords'] = array("3", "4");
+$dummyarray['keywords'] = empty($keywordsFrontend) ? array() : $keywordsFrontend;
+
 
 
 //Create return 
@@ -181,7 +187,7 @@ if(strcmp($checkRecipeCreated, "200")){
     //Ingredient
     //Insert recipe id to ingredients
     for($_i = 0; $_i < count($dummyarray['ingredients']); $_i++){
-        $dummyarray['ingredients'][$_i]['r_id']= strval($recipeId);
+        $dummyarray['ingredients'][$_i]->r_id= strval($recipeId);
     }
 
     $checkIngredient = $ingredient->createIngredients($dummyarray['ingredients']);
