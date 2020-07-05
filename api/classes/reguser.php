@@ -477,7 +477,7 @@ class RegUser{
         $_query = "";
 
         // select all query
-        if($_cityId){
+        if($_cityId != null){
             $_query = "SELECT * FROM cities WHERE C_ID = :C_ID";
 
             // prepare query statement
@@ -529,7 +529,12 @@ class RegUser{
                     $this->cityId = $C_ID;
                     $_result = true;
                 }
-
+                if($_cityId != null){
+                    $this->postcode = $PostalCode;
+                    $this->location = $City;
+                    $this->cityId = $C_ID;
+                    $_result = true;
+                }
             }
         }
 
