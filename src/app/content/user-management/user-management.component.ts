@@ -15,7 +15,7 @@ export class UserManagementComponent implements OnInit {
   name: String;
   gender: String;
   street: String;
-  housenumber: number;
+  housenumber: string;
   postalcode: number;
   city: String;
   birthday: Date;
