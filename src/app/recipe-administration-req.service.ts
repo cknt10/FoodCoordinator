@@ -8,6 +8,7 @@ import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
 import { User } from './User';
 import { Ratings } from './ratings';
+import { until } from 'protractor';
 
 
 @Injectable({
@@ -17,12 +18,12 @@ export class RecipeAdministrationReqService {
   private errorValue: string;
   private userRecipes: Recipe[] = [];
   private userRecipe: Recipe;
-  private recipeRatings: Ratings[] = []
+  private recipeRatings: Ratings[] = [];
 
   constructor(
     private http: HttpClient,
     private searchRequestService: SearchReqService,
-    private datePipe: DatePipe,
+    private datePipe: DatePipe
   ) {}
 
   /////////////////////////////////method to display error message to user///////////////////////////
@@ -32,6 +33,46 @@ export class RecipeAdministrationReqService {
 
   getRecipeDetails(): Recipe {
     return this.userRecipe;
+  }
+
+  getDifficulty(): string[]{
+    let difficulty: string[] =  
+    ['einfach', 
+      'mittel', 
+      'schwer'];
+    return difficulty;
+  }
+
+  getUnit(): string[]{
+    let unit: string[] = 
+    ['l', 
+    'dl', 
+    'cl',
+    'ml',
+    'tasse',
+    'g',
+    'mg',
+    'dag',
+    'kg',
+    'pfund',
+    'bund',
+    'tropfen',
+    'spitzer',
+    'blatt',
+    'tl',
+    'bl',
+    'el',
+    'msp',
+    'prise',
+    'dose',
+    'karton',
+    'becher',
+    'stk',
+    'packung',
+    'päckchen',
+    'tsp'
+  ];
+    return unit;
   }
 
   /////////////////////////////////Http-Request to send new recipe///////////////////////////

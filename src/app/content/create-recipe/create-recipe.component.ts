@@ -59,6 +59,9 @@ export class CreateRecipeComponent implements OnInit {
       this.serverKeywords = this.searchReqService.getKeywords();
       console.log(this.serverIngredients);
   console.log(this.serverKeywords);*/
+
+    console.log(this.recipeAdministrationReqService.getDifficulty());
+    console.log(this.recipeAdministrationReqService.getUnit());
   }
 
   addIngredient() {
