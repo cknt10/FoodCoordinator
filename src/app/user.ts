@@ -84,24 +84,52 @@ export class User{
     this.street = street;
   }
 
-  convertAdress(){
+  convertAdress(): string[]{
     var adress = this.street;
-    let nr: string='';
+    // let nr: string='';
 var splitted = adress.split(" ");
-for(var i=splitted.length-1;i>=0;i--){
-  if(Number(splitted[i])>=0){
-   // console.log(splitted[i]);
-   // nr.concat(splitted[i]);
-    for(var j=i;j<=splitted.length-1;j++){
+// for(var i=splitted.length-1;i>=0;i--){
+//   if(Number(splitted[i])>=0){
+//    // console.log(splitted[i]);
+//    // nr.concat(splitted[i]);
+//     for(var j=i;j<=splitted.length-1;j++){
 
-      console.log(splitted[j]);
-      nr= splitted[i].concat(splitted[j]);
+//       console.log(splitted[j]);
+//       nr= splitted[i].concat(splitted[j]);
+
+//     }
+//   }
+
+
+// console.log(nr);
+// return nr;
+//   }
+
+
+var homenumber: string[]=[];
+var homestreet: string[]=[];
+let mark: number;
+
+  for(var i=splitted.length-1;i>=0;i--){
+    if(Number(splitted[i])>=0){
+     // console.log(splitted[i]);
+     // nr.concat(splitted[i]);
+     mark=i-1;
+      for(var j=i;j<=splitted.length-1;j++){
+        homenumber.push(splitted[j]);
+
+      }
     }
-  }
 
 }
-console.log(nr);
-return nr;
+
+for(var i=0;i<=mark;i++){
+  homestreet.push(splitted[i]);
+}
+
+console.log(homenumber.join(" "));
+console.log(homestreet.join(" "));
+return splitted;
   }
 
   //////////////////////////////////////clean User Object//////////////////////////////////
