@@ -101,8 +101,8 @@ export class CreateRecipeComponent implements OnInit {
     reader.onload = (event:any) =>{
       console.log(text.result)
       this.picture = <string>text.result;
- };
-    }
+    };
+  }
 
    async createRecipe(){
 

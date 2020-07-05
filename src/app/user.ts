@@ -9,7 +9,7 @@ export class User{
   private birthday: Date;
   private gender: String;
   private street: String;
-  private houseNumber: number;
+  private houseNumber: string;
   private postcode: number;
   private city: String;
   private isPremium: boolean;
@@ -72,7 +72,7 @@ export class User{
   getPicture(): String {
     return this.picture;
   }
-  getHouseNumber(): number {
+  getHouseNumber(): string {
     return this.houseNumber;
   }
 
@@ -84,7 +84,7 @@ export class User{
     this.street = street;
   }
 
-  convertAdress(): string[]{
+  convertAdress(): string{
     var adress = this.street;
     // let nr: string='';
 var splitted = adress.split(" ");
@@ -127,9 +127,9 @@ for(var i=0;i<=mark;i++){
   homestreet.push(splitted[i]);
 }
 
-console.log(homenumber.join(" "));
-console.log(homestreet.join(" "));
-return splitted;
+this.houseNumber=homenumber.join(" ");
+this.street=homestreet.join(" ");
+return this.street + ' ' + this.houseNumber;
   }
 
   //////////////////////////////////////clean User Object//////////////////////////////////
