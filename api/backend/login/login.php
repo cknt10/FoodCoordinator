@@ -46,6 +46,7 @@ if($num>0){
         'street' => $user->getStreet(),
         'postalCode' => $user->getPostcode(),
         'city' => $user->getLocation(),
+        'picture' => $user->getImage(),
         'isPremium' => ''
     );
 
