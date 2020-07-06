@@ -1,9 +1,9 @@
 export class PremiumModel{
-    private id: number;
-    private description: string;
-    private duration: number;
-    private netprice: number;
-    private startDay: Date;
+    public id: number;
+    public description: string;
+    public duration: number;
+    public netprice: number;
+    public startDay: Date;
 
     constructor(premium: PremiumModel){
         this.id = premium.id;

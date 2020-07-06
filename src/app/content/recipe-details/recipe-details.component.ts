@@ -3,6 +3,7 @@ import { Recipe } from 'src/app/recipe';
 import { ActivatedRoute } from '@angular/router';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
+import { AuthenticationService } from './../../authentication.service';
 
 import { Ingredient } from 'src/app/ingredient';
 import { Ratings } from 'src/app/ratings';
@@ -19,7 +20,8 @@ export class RecipeDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private recipeAdministrationReqService: RecipeAdministrationReqService
+    private recipeAdministrationReqService: RecipeAdministrationReqService,
+    private user: AuthenticationService
   ) {}
 
   async ngOnInit() {
@@ -31,8 +33,16 @@ export class RecipeDetailsComponent implements OnInit {
 
   async getRecipe(): Promise<Recipe> {
     const id = +this.route.snapshot.paramMap.get('id');
+
+    let isPremium: boolean;
+    if(this.user.getUser() != null ){
+      isPremium = this.user.getUser().getIsPremium();
+    }else{
+      isPremium = false;
+    }
+
     await this.recipeAdministrationReqService
-      .getServerRecipeDetails(id)
+      .getServerRecipeDetails(id, isPremium)
       .then((data: Recipe) => {
         this.recipe = data;
         this.ingredients = this.recipe.getIngredients();

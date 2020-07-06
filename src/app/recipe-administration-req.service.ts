@@ -323,12 +323,18 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
-  async getServerRecipeDetails(id: number): Promise<Recipe> {
-    let nutrients: Nutrient[] = [];
+  async getServerRecipeDetails(id: number,isPremium: boolean): Promise<Recipe> {
+    
     await this.fetchServerRecipeDetails(id)
       .then((data: Recipe) => {
         data['recipe'].forEach((value) =>{
           this.userRecipe = new Recipe(value);
+          if(!isPremium){
+            this.userRecipe.getIngredients().forEach(element => {
+              element.nutrients=undefined;
+            });
+          }
+
         })
       })
       .catch((error) => {
@@ -337,6 +343,7 @@ export class RecipeAdministrationReqService {
 
     console.log(this.userRecipe);
     return this.userRecipe;
+    
   }
 
   /////////////////////////////////Http-Request to get recipe details///////////////////////////

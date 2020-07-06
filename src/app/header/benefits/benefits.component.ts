@@ -10,8 +10,8 @@ import { PremiumModel } from '../../PremiumModel'
 })
 export class BenefitsComponent implements OnInit {
 
-  private checkStatus: boolean = false;
-  private premium: PremiumModel[] = [];
+  checkStatus: boolean = false;
+  premium: PremiumModel[] = [];
 
   constructor(
     private premiumReqService: PremiumReqService,
