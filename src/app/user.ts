@@ -10,7 +10,7 @@ export class User{
   private gender: String;
   private street: String;
   private houseNumber: string;
-  private postcode: number;
+  private postalCode: number;
   private city: String;
   private isPremium: boolean;
   private picture: String;
@@ -25,7 +25,7 @@ export class User{
       this.birthday = user.birthday;
       this.gender = user.gender;
       this.street = user.street;
-      this.postcode = user.postcode;
+      this.postalCode = user.postalCode;
       this.city = user.city;
       this.isPremium = user.isPremium;
       this.picture = user.picture;
@@ -61,7 +61,7 @@ export class User{
     return this.street;
   }
   getPostalcode(): number {
-    return this.postcode;
+    return this.postalCode;
   }
   getCity(): String {
     return this.city;
@@ -143,7 +143,7 @@ return this.street + ' ' + this.houseNumber;
     this.houseNumber = null;
     this.gender = '';
     this.street = '';
-    this.postcode = null;
+    this.postalCode = null;
     this.city = '';
     this.isPremium = false;
   }
