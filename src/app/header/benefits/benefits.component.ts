@@ -18,21 +18,29 @@ export class BenefitsComponent implements OnInit {
     private authenticationService: AuthenticationService
   ) { }
 
- async ngOnInit() {
+ ngOnInit() {
 
-    if(this.checkPremiumStatus()){
-      await this.premiumReqService.getPremium().then((data: PremiumModel[]) => {
-        this.premium = data;
-       })
-       console.log(this.premium);
-    }
+  this.getPremiumPackages();
+
   }
 
-  checkPremiumStatus(): boolean{
+   checkPremiumStatus(): boolean{
     if(this.authenticationService.getUser() != null){
       this.checkStatus=this.authenticationService.getUser().getIsPremium();
     }
     return this.checkStatus;
+  }
+
+
+  async getPremiumPackages(){
+    if(this.checkPremiumStatus()){ 
+     await this.premiumReqService.getPremium().then((data) => {
+        this.premium = data;
+        
+       })
+       
     }
+    
+  }
   }
 

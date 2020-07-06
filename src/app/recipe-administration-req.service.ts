@@ -173,7 +173,9 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////Http-Request to change recipe///////////////////////////
-  async getServerChangeRecipe( title: string,
+  async getServerChangeRecipe( 
+    id: number,
+    title: string,
     picture: string,
     servings: number,
     description: string,
@@ -195,7 +197,7 @@ export class RecipeAdministrationReqService {
     });
 
     let values = {
-      //'id': id
+      'id': id,
       'title': title,
       'picture': picture,
       'servings': servings.toString(),
@@ -223,22 +225,6 @@ export class RecipeAdministrationReqService {
     .toPromise())
   }
 
-
-  /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
-  // async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
-  //   await this.getServerChangeRecipe(recipe)
-  //     .then((data: Recipe) => {
-  //       console.log(data['recipe']);
-  //       data['recipe'].forEach((value: Recipe) => {
-  //         this.userRecipes.push(new Recipe(value));
-  //       });
-  //     })
-  //     .catch((error) => {
-  //       this.handleErrorChangeRecipe(error);
-  //     });
-  //   console.log(this.userRecipe);
-  //   return this.userRecipe;
-  // }
 
   /////////////////////////////////convert keywords to their id///////////////////////////
   convertRecipeKeywordsArray(keywords: string[]): string[] {

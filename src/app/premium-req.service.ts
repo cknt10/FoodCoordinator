@@ -158,7 +158,7 @@ export class PremiumReqService {
 ///////////////////////////////////////get premium modells from database//////////////////////////////////////////////////////////////////
  async getPremium(): Promise<PremiumModel[]>{
 
-  const requestLink = this.constant.backendBaseURL + 'api/backend//backend/order/premium.php'
+  const requestLink = this.constant.backendBaseURL + 'api/backend/order/premium.php'
 
  await  this.http.get<PremiumModel[]>(requestLink).toPromise().then((data: PremiumModel[]) => {
 //console.log(data);
@@ -179,7 +179,7 @@ async setPremium (user: User): Promise<User>{
   let values = {
     'premiumId': user.getPremiumUser().getPremiumModel().getId(),
     'userId': user.getId(),
-    'premiumModel': user.getPremiumUser().getPremiumModel(),
+    'premiumPaket': user.getPremiumUser().getPremiumModel().getDescription(),
     'paymentMethode': user.getPremiumUser().getPaymentMethodId(),
     'date': this.date()
   }
