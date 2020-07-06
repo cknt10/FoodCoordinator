@@ -25,6 +25,8 @@ import { CreateRecipeComponent } from './content/create-recipe/create-recipe.com
 import { MenuComponent } from './content/menu/menu.component';
 import { MyRecipesComponent } from './content/my-recipes/my-recipes.component';
 import { RecipeDetailsComponent } from './content/recipe-details/recipe-details.component';
+import { UserManagementComponent } from './content/user-management/user-management.component';
+import { CookbookComponent } from './content/cookbook/cookbook.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +44,8 @@ import { RecipeDetailsComponent } from './content/recipe-details/recipe-details.
     MenuComponent,
     MyRecipesComponent,
     RecipeDetailsComponent,
+    UserManagementComponent,
+    CookbookComponent,
 
   ],
   imports: [
@@ -64,7 +68,9 @@ import { RecipeDetailsComponent } from './content/recipe-details/recipe-details.
       { path: 'benefits', component: BenefitsComponent },
       { path: 'impressum', component: ImpressumComponent },
       { path: 'detail/:id', component: RecipeDetailsComponent },
-      { path: 'datenschutz', component: DatenschutzComponent }
+      { path: 'datenschutz', component: DatenschutzComponent },
+      { path: 'cookbook', component: CookbookComponent },
+      { path: 'account', component: UserManagementComponent },
     ]),
   ],
   providers: [DatePipe],

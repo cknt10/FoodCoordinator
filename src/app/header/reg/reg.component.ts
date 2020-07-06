@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
 import { LoginReqService } from '../../login-req.service';
+import { FormControl } from '@angular/forms';
+import { Cities } from 'src/app/cites';
 
 @Component({
   selector: 'app-reg',
@@ -26,6 +28,10 @@ export class RegComponent implements OnInit {
   usernameLogin: string;
   passwordLogin: string;
 
+  postcodes: number[] = [];
+  cities: Cities[] = [];
+  drop = new FormControl();
+
   constructor(
     private router: Router,
     private authenticationReqService: AuthenticationService,
@@ -36,7 +42,7 @@ export class RegComponent implements OnInit {
   }
 
   async getPostcode(){
-    console.log(await this.loginReqService.getServerCities(this.postalcode));
+    console.log(this.loginReqService.getServerCities(this.postalcode));
   }
 
   async regUser() {
@@ -58,6 +64,7 @@ export class RegComponent implements OnInit {
           )
         ).getFirstname()
       );
+      this.router.navigate(['login']);
     } catch {
       window.alert("Bitte füllen Sie alle Felder aus!");
     }

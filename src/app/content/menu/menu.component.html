@@ -1,4 +1,14 @@
-<div>
-  <button class="menu" >Menü</button>
-  <button class="nav" routerLink="/myrecipes">Meine Rezepte</button>
+<div class="container" *ngIf="user">
+  <button class="menu"><img [src]= "user.getPicture()"></button>
+  <div class="menuuu">
+    <p>{{this.user.getFirstname()}}</p>
+    <button class="nav" routerLink="/account">Konto verwalten</button>
+    <button class="nav" routerLink="/myrecipes">Meine Rezepte</button>
+    <button class="nav" routerLink="/cookbook">Kochbuch zusammenstellen</button>
+    <div *ngIf="user.getIsPremium()">
+      <button class="nav" routerLink="" disabled>Favoriten</button>
+      <button class="nav" routerLink="" disabled>Top Newcomer</button>
+      <button class="nav" routerLink="" disabled>Geschenk abholen</button>
+    </div>
+  </div>
 </div>

@@ -21,7 +21,16 @@
     <label>* Hausnummer:</label>
     <input type="text" [(ngModel)]="housenumber" ><br>
     <label>* Postleitzahl</label>
-    <input type="text" [(ngModel)]="postalcode" (focusout) = "getPostcode()"><br>
+
+    <div class="postcode">
+      <input  type="text" (focusout) = "getPostcode()" [(ngModel)]="postalcode" matInput [formControl]="drop" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let option of postcodes" [value]=postalcode>
+          {{option }}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+
     <label>* Wohnort:</label>
     <input type="text" [(ngModel)]="city" ><br>
   </div>

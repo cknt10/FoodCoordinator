@@ -1,4 +1,6 @@
-export class User {
+import { Premium } from './premium';
+
+export class User{
   private id: number;
   private username: String;
   private email: String;
@@ -7,25 +9,31 @@ export class User {
   private birthday: Date;
   private gender: String;
   private street: String;
-  private houseNumber: number;
-  private postcode: number;
+  private houseNumber: string;
+  private postalCode: number;
   private city: String;
   private isPremium: boolean;
   private picture: String;
+  private premiumUser: Premium;
 
-  constructor(user: User) {
-    this.id = user.id;
-    this.username = user.username;
-    this.email = user.email;
-    this.firstname = user.firstname;
-    this.name = user.name;
-    this.birthday = user.birthday;
-    this.gender = user.gender;
-    this.street = user.street;
-    this.postcode = user.postcode;
-    this.city = user.city;
-    this.isPremium = user.isPremium;
-    this.picture = user.picture;
+  constructor(user: User, premium?: Premium) {
+      this.id = user.id;
+      this.username = user.username;
+      this.email = user.email;
+      this.firstname = user.firstname;
+      this.name = user.name;
+      this.birthday = user.birthday;
+      this.gender = user.gender;
+      this.street = user.street;
+      this.postalCode = user.postalCode;
+      this.city = user.city;
+      this.isPremium = user.isPremium;
+      this.picture = user.picture;
+      this.premiumUser = premium;
+  }
+
+  getPremiumUser(): Premium{
+    return this.premiumUser;
   }
 
   getId(): number {
@@ -53,18 +61,18 @@ export class User {
     return this.street;
   }
   getPostalcode(): number {
-    return this.postcode;
+    return this.postalCode;
   }
   getCity(): String {
     return this.city;
   }
-  getIsPremum(): boolean {
+  getIsPremium(): boolean {
     return this.isPremium;
   }
   getPicture(): String {
     return this.picture;
   }
-  getHouseNumber(): number {
+  getHouseNumber(): string {
     return this.houseNumber;
   }
 
@@ -74,6 +82,54 @@ export class User {
 
   setStreet(street: string){
     this.street = street;
+  }
+
+  convertAdress(): string{
+    var adress = this.street;
+    // let nr: string='';
+var splitted = adress.split(" ");
+// for(var i=splitted.length-1;i>=0;i--){
+//   if(Number(splitted[i])>=0){
+//    // console.log(splitted[i]);
+//    // nr.concat(splitted[i]);
+//     for(var j=i;j<=splitted.length-1;j++){
+
+//       console.log(splitted[j]);
+//       nr= splitted[i].concat(splitted[j]);
+
+//     }
+//   }
+
+
+// console.log(nr);
+// return nr;
+//   }
+
+
+var homenumber: string[]=[];
+var homestreet: string[]=[];
+let mark: number;
+
+  for(var i=splitted.length-1;i>=0;i--){
+    if(Number(splitted[i])>=0){
+     // console.log(splitted[i]);
+     // nr.concat(splitted[i]);
+     mark=i-1;
+      for(var j=i;j<=splitted.length-1;j++){
+        homenumber.push(splitted[j]);
+
+      }
+    }
+
+}
+
+for(var i=0;i<=mark;i++){
+  homestreet.push(splitted[i]);
+}
+
+this.houseNumber=homenumber.join(" ");
+this.street=homestreet.join(" ");
+return this.street + ' ' + this.houseNumber;
   }
 
   //////////////////////////////////////clean User Object//////////////////////////////////
@@ -87,7 +143,7 @@ export class User {
     this.houseNumber = null;
     this.gender = '';
     this.street = '';
-    this.postcode = null;
+    this.postalCode = null;
     this.city = '';
     this.isPremium = false;
   }

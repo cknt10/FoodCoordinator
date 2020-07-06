@@ -1,7 +1,4 @@
 <div class="detail" *ngIf="recipe">
-<div>
-<button (click)="goBack()">go back</button>
-</div>
   <div class="left">
     <div id="title">
       <p id="titleText">{{ recipe.getTitle() }}</p>
@@ -12,7 +9,7 @@
       <div *ngFor="let ingredient of ingredients">
         <!--die getter Funktionen bereiten Schwierigkeiten, es wird nichts angezeigt
         wenn ich direkt auf das attribut zugreife (was ja nicht erlaubt ist, zeigt es alles an-->
-      <p>{{ ingredient.getAmount}}{{ ingredient.getUnit() }} {{ ingredient.getDescription() }}</p>
+      <p>{{ ingredient.amount }} {{ ingredient.unit}} {{ ingredient.description}}</p>
     </div>
   </div>
     <div id="duration">
@@ -35,7 +32,7 @@
       <div *ngFor="let rating of ratings">
         <div class="comments">
           <!--Hier dasselbe Problem wie bei ingredients-->
-          {{rating.getComment()}}
+          {{rating.comment}}
         </div>
       </div>
     </div>

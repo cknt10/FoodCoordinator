@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 
 import { Recipe } from './recipe';
 import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
 import { User } from './User';
 import { Ratings } from './ratings';
+import { identifierModuleUrl } from '@angular/compiler';
 
 
 @Injectable({
@@ -47,28 +48,24 @@ export class RecipeAdministrationReqService {
     keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
-    let params = new HttpParams()
-      .set('title', title)
-      .set('picture', picture)
-      .set('servings', servings.toString())
-      .set('description', description)
-      .set('instruction', instruction)
-      .set('createionDate', this.Date())
-      .set('duration', duration.toString())
-      .set('difficulty', difficulty)
-      .set('certified', '0')
-      .set('lastChange', null)
-      .set('userId', userId.toString())
-      .set('keywords', this.convertRecipeKeywordsArray(keywords).join('|'));
 
     let modifiedIngredients: Object[] = [];
+    // ingredients.forEach((value, index) => {
+    //   modifiedIngredients[index] = new Object();
+    //   modifiedIngredients[index] = {
+    //     id: value.getId().toString(),
+    //     amount: value.getAmount().toString(),
+    //     unit: value.getUnit(),
+    //   };
+    // });
+
+    let ingr = new Array();
     ingredients.forEach((value, index) => {
-      modifiedIngredients[index] = new Object();
-      modifiedIngredients[index] = {
-        id: value.getId().toString(),
-        amount: value.getAmount().toString(),
-        unit: value.getUnit(),
-      };
+      ingr.push({
+        'id': value.getId(),
+        'amount': value.getAmount(),
+        'unit': value.getUnit()
+      })
     });
 
     console.log(modifiedIngredients);
@@ -77,10 +74,36 @@ export class RecipeAdministrationReqService {
     jsonFormat.myArray = JSON.stringify(modifiedIngredients);
     console.log(ingredients);
     console.log(jsonFormat.myArray);
+    console.log(this.convertRecipeKeywordsArray(keywords).join('|'));
 
-    params = params.append('ingredients', jsonFormat.myArray);
+      let values = {
+        'title': title,
+        'picture': picture,
+        'servings': servings.toString(),
+        'description': description,
+        'instruction': instruction,
+        'creationDate': this.date(),
+        'duration': duration.toString(),
+        'difficulty': difficulty,
+        'certified': '0',
+        'lastChange': 'null',
+        'userId': userId.toString(),
+        'keywords': this.convertRecipeKeywordsArray(keywords).join('|'),
+        'ingredients': ingr
+      }
 
-    console.log(params);
+
+   /*   let headers = new HttpHeaders();
+
+      headers.append("Access-Control-Allow-Origin", "*");
+      headers.append("Access-Control-Allow-Methods", "POST,OPTIONS");
+
+      let options = {
+        headers: headers,
+
+     }*/
+
+
 
     const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/recipeset.php';
 
@@ -88,61 +111,54 @@ export class RecipeAdministrationReqService {
 
     return (
       this.http
-        .get<Recipe>(requestLink, { params: params })
-        //.pipe(catchError(this.handleError))
+        .post<Recipe>(requestLink, values)
+        //.pipe(catchError(this.handleErrorCreateRecipe()))
         .toPromise()
     );
   }
 
   /////////////////////////////////Http-Request to change recipe///////////////////////////
-  getServerChangeRecipe(recipe: Recipe): Promise<Recipe> {
+  getServerChangeRecipe( title: string,
+    picture: string,
+    servings: number,
+    description: string,
+    instruction: string,
+    duration: number,
+    difficulty: string,
+    userId: number,
+    keywords: string[],
+    ingredients: Ingredient[]): Promise<Recipe> {
     console.log('server request with keywords');
 
-    let ingredientsID = new Array<string>();
-    let ingredientsAmount = new Array<string>();
-    let ingredientsUnit = new Array<string>();
-    let ingredientsDescription = new Array<string>();
-    recipe.getIngredients().forEach((value) => {
-      ingredientsID.push(value.getId().toString());
-      ingredientsAmount.push(value.getAmount().toString());
-      ingredientsUnit.push(value.getUnit());
-      ingredientsDescription.push(value.getDescription());
+    let ingr = new Array();
+    ingredients.forEach((value, index) => {
+      ingr.push({
+        'id': value.getId(),
+        'amount': value.getAmount(),
+        'unit': value.getUnit()
+      })
     });
 
-    let params = new HttpParams()
-      .set('id', recipe.getId().toString())
-      .set('title', recipe.getTitle())
-      .set('picture', recipe.getPicture().toString())
-      .set('servings', recipe.getServings().toString())
-      .set('description', recipe.getDescription())
-      .set('instruction', recipe.getInstruction())
-      .set('createionDate', recipe.getCreateionDate().toString())
-      .set('duration', recipe.getDuration().toString())
-      .set('difficulty', recipe.getDifficulty())
-      .set('certified', recipe.getCertified().toString())
-      .set('lastChangeDate', recipe.getLastChangeDate().toString())
-      .set('userId', recipe.getUserId().toString());
-    //.set('keywords', this.convertRecipeKeywordsArray(recipe.getKeywords()).join('|') )
-    //.set('ingredients', recipe.getIngredients().join('|'));
-    recipe.getKeywords().forEach((key) => {
-      params = params.append('keywords', this.convertRecipeKeyword(key));
-    });
-    //.set('ingredients', ingredientsDescription.join('|'));
-    ingredientsDescription.forEach((description) => {
-      params = params.append('ingredients', description);
-    });
+    let values = {
+      //'id': id
+      'title': title,
+      'picture': picture,
+      'servings': servings.toString(),
+      'description': description,
+      'instruction': instruction,
+      'creationDate': this.date(),
+      'duration': duration.toString(),
+      'difficulty': difficulty,
+      'certified': '0',
+      'lastChange': this.date(),
+      'userId': userId.toString(),
+      'keywords': this.convertRecipeKeywordsArray(keywords).join('|'),
+      'ingredients': ingr
+    }
 
-    ingredientsID.forEach((id) => {
-      params = params.append('id', id);
-    });
 
-    ingredientsAmount.forEach((amount) => {
-      params = params.append('amount', amount);
-    });
 
-    ingredientsUnit.forEach((unit) => {
-      params = params.append('unit', unit);
-    });
+
 
     //console.log(params);
 
@@ -153,7 +169,7 @@ export class RecipeAdministrationReqService {
 
     return (
       this.http
-        .get<Recipe>(requestLink, { params: params })
+        .post<Recipe>(requestLink, values)
         //.pipe(catchError(this.handleError))
         .toPromise()
     );
@@ -172,6 +188,7 @@ export class RecipeAdministrationReqService {
     keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
+
     await this.getCreateRecipe(
       title,
       picture,
@@ -185,6 +202,8 @@ export class RecipeAdministrationReqService {
       ingredients
     )
       .then((data: Recipe) => {
+
+        console.log(data);
         data['recipe'].forEach((value: Recipe) => {
           this.userRecipes.push(new Recipe(value));
         });
@@ -197,19 +216,20 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
-  async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
-    await this.getServerChangeRecipe(recipe)
-      .then((data: Recipe) => {
-        data['recipe'].forEach((value: Recipe) => {
-          this.userRecipes.push(new Recipe(value));
-        });
-      })
-      .catch((error) => {
-        this.handleErrorChangeRecipe(error);
-      });
-    console.log(this.userRecipe);
-    return this.userRecipe;
-  }
+  // async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
+  //   await this.getServerChangeRecipe(recipe)
+  //     .then((data: Recipe) => {
+  //       console.log(data['recipe']);
+  //       data['recipe'].forEach((value: Recipe) => {
+  //         this.userRecipes.push(new Recipe(value));
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       this.handleErrorChangeRecipe(error);
+  //     });
+  //   console.log(this.userRecipe);
+  //   return this.userRecipe;
+  // }
 
   /////////////////////////////////convert keywords to their id///////////////////////////
   convertRecipeKeywordsArray(keywords: string[]): string[] {
@@ -233,44 +253,6 @@ export class RecipeAdministrationReqService {
     return keywordsId;
   }
 
-  /////////////////////////////////convert ingredients to their id///////////////////////////
-  convertRecipeIngredientsArray(keywords: Ingredient[]): Ingredient[] {
-    let tempRecipe = keywords;
-    let ingredientsId = [];
-    let serverKeywords = this.searchRequestService.getIngredients();
-
-    serverKeywords.forEach((elem1) => {
-      elem1;
-      tempRecipe.forEach((elem2) => {
-        elem2;
-        if (elem1.description === elem2.getDescription()) {
-          ingredientsId.push(elem1.id.toString());
-        }
-      });
-    });
-
-    ingredientsId.filter((value) => {
-      value === value.id;
-    });
-
-    return ingredientsId;
-  }
-
-  /////////////////////////////////convert keyword to their id///////////////////////////
-  convertRecipeKeyword(keywords: string): string {
-    let keywordsId: string = '';
-    let serverKeywords = this.searchRequestService.getKeywords();
-
-    serverKeywords.forEach((elem1) => {
-      elem1;
-      if (elem1.name === keywords) {
-        keywordsId = elem1.id.toString();
-      }
-    });
-
-    return keywordsId;
-  }
-
   /////////////////////////////////convert ingredient to their id///////////////////////////
   convertRecipeIngredient(keywords: string): number {
     let tempRecipe = keywords;
@@ -288,8 +270,9 @@ export class RecipeAdministrationReqService {
     return ingredientsId;
   }
 
+
   /////////////////////////////////method for current date///////////////////////////
-  Date() {
+  date() {
     let creation: string;
     creation = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
     console.log(creation);
@@ -300,7 +283,7 @@ export class RecipeAdministrationReqService {
   async getServerUserRecipe(user: User): Promise<Recipe[]> {
     await this.fetchServerUserRecipe(user)
       .then((data: Recipe) => {
-        console.log(data['recipes']);
+        //console.log(data['recipes']);
         data['recipes'].forEach((value: Recipe) => {
           this.userRecipes.push(new Recipe(value));
         });
@@ -308,7 +291,7 @@ export class RecipeAdministrationReqService {
       .catch((error) => {
         this.handleErrorUserRecipe(error);
       });
-    console.log(this.userRecipes);
+    //console.log(this.userRecipes);
     return this.userRecipes;
   }
 
@@ -329,10 +312,10 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
-  async getServerRecipeDetails(recipe: Recipe, isPremium: boolean): Promise<Recipe> {
-    await this.fetchServerRecipeDetails(recipe, isPremium)
+  async getServerRecipeDetails(id: number/*, user: User*/): Promise<Recipe> {
+    await this.fetchServerRecipeDetails(id)
       .then((data: Recipe) => {
-        
+
         data['recipe'].forEach((value) =>{
           this.userRecipe = new Recipe(value);
         })
@@ -341,21 +324,20 @@ export class RecipeAdministrationReqService {
       .catch((error) => {
         this.handleErrorRecipeDetails(error);
       });
+      /*if (user.getIsPremium() == true){
+        console.log(this.userRecipe);
+    return this.userRecipe;
+      }else{
+
+      }*/
     console.log(this.userRecipe);
     return this.userRecipe;
   }
 
   /////////////////////////////////Http-Request to get recipe details///////////////////////////
-  async fetchServerRecipeDetails(recipe: Recipe, isPremium: boolean): Promise<Recipe> {
-    let premium: number;
-    if(isPremium == true){
-      premium = 1;
-    }else{
-      premium= 0;
-    }
+  async fetchServerRecipeDetails(id: number): Promise<Recipe> {
     let params = new HttpParams()
-    .set('idRecipe', recipe.getId().toString())
-    .set('isPremium', premium.toString());
+    .set('recipeId', id.toString());
 
     console.log(params);
 

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PremiumReqService } from '../../premium-req.service';
+import { AuthenticationService } from '../../authentication.service';
+import { PremiumModel } from '../../PremiumModel'
 
 @Component({
   selector: 'app-benefits',
@@ -7,9 +10,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BenefitsComponent implements OnInit {
 
-  constructor() { }
+  checkStatus: boolean = false;
+  premium: PremiumModel[] = [];
 
-  ngOnInit(): void {
+  constructor(
+    private premiumReqService: PremiumReqService,
+    private authenticationService: AuthenticationService
+  ) { }
+
+ async ngOnInit() {
+
+    if(this.checkPremiumStatus()){
+      await this.premiumReqService.getPremium().then((data: PremiumModel[]) => {
+        this.premium = data;
+       })
+       console.log(this.premium);
+    }
   }
 
-}
+  checkPremiumStatus(): boolean{
+    if(this.authenticationService.getUser() != null){
+      this.checkStatus=this.authenticationService.getUser().getIsPremium();
+    }
+    return this.checkStatus;
+    }
+  }
+
