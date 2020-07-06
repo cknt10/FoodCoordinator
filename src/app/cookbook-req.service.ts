@@ -20,14 +20,14 @@ export class CookbookReqService {
   private serverPayments: Payment[] = [];
 
   constructor(
-    private autenticationReqService: AuthenticationService, 
-    private premiumReqService: PremiumReqService, 
-    private http: HttpClient, 
+    private autenticationReqService: AuthenticationService,
+    private premiumReqService: PremiumReqService,
+    private http: HttpClient,
     private datePipe: DatePipe,
     private constant: ConstantsService
   ) { }
 
-  
+
    /////////////////////////////////////////get from Server recipe details///////////////////////////////////////////
    async getServerCookbookFormats(): Promise<CookbookFormat[]> {
     await this.fetchServerCookbookFormats()
@@ -35,7 +35,7 @@ export class CookbookReqService {
         data['format'].forEach((value: CookbookFormat) =>{
           this.cookbookFormats.push(new CookbookFormat(value));
         })
-        console.log(data['format']);
+        //console.log(data['format']);
       })
       .catch((error) => {
         this.handleErrorCookbookFormats(error);
@@ -142,8 +142,8 @@ export class CookbookReqService {
           .set('cityId', cookbook.getCityId().toString())
           .set('paymentMethod', cookbook.getPaymentMethod().toString())
           .set('recipeId', recipeId.join('|'));
-  
-  
+
+
 
     console.log(params);
 
