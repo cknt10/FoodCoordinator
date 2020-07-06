@@ -25,7 +25,7 @@ export class UserManagementComponent implements OnInit {
   username: String;
   email: String;
   emailConfirm: String;// finde ich nicht nötig
-  password: String; // sollte, da man es ohnehin nicht shene kann und nicht weiß was drin ist, leer lassen
+  password: string; // sollte, da man es ohnehin nicht shene kann und nicht weiß was drin ist, leer lassen
   passwordConfirm: String;//Kontrolle der beiden n icht vergessen :)
   picture: String;
 
@@ -47,7 +47,7 @@ export class UserManagementComponent implements OnInit {
   }
 
   async safe(){
-   await this.userManagement.changeUserData(
+   /*await this.userManagement.changeUserData(
     this.user.getId(),
     this.username,
     this.password,
@@ -62,7 +62,9 @@ export class UserManagementComponent implements OnInit {
     this.email,
     this.picture
 
-    )
+    )*/
+    
+    await this.userManagement.postchangePassword( this.password, this.user.getId());
     //@Frontend, wenn erfolreich dann set-Methode um die lokalen Werte des Users zu überschreiben
 
   }
