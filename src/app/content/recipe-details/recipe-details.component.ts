@@ -1,7 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Recipe } from 'src/app/recipe';
 import { ActivatedRoute } from '@angular/router';
+
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
+
+
 import { Ingredient } from 'src/app/ingredient';
 import { Ratings } from 'src/app/ratings';
 
@@ -22,6 +25,7 @@ export class RecipeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     await this.getRecipe();
+
     console.log(this.ingredients);
     console.log(this.ratings);
   }

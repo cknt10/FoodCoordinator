@@ -4,6 +4,8 @@ import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
+import { RecipeAdministrationService } from 'src/app/recipe-administration.service';
+
 import { Ratings } from 'src/app/ratings';
 
 @Component({
@@ -21,15 +23,18 @@ export class SearchComponent implements OnInit {
   ratings: Ratings[] = [];
   countRating: number;
 
-  constructor(private searchReqService: SearchReqService) {}
+  constructor(
+    private searchReqService: SearchReqService,
+    private recipeAdministrationService: RecipeAdministrationService
+    ) {}
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
   async ngOnInit() {
+    this.recipes=this.recipeAdministrationService.getRecipes();
     await this.searchReqService
       .fetchSearchKeywords()
       .then((data) => console.log(this.searchReqService.filterKeywords())); // Hier alle Keywords, durch getFilteredKeywords() abrufen
     this.allKeywords = this.searchReqService.getFilteredKeywords();
-    this.clearArray(this.recipes);
   }
 
   ////////////////////////add ingredient to array///////////////////////////////////////////
@@ -54,6 +59,7 @@ export class SearchComponent implements OnInit {
       await this.searchReqService.getUserServerResult(this.ingredients)
     );
     this.recipes = this.searchReqService.getUserResults();
+    this.recipeAdministrationService.setRecipes(this.recipes);
     //this.throwError();
     //show rating
     this.setRatings();
