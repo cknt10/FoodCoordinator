@@ -123,7 +123,7 @@ export class CreateRecipeComponent implements OnInit {
      && this.duration != null
      && this.difficulty != null
      && this.ingredients != null){
-     console.log(await this.recipeAdministrationReqService.getNewServerRecipe(
+     console.log(await this.recipeAdministrationReqService.getCreateRecipe(
        this.title,
        this.picture,
        this.servings,

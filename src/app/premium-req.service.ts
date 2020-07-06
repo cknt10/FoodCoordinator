@@ -8,6 +8,10 @@ import { Recipe } from './recipe';
 import { Gift } from './gift';
 import { PremiumModel } from './premiumModel';
 import {AuthenticationService} from '././authentication.service';
+import { Premium } from './premium';
+
+import { ConstantsService } from './common/globals/constants.service';
+
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +26,8 @@ export class PremiumReqService {
   constructor(
     private http: HttpClient,
     private datePipe: DatePipe,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private constant: ConstantsService
   ) {}
 
   /////////////////////////////////errror Message to display on user///////////////////////
@@ -118,8 +123,7 @@ export class PremiumReqService {
 
     console.log(params);
 
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/recipe/favourites.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/favourites.php';
 
     console.log('request finished');
 
@@ -140,8 +144,7 @@ export class PremiumReqService {
 
     console.log(params);
 
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/recipe/setfavourites.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/setfavourites.php';
 
     console.log('request finished');
 
@@ -155,7 +158,9 @@ export class PremiumReqService {
 ///////////////////////////////////////get premium modells from database//////////////////////////////////////////////////////////////////
  async getPremium(): Promise<PremiumModel[]>{
 
- await  this.http.get<PremiumModel[]>('http://xcsd.ddns.net/api/backend/order/premium.php').toPromise().then((data: PremiumModel[]) => {
+  const requestLink = this.constant.backendBaseURL + 'api/backend//backend/order/premium.php'
+
+ await  this.http.get<PremiumModel[]>(requestLink).toPromise().then((data: PremiumModel[]) => {
 //console.log(data);
   data['premium'].forEach((value: PremiumModel) => {
     this.premiumModels.push(new PremiumModel(value));
@@ -169,24 +174,27 @@ return this.premiumModels;
 }
 
 //////////////////////////////////////set premium //////////////////////////////////////////////////////////////////
-async setPremium(premium: PremiumModel, user: User): Promise<PremiumModel[]>{
+async setPremium (user: User): Promise<User>{
 
-  /*let values = {
-    'premiumId': premium.getId().toString(),
-    'userId':
-  }*/
+  let values = {
+    'premiumId': user.getPremiumUser().getPremiumModel().getId(),
+    'userId': user.getId(),
+    'premiumModel': user.getPremiumUser().getPremiumModel(),
+    'paymentMethode': user.getPremiumUser().getPaymentMethodId(),
+    'date': this.date()
+  }
 
-  await  this.http.get<PremiumModel[]>('xcsd.ddns.net/api/backend/user/setpremium.php').toPromise().then((data: PremiumModel[]) => {
+  const requestLink = this.constant.backendBaseURL + 'api/backend/user/setpremium.php'
 
-   data['premium'].forEach((value: PremiumModel) => {
-     this.premiumModels.push(new PremiumModel(value));
-   });
+  await  this.http.post<Premium>(requestLink, values).toPromise().then((data: Premium) => {
+
+     this.premiumUser.getPremiumUser().setPremium(data['premium']);
  })
  .catch((error) => {
    this.handleErrorPremiumModel(error);
  });
  console.log
- return this.premiumModels;
+ return this.premiumUser;
  }
   ///////////////////////////////////////method to handle error for gift//////////////////////////////////////////////////////////////////
   handleErrorGift(error: Response) {

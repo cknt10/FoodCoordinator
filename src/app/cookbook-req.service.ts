@@ -8,6 +8,8 @@ import { Payment } from './payment';
 import { Recipe } from './recipe';
 import { DatePipe } from '@angular/common';
 
+import { ConstantsService } from './common/globals/constants.service';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,7 +23,8 @@ export class CookbookReqService {
     private autenticationReqService: AuthenticationService, 
     private premiumReqService: PremiumReqService, 
     private http: HttpClient, 
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private constant: ConstantsService
   ) { }
 
   
@@ -47,7 +50,7 @@ export class CookbookReqService {
 
     console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/order/getcookbookformats.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/order/getcookbookformats.php';
 
     return (
       this.http
@@ -79,7 +82,7 @@ export class CookbookReqService {
 
     console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/order/payment.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/order/payment.php';
 
     return (
       this.http
@@ -144,7 +147,7 @@ export class CookbookReqService {
 
     console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/order/createorder.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/order/createorder.php';
 
     return (
       this.http

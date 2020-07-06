@@ -8,6 +8,8 @@ import { SearchParameter } from './searchParameter';
 
 import { Ingredient } from './ingredient';
 
+import { ConstantsService } from './common/globals/constants.service';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -20,7 +22,7 @@ export class SearchReqService {
 
   private errorValue: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private constant: ConstantsService) {}
 
   /////////////////////////////////method to get keywords without duplicate and id///////////////////////////
   getFilteredKeywords(): string[] {
@@ -115,8 +117,7 @@ export class SearchReqService {
 
   /////////////////////////////////Http-Request method to get ingredients as proposition///////////////////////////
   async fetchServerSearchPropositionForIngredients(): Promise<Ingredient> {
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/search/getingredients.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/search/getingredients.php';
 
     return (
       this.http
@@ -128,8 +129,7 @@ export class SearchReqService {
 
   /////////////////////////////////Http-Request method to get keywords as proposition///////////////////////////
   async fetchServerSearchPropositionForKeywords(): Promise<string> {
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/search/getkeywords.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/search/getkeywords.php';
 
     return (
       this.http
@@ -144,7 +144,7 @@ export class SearchReqService {
 
     let params = new HttpParams().set('keys', userSearchInputs.join('|'));
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/search/search.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/search/search.php';
 
     return (
       this.http

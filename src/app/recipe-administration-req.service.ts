@@ -8,9 +8,9 @@ import { SearchReqService } from './search-req.service';
 import { Ingredient } from './ingredient';
 import { User } from './User';
 import { Ratings } from './ratings';
-import { until } from 'protractor';
 import { Nutrient } from './nutrient';
-import { identifierModuleUrl } from '@angular/compiler';
+
+import { ConstantsService } from './common/globals/constants.service';
 
 
 @Injectable({
@@ -25,7 +25,8 @@ export class RecipeAdministrationReqService {
   constructor(
     private http: HttpClient,
     private searchRequestService: SearchReqService,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private constant: ConstantsService
   ) {}
 
   /////////////////////////////////method to display error message to user///////////////////////////
@@ -89,7 +90,7 @@ export class RecipeAdministrationReqService {
     userId: number,
     keywords: string[],
     ingredients: Ingredient[]
-  ): Promise<Recipe> {
+  ): Promise<string> {
 
     let modifiedIngredients: Object[] = [];
     // ingredients.forEach((value, index) => {
@@ -145,22 +146,34 @@ export class RecipeAdministrationReqService {
 
      }*/
 
+     const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/recipeset.php';
 
-
-    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/recipeset.php';
+    let message: string;
 
     console.log('request finished');
 
-    return (
+    await (
       this.http
-        .post<Recipe>(requestLink, values)
-        //.pipe(catchError(this.handleErrorCreateRecipe()))
+        .post<string>(requestLink, values)
+        //.pipe(catchError(this.handleError))
         .toPromise()
-    );
+    )  .then((data: any) => {
+      message = data['message'];
+      if(message === 'Recipe created'){
+        message = 'Rezept wurde erfolgreich erstellt!';
+      }else{
+        message = 'Rezept konnte nicht erstellt werden!'
+      }
+      })
+    .catch((error) => {
+      this.handleErrorRecipeDetails(error);
+    });
+
+    return message;
   }
 
   /////////////////////////////////Http-Request to change recipe///////////////////////////
-  getServerChangeRecipe( title: string,
+  async getServerChangeRecipe( title: string,
     picture: string,
     servings: number,
     description: string,
@@ -198,64 +211,18 @@ export class RecipeAdministrationReqService {
       'ingredients': ingr
     }
 
-
-
-
-
     //console.log(params);
 
-    const requestLink =
-      'http://xcsd.ddns.net/api/backend/recipe/recipechange.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/recipechange.php';
 
     console.log('request finished');
 
-    return (
-      this.http
-        .post<Recipe>(requestLink, values)
-        //.pipe(catchError(this.handleError))
-        .toPromise()
-    );
+    return (this.http
+    .post<Recipe>(requestLink, values)
+    //.pipe(catchError(this.handleError))
+    .toPromise())
   }
 
-  ///////////////////////////////////////////////save created recipe from response //////////////////////////////////
-  async getNewServerRecipe(
-    title: string,
-    picture: string,
-    servings: number,
-    description: string,
-    instruction: string,
-    duration: number,
-    difficulty: string,
-    userId: number,
-    keywords: string[],
-    ingredients: Ingredient[]
-  ): Promise<Recipe> {
-
-    await this.getCreateRecipe(
-      title,
-      picture,
-      servings,
-      description,
-      instruction,
-      duration,
-      difficulty,
-      userId,
-      keywords,
-      ingredients
-    )
-      .then((data: Recipe) => {
-
-        console.log(data);
-        data['recipe'].forEach((value: Recipe) => {
-          this.userRecipes.push(new Recipe(value));
-        });
-      })
-      .catch((error) => {
-        this.handleErrorCreateRecipe(error);
-      });
-    console.log(this.userRecipe);
-    return this.userRecipe;
-  }
 
   /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
   // async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
@@ -343,7 +310,7 @@ export class RecipeAdministrationReqService {
 
     console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/myrecipes.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/myrecipes.php';
 
     return (
       this.http
@@ -377,7 +344,7 @@ export class RecipeAdministrationReqService {
 
     console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/getrecipe.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/getrecipe.php';
 
     return (
       this.http
@@ -415,7 +382,7 @@ export class RecipeAdministrationReqService {
 
     console.log(params);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/recipe/setrating.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/setrating.php';
 
     return (
       this.http

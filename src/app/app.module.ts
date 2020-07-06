@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { MatMenuModule} from '@angular/material/menu';
+import { ConstantsService } from './common/globals/constants.service';
 
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -73,7 +74,7 @@ import { CookbookComponent } from './content/cookbook/cookbook.component';
       { path: 'account', component: UserManagementComponent },
     ]),
   ],
-  providers: [DatePipe],
+  providers: [DatePipe, ConstantsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

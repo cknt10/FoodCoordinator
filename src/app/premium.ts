@@ -9,6 +9,7 @@ export  class Premium {
     private gift: Gift[];
     private startDate: Date;
     private favorites: Recipe[];
+    private paymentMethode: number;
 
     constructor(premium: Premium){
         this.id = premium.id;
@@ -16,6 +17,7 @@ export  class Premium {
         this.gift = premium.gift;
         this.startDate = premium.startDate;
         this.favorites = premium.favorites;
+        this.paymentMethode = premium.paymentMethode;
     }
 
     endPremium(): Date{
@@ -45,5 +47,18 @@ export  class Premium {
 
     getFavorites(){
       return this.favorites;
+    }
+
+    getPaymentMethodId():number{
+      return this.paymentMethode;
+    }
+
+    setPremium(premium: Premium){
+      this.id = premium.id;
+      this.premiumModel = premium.premiumModel;
+      this.gift = premium.gift;
+      this.startDate = premium.startDate;
+      this.favorites = premium.favorites;
+      this.paymentMethode = premium.paymentMethode;
     }
 }

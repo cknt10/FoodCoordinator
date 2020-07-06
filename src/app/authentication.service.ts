@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LoginReqService } from './login-req.service';
 import { User } from './User';
-import {PremiumModel} from './premiumModel';
-import { Premium } from './premium';
+
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +12,7 @@ export class AuthenticationService {
   private errorValue: string;
 
   constructor(
-    private LoginReqService: LoginReqService,
+    private LoginReqService: LoginReqService
     ) {}
 
   ///////////////////////////////////////////////////////////get user data////////////////////////////////////////////////////////////////////////////

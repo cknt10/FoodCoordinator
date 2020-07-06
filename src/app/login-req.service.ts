@@ -7,6 +7,8 @@ import {
 import { throwError } from 'rxjs';
 import { catchError, retry, map } from 'rxjs/operators';
 
+import { ConstantsService } from './common/globals/constants.service';
+
 import { User } from './User';
 import { Cities } from './cites';
 
@@ -17,7 +19,7 @@ export class LoginReqService {
   private errorValue: string;
   private cities: Cities[] = [];
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private constant: ConstantsService) {}
 
   /////////////////////////////////method to display error message to user///////////////////////////
   getErrorMessage(): string {
@@ -36,8 +38,8 @@ export class LoginReqService {
       .set('username', username)
       .set('password', password);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/login/login.php';
-
+    const requestLink = this.constant.backendBaseURL + 'api/backend/login/login.php';
+    
     return this.http
       .get<User>(requestLink, { params: params })
       //.pipe(catchError(this.handleError))
@@ -72,7 +74,7 @@ export class LoginReqService {
       .set('birthday', birthday)
       .set('email', email);
 
-    const requestLink = 'http://xcsd.ddns.net/api/backend/login/register.php';
+      const requestLink = this.constant.backendBaseURL + 'api/backend/login/register.php';
 
     return this.http
       .get<User>(requestLink, { params: params })
@@ -98,7 +100,8 @@ export class LoginReqService {
 
     let params = new HttpParams()
     .set('postcode', postcode.toString());
-    const requestLink = 'http://xcsd.ddns.net/api/backend/order/getcities.php';
+    
+    const requestLink = this.constant.backendBaseURL + 'api/backend/order/getcities.php';
 
     return this.http
       .get<Cities>(requestLink, { params: params })

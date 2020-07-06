@@ -4,6 +4,9 @@ import { HttpClient } from '@angular/common/http';
 
 import { AuthenticationService } from './authentication.service';
 
+import { ConstantsService } from './common/globals/constants.service';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -14,7 +17,7 @@ export class UserManagementServiceReqService {
   private errorValue: string;
 
 
-  constructor(private userAuthentication: AuthenticationService,private http: HttpClient) { }
+  constructor(private userAuthentication: AuthenticationService,private http: HttpClient, private constant: ConstantsService) { }
 
 getUserData(){
   return this.UserData;
@@ -60,7 +63,7 @@ getUserData(){
     }
 
 
-  const requestLink = 'http://xcsd.ddns.net/api/backend/login/usermanagment.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/login/usermanagment.php';
 
   await this.http
     .post<User>(requestLink, values)
