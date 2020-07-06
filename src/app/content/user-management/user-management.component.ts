@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from 'src/app/authentication.service';
-import { User } from 'src/app/User';
+
+import { AuthenticationService } from '../../authentication.service';
+import { UserManagementServiceReqService } from '../../user-management-service-req.service';
+
+import { User } from '../../User';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,19 +18,21 @@ export class UserManagementComponent implements OnInit {
   name: String;
   gender: String;
   street: String;
-  housenumber: string;
-  postalcode: number;
+  houseNumber: String;
+  postalCode: number;
   city: String;
   birthday: Date;
   username: String;
   email: String;
-  emailConfirm: String;
-  password: String;
-  passwordConfirm: String;
+  emailConfirm: String;// finde ich nicht nötig
+  password: String; // sollte, da man es ohnehin nicht shene kann und nicht weiß was drin ist, leer lassen
+  passwordConfirm: String;//Kontrolle der beiden n icht vergessen :)
+  picture: String;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
+    private userManagement: UserManagementServiceReqService
   ) { }
 
   ngOnInit(): void {
@@ -41,7 +46,24 @@ export class UserManagementComponent implements OnInit {
     console.log(this.user);
   }
 
-  safe(){
+  async safe(){
+   await this.userManagement.changeUserData(
+    this.user.getId(),
+    this.username,
+    this.password,
+    this.firstname,
+    this.name,
+    this.gender,
+    this.street,
+    this.houseNumber,
+    this.postalCode,
+    this.city,
+    this.birthday,
+    this.email,
+    this.picture
+
+    )
+    //@Frontend, wenn erfolreich dann set-Methode um die lokalen Werte des Users zu überschreiben
 
   }
 
@@ -50,12 +72,15 @@ export class UserManagementComponent implements OnInit {
     this.name = this.user.getName();
     this.gender = this.user.getGender();
     this.street = this.user.getStreet();
-    this.housenumber = this.user.getHouseNumber();
-    this.postalcode = this.user.getPostalcode();
+    this.houseNumber = this.user.getHouseNumber();
+    this.postalCode = this.user.getPostalcode();
     this.city = this.user.getCity();
     this.birthday = this.user.getBirthday();
     this.username = this.user.getUsername();
     this.email = this.user.getEmail();
+    this.picture = this.user.getPicture();
+
+    //picture fehlt noch
   }
 
 }
