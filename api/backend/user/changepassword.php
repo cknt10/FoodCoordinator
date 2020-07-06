@@ -14,6 +14,10 @@ $db = $database->connection();
 $user = new RegUser();
 $user->connection($db);
 
+//Userdata from frontend
+$postdata = file_get_contents("php://input");
+// Extract the data.
+$userData = json_decode($postdata);
 
 $result = array();
 $result["message"] = "";
@@ -23,11 +27,11 @@ $result["user"] = array();
 //DUMMY data
 
 //user
-$userId = "15";
-$password = "123456";
+$userId = trim($userData->id);
+$password = trim($userData->password);
 
 
-if($userId != "" || $password != ""){
+if($userId != "" && $password != ""){
     $result["user"] = $user->changePassword($userId, $password);
     
     if($result["user"] === "200"){
@@ -35,6 +39,7 @@ if($userId != "" || $password != ""){
         http_response_code(200);
 
         // show result data in json format
+        $result["message"] = "Password changed";
         echo json_encode($result);
     }else{
         // set response code - 500 Not found
@@ -54,7 +59,6 @@ if($userId != "" || $password != ""){
         $result["message"] = "Missing password";
         echo json_encode($result);
 }
-
 
 
 ?>

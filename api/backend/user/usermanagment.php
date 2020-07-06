@@ -14,6 +14,12 @@ $db = $database->connection();
 $user = new RegUser();
 $user->connection($db);
 
+$postdata = file_get_contents("php://input");
+
+
+// Extract the data.
+$userData = json_decode($postdata);
+
 
 $result = array();
 $result["message"] = "";
@@ -23,30 +29,35 @@ $result["user"] = array();
 //DUMMY data
 
 //user
-$userId = "15";
-$mail = "test@mail.com";
-$username = "test";
-$firstName = "SergejTest";
-$name = "SergejTeeeest";
-$gender = "m";
-$street = "Street Test 22";
-$birthday = "1990-10-19";
-$cityId = "27834";
-$userImg = "";
+$userId = $userData->id;
+$mail = $userData->email;
+$username = $userData->username;
+$firstName = $userData->firstname;
+$name = $userData->name;
+$gender = $userData->gender;
+$street = $userData->street . ' ' . $userData->houseNumber;
+$birthday = $userData->birthday;
+$cityId =""; //will be set after check if location exists
+$userImg = $userData->picture;
 
-// $username = trim($_GET['username']);
-// $email = trim($_GET['email']);
-// $password = trim($_GET['password']);
-// $firstName = trim($_GET['firstname']);
-// $name = trim($_GET['name']);
-// $gender = trim($_GET['gender']);
-// $street = trim($_GET['street']) . ' ' . trim($_GET['houseNumber']);
-// $birthday = trim($_GET['birthday']);
+//Need to get the cityId
+$zip = $userData->postalCode;
+$city = $userData->city;
+
+//Check location exist. If not create Location and set ID into Object
+
+if(!$user->checkLocation($zip, $city)){
+    //Create City Entry
+    $user->createLocation($zip, $city);
+}else{
+    $cityId = $user->getCityId();
+}
+
 
 
 if($mail != "" || $userId != "" || $username != "" || $firstName != ""){
     $result["user"] = $user->changeUser($userId, $mail, $username, $firstName, $name, $gender, $street, $birthday, $cityId, $userImg);
-    
+    sleep(2);
     if($result["user"] === "200"){
         // set response code - 200 OK
         http_response_code(200);
@@ -73,5 +84,21 @@ if($mail != "" || $userId != "" || $username != "" || $firstName != ""){
 }
 
 
+        // // TEST
+        // $test = array(
+        //     "userId" => $userId,
+        //     "mail" => $mail,
+        //     "username" => $username,
+        //     "firstname" => $firstName,
+        //     "name" => $name,
+        //     "gender" => $gender,
+        //     "street" => $street,
+        //     "birthday" => $birthday,
+        //     "cityId" => $cityId,
+        //     "userImg" => $userImg
+        // );
+
+        // $result["message"] = $test;
+        // echo json_encode($result);
 
 ?>

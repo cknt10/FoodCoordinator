@@ -36,7 +36,7 @@
     <label>Passwort bestätigen:</label>
     <input type="password" [(ngModel)]="passwordConfirm"><br>
     <label>Profilbild:</label>
-    <input type="file"><br>
+    <img [src]= "picture"><br>
   </div>
   <button id="safe" mat-raised-button routerLink="/userManagement" (click)="safe()">Ändern</button>
 </div>

@@ -174,27 +174,25 @@ return this.premiumModels;
 }
 
 //////////////////////////////////////set premium //////////////////////////////////////////////////////////////////
-async setPremium (user: User): Promise<User>{
+async setPremium (user: User): Promise<string>{
 
   let values = {
     'premiumId': user.getPremiumUser().getPremiumModel().getId(),
     'userId': user.getId(),
-    'premiumPaket': user.getPremiumUser().getPremiumModel().getDescription(),
     'paymentMethode': user.getPremiumUser().getPaymentMethodId(),
     'date': this.date()
   }
 
   const requestLink = this.constant.backendBaseURL + 'api/backend/user/setpremium.php'
+let message: string ='';
+  await  this.http.post<string>(requestLink, values).toPromise().then((data: string) => {
 
-  await  this.http.post<Premium>(requestLink, values).toPromise().then((data: Premium) => {
-
-     this.premiumUser.getPremiumUser().setPremium(data['premium']);
  })
  .catch((error) => {
    this.handleErrorPremiumModel(error);
  });
  console.log
- return this.premiumUser;
+ return message;
  }
   ///////////////////////////////////////method to handle error for gift//////////////////////////////////////////////////////////////////
   handleErrorGift(error: Response) {
