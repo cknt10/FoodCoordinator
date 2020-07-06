@@ -3,10 +3,11 @@ import { Recipe } from 'src/app/recipe';
 import { ActivatedRoute } from '@angular/router';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
-import { AuthenticationService } from './../../authentication.service';
+import { AuthenticationService } from '../../authentication.service';
 
 import { Ingredient } from 'src/app/ingredient';
 import { Ratings } from 'src/app/ratings';
+import { Nutrient } from 'src/app/nutrient';
 
 @Component({
   selector: 'app-recipe-details',
@@ -16,6 +17,8 @@ import { Ratings } from 'src/app/ratings';
 export class RecipeDetailsComponent implements OnInit {
   recipe: Recipe;
   ingredients: Ingredient[] = [];
+  nutrients: Nutrient[] = [];
+  nut: Nutrient[][] = [];
   ratings: Ratings[] = [];
 
   constructor(
@@ -29,6 +32,7 @@ export class RecipeDetailsComponent implements OnInit {
 
     console.log(this.ingredients);
     console.log(this.ratings);
+    console.log(this.getNutrient());
   }
 
   async getRecipe(): Promise<Recipe> {
@@ -55,4 +59,18 @@ export class RecipeDetailsComponent implements OnInit {
     console.log(this.recipeAdministrationReqService.getErrorMessage());
     //window.alert(this.error);
   }
+
+  getNutrient(){
+
+    let count: number;
+    this.ingredients.forEach((value) => {
+      if(value.nutrients != null){
+        this.nut[count] = value.nutrients;
+      }
+    });
+    console.log(this.nut);
+  }
+
+
+
 }

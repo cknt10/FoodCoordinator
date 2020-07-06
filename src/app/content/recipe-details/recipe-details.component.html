@@ -4,24 +4,31 @@
       <p id="titleText">{{ recipe.getTitle() }}</p>
     </div>
     <div class="leftInner">
-    <div id="ingredients">
-      <p>Zutaten</p>
-      <div *ngFor="let ingredient of ingredients">
-        <!--die getter Funktionen bereiten Schwierigkeiten, es wird nichts angezeigt
+      <div id="ingredients">
+        <p>Zutaten</p>
+        <div *ngFor="let ingredient of ingredients">
+          <!--die getter Funktionen bereiten Schwierigkeiten, es wird nichts angezeigt
         wenn ich direkt auf das attribut zugreife (was ja nicht erlaubt ist, zeigt es alles an-->
-      <p>{{ ingredient.amount }} {{ ingredient.unit}} {{ ingredient.description}}</p>
+          <p>
+            {{ ingredient.amount }} {{ ingredient.unit }}
+            {{ ingredient.description }}
+          </p>
+        </div>
+        
+      </div>
+      <div *ngFor="let ingredient of ingredients">
+        <div *ngFor="let nutrient of ingredient.nutrients">
+              <p>
+                {{ nutrient.amount }} {{ nutrient.unit }} {{ nutrient.description }} 
+              </p>
+        </div>
+      </div>
+      
+      <div id="duration">
+        <p>{{ recipe.getDuration() }}</p>
+      </div>
     </div>
-    <!--<div *ifngFor='userIsPremium === true' *ngFor="let nutirent of speziNutrients">
-      die getter Funktionen bereiten Schwierigkeiten, es wird nichts angezeigt
-      wenn ich direkt auf das attribut zugreife (was ja nicht erlaubt ist, zeigt es alles an
-    <p>{{ nutrients.amount }} {{ nutrients.unit}} {{ nutrients.description}}</p>
-  </div>-->
   </div>
-    <div id="duration">
-      <p>{{ recipe.getDuration() }}</p>
-    </div>
-  </div>
-</div>
   <div class="middle">
     <div id="servings">
       <p>Anzahl Portionen: {{ recipe.getServings() }}</p>
@@ -37,7 +44,7 @@
       <div *ngFor="let rating of ratings">
         <div class="comments">
           <!--Hier dasselbe Problem wie bei ingredients-->
-          {{rating.comment}}
+          {{ rating.comment }}
         </div>
       </div>
     </div>
