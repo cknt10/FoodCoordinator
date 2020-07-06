@@ -1,0 +1,42 @@
+<div class="container">
+  <div id="left">
+    <label>Vorname:</label>
+    <input type="text" [(ngModel)]="firstname" value={{firstname}}><br>
+    <label>Nachname:</label>
+    <input type="text" [(ngModel)]="name" value={{this.user.getName()}}><br>
+    <label>Geschlecht:</label>
+      <div id="geschlechter">
+      <input type="radio" value="m" name="gender" [(ngModel)]="gender" >
+        <label for="male">m</label>
+      <input type="radio" value="f" name="gender" [(ngModel)]="gender" >
+        <label for="female">w</label>
+      <input type="radio" value="d" name="gender" [(ngModel)]="gender" >
+        <label for="divers">d</label>
+      </div>
+    <label>Straße:</label>
+    <input type="text" [(ngModel)]="street" value="{{user.getStreet()}}"><br>
+    <label>Hausnummer:</label>
+    <input type="text" [(ngModel)]="houseNumber" value="{{user.getHouseNumber()}}"><br>
+    <label>Postleitzahl</label>
+    <input type="text" [(ngModel)]="postalCode" value="{{user.getPostalcode()}}"><br>
+    <label>Wohnort:</label>
+    <input type="text" [(ngModel)]="city" value="{{user.getCity()}}"><br>
+  </div>
+  <div id="right">
+    <label>Geburtstag:</label>
+    <input type="date" [(ngModel)]="birthday" value="{{user.getBirthday()}}"><br>
+    <label>Benutzername:</label>
+    <input type="text" [(ngModel)]="username" value="{{user.getUsername()}}"><br>
+    <label>Email- Adresse:</label>
+    <input type="text" [(ngModel)]="email" value="{{user.getEmail()}}"><br>
+    <label>Email- Adresse bestätigen:</label>
+    <input type="text" [(ngModel)]="emailConfirm" ><br>
+    <label>Passwort:</label>
+    <input type="password" [(ngModel)]="password" ><br>
+    <label>Passwort bestätigen:</label>
+    <input type="password" [(ngModel)]="passwordConfirm"><br>
+    <label>Profilbild:</label>
+    <input type="file"><br>
+  </div>
+  <button id="safe" mat-raised-button routerLink="/userManagement" (click)="safe()">Ändern</button>
+</div>

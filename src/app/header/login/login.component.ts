@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../authentication.service';
+import { PremiumReqService } from '../../premium-req.service';
 import { LoginReqService } from 'src/app/login-req.service';
 import { Router } from '@angular/router';
 import { User } from 'src/app/User';
@@ -12,12 +13,12 @@ import { User } from 'src/app/User';
 export class LoginComponent implements OnInit {
   username: string;
   password: string;
-  loggedIn: boolean = false;
-  log: string = "Login";
+  user: User;
 
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
+    private premiumReqService: PremiumReqService,
     ) { }
 
   ngOnInit(): void {
@@ -28,21 +29,18 @@ export class LoginComponent implements OnInit {
   async loginUser(){
     console.log('start logging...');
     //add parameter username and password
-    console.log((await this.authenticationService.readUserData(this.username, this.password)));
-
-    this.loggedIn = true;
-
-    if (this.loggedIn){
-      this.log = "Logout";
+  await this.authenticationService.readUserData(this.username, this.password).then((user: User) =>{
+    this.user = user;
+  });
+    if(this.user.getIsPremium()){
+      this.authenticationService.getUser();
     }
-    else{
-      this.log = "Login";
-    }
+    this.router.navigate(['content']);
   }
 
-goBack(){
-  this.router.navigate(['content']);
-}
+  goBack(){
+    this.router.navigate(['content']);
+  }
 
   throwError() {
     console.log(this.authenticationService.getErrorMessage());

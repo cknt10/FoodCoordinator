@@ -6,6 +6,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from './User';
 import { Recipe } from './recipe';
 import { Gift } from './gift';
+import { PremiumModel } from './premiumModel';
+import {AuthenticationService} from '././authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,29 +16,23 @@ export class PremiumReqService {
   private errorValue: string;
   private gift: Gift[];
   private favouriteRecipe: Recipe[] = [];
+  private premiumModels: PremiumModel[] = [];
   private premiumUser: User = null;
 
   constructor(
     private http: HttpClient,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private authenticationService: AuthenticationService
   ) {}
 
+  /////////////////////////////////errror Message to display on user///////////////////////
   getErrorMessage() {
     return this.errorValue;
   }
 
-  getPremiumUser(){
-    return this.premiumUser;
-  }
-
-  /////////////////////save premium user after login////////////////////////
-  getServerPremiumUser(user: any): User {
-    this.premiumUser = new User (user);
-    return this.premiumUser;
-  }
-
-  redeemGift(gift: string) {
-    let params = new HttpParams().set('gift', this.premiumUser.getId().toString());
+  ////////////////////////////HTTP-Request to redeem gift/////////////////////////////////
+  redeemGift(gift: string, premium: User) {
+    let params = new HttpParams().set('gift', premium.getId().toString());
 
     //console.log(params);
 
@@ -50,7 +46,8 @@ export class PremiumReqService {
     );
   }
 
-  Date(): string {
+  /////////////////////////////get current day and time//////////////////////////////////////////////////////
+  date(): string {
     let startDay: string;
     startDay = this.datePipe.transform(new Date(), 'yyyy-MM-dd  HH:mm:ss');
     return startDay;
@@ -155,7 +152,42 @@ export class PremiumReqService {
         .toPromise()
     );
   }
+///////////////////////////////////////get premium modells from database//////////////////////////////////////////////////////////////////
+ async getPremium(): Promise<PremiumModel[]>{
 
+ await  this.http.get<PremiumModel[]>('http://xcsd.ddns.net/api/backend/order/premium.php').toPromise().then((data: PremiumModel[]) => {
+//console.log(data);
+  data['premium'].forEach((value: PremiumModel) => {
+    this.premiumModels.push(new PremiumModel(value));
+  });
+})
+.catch((error) => {
+  this.handleErrorPremiumModel(error);
+});
+//console.log(this.premiumModels);
+return this.premiumModels;
+}
+
+//////////////////////////////////////set premium //////////////////////////////////////////////////////////////////
+async setPremium(premium: PremiumModel, user: User): Promise<PremiumModel[]>{
+
+  /*let values = {
+    'premiumId': premium.getId().toString(),
+    'userId':
+  }*/
+
+  await  this.http.get<PremiumModel[]>('xcsd.ddns.net/api/backend/user/setpremium.php').toPromise().then((data: PremiumModel[]) => {
+
+   data['premium'].forEach((value: PremiumModel) => {
+     this.premiumModels.push(new PremiumModel(value));
+   });
+ })
+ .catch((error) => {
+   this.handleErrorPremiumModel(error);
+ });
+ console.log
+ return this.premiumModels;
+ }
   ///////////////////////////////////////method to handle error for gift//////////////////////////////////////////////////////////////////
   handleErrorGift(error: Response) {
     if (error instanceof ErrorEvent) {
@@ -167,10 +199,10 @@ export class PremiumReqService {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
       if (error.status === 403) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, das Geschenk kann nicht ausgestellt werden`;
+        this.errorValue = `Es tut uns leid, das Geschenk kann nicht ausgestellt werden`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, das Geschenk wurde nicht gefunden`;
+        this.errorValue = `Es tut uns leid, das Geschenk wurde nicht gefunden`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
@@ -190,10 +222,10 @@ export class PremiumReqService {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
       if (error.status === 403) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, unerwarter Fehler `;
+        this.errorValue = `Es tut uns leid,  unerwarter Fehler `;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, die Rezepte wurden nicht gefunden`;
+        this.errorValue = `Es tut uns leid,  die Rezepte wurden nicht gefunden`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
@@ -213,10 +245,33 @@ export class PremiumReqService {
         this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
       }
       if (error.status === 403) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, das Rezept kann nicht hinzugefügt werden`;
+        this.errorValue = `Es tut uns leid, das Rezept kann nicht hinzugefügt werden`;
       }
       if (error.status === 404) {
-        this.errorValue = `Es tut uns leid, ${this.premiumUser.getUsername()}, die Rezept wurde nicht gefunden`;
+        this.errorValue = `Es tut uns leid, die Rezept wurde nicht gefunden`;
+      }
+      if (error.status === 500) {
+        this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;
+      }
+    }
+    return this.errorValue;
+  }
+
+    ///////////////////////////////////////method to handle error for get premium modells//////////////////////////////////////////////////////////////////
+  handleErrorPremiumModel(error: Response) {
+    if (error instanceof ErrorEvent) {
+      // Client-side errors
+      this.errorValue = `Unerwarteter Fehler. Bitte versuchen Sie später noch Mal.`;
+    } else {
+      // Server-side errors
+      if (error.status === 401) {
+        this.errorValue = `Die Verbindung zum Server kann nicht aufgebaut werden`;
+      }
+      if (error.status === 403) {
+        this.errorValue = `Leider haben haben Sie kein Zugriff auf die Premium Modelle`;
+      }
+      if (error.status === 404) {
+        this.errorValue = `Leider wurden keine Premium Modelle gefunden`;
       }
       if (error.status === 500) {
         this.errorValue = `Die Verbindung zum Server ist fehlgeschlagen`;

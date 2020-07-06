@@ -5,7 +5,7 @@ import { Ratings } from './ratings';
 export class Recipe {
   private id: number;
   private title: string;
-  private picture: File;
+  private picture: string;
   private servings: number;
   private description: string;
   private instruction: string;
@@ -47,7 +47,7 @@ export class Recipe {
     return this.title;
   }
 
-  getPicture(): File {
+  getPicture(): string {
     return this.picture;
   }
 
@@ -115,7 +115,7 @@ export class Recipe {
     this.title = title;
   }
 
-  setPicture(picture: File) {
+  setPicture(picture: string) {
      this.picture = picture;
   }
 

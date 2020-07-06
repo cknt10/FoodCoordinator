@@ -1,64 +1,62 @@
 import { Nutrient } from './nutrient';
 
 export class Ingredient {
-   private id: number;
-   private description: string;
-    private amount: number;
-    private unit: string;
-    private nutrients: Nutrient[];
+  public id: number;
+  public description: string;
+  public amount: number;
+  public unit: string;
+  public nutrients: Nutrient[];
 
+  constructor(
+    id: number,
+    description: string,
+    amount: number,
+    unit: string,
+    nutrients?: Nutrient[]
+  ) {
+    this.id = id;
+    this.description = description;
+    this.amount = amount;
+    this.unit = unit;
+    this.nutrients = nutrients;
+  }
 
-    constructor(
-        id: number, 
-        description: string, 
-        amount: number,
-        unit: string, 
-        nutrients?: Nutrient[] 
-        ){
-        this.id  =id;
-        this.description = description;
-        this.amount = amount;
-        this.unit = unit;
-        this.nutrients = nutrients;
-    }
+  getId(): number {
+    return this.id;
+  }
 
+  getDescription(): string {
+    return this.description;
+  }
+  getAmount(): number {
+    return this.amount;
+  }
 
-    getId():number{
-        return this.id;
-    }
+  getUnit(): string {
+    return this.unit;
+  }
 
-    getDescription():string{
-        return this.description;
-    }
-    getAmount():number{
-        return this.amount;
-    }
+  getNutrients(): Nutrient[] {
+    return this.nutrients;
+  }
 
-    getUnit():string{
-        return this.unit;
-    }
+  setId(id: number) {
+    this.id = id;
+  }
 
-    getNutrients():Nutrient[]{
-        return this.nutrients;
-    }
+  setDescription(description: string) {
+    this.description = description;
+  }
 
-    setId(id: number){
-        this.id = id;
-    }
+  setAmount(amount: number) {
+    this.amount = amount;
+  }
 
-    setDescription(description: string){
-        this.description = description;
-    }
+  setUnit(unit: string) {
+    this.unit = unit;
+  }
 
-    setAmount(amount: number){
-        this.amount = amount;
-    }
-
-    setUnit(unit :string){
-        this.unit = unit;
-    }
-
-    setNutrients(nutrients: Nutrient){
-        this.nutrients.push(nutrients);
-    }
+  setNutrients(nutrients: Nutrient) {
+    this.nutrients.push(nutrients);
+  }
 }
