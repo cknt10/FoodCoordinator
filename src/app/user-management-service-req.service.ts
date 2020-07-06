@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 import { User } from './User';
-import {
-  HttpClient,
-  HttpParams,
-} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { AuthenticationService } from './authentication.service';
-import { timeStamp } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -29,36 +25,45 @@ getUserData(){
   }
 
   ///////////////////////////////////////////////////get user data with login and registration////////////////////////////////////////////////////////
-  async readUserData(
-    username: string,
-    password: string,
-    firstname: string,
-    name: string,
-    gender: string,
-    street: string,
-    houseNumber: string,
-    postcode: string,
-    city: string,
-    birthday: string,
-    email: string
+  async changeUserData(
+    id: number,
+    username: String,
+    password: String,
+    firstname: String,
+    name: String,
+    gender: String,
+    street: String,
+    houseNumber: String,
+    postalCode: number,
+    city: String,
+    birthday: Date,
+    email: String,
+    picture: String
   ): Promise<User> {
-    let params = new HttpParams()
-    .set('username', username)
-    .set('password', password)
-    .set('firstname', firstname)
-    .set('name', name)
-    .set('gender', gender)
-    .set('street', street)
-    .set('houseNumber', houseNumber)
-    .set('postcode', postcode)
-    .set('city', city)
-    .set('birthday', birthday)
-    .set('email', email);
+
+    let values={
+
+      'id': id,
+      'firstname': firstname,
+      'name': name,
+      'gender': gender,
+      'street': street,
+      'houseNumber': houseNumber,
+      'postalCode': postalCode,
+      'city': city,
+      'birthday': birthday,
+      'username': username,
+      'email': email,
+      'password': password,
+      'picture': picture
+
+    }
+
 
   const requestLink = 'http://xcsd.ddns.net/api/backend/login/usermanagment.php';
 
   await this.http
-    .get<User>(requestLink, { params: params })
+    .post<User>(requestLink, values)
     .toPromise().then((data: User) => {
       this.UserData = new User(data['user']);
       this.userAuthentication.setUser(this.UserData);

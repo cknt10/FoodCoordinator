@@ -10,6 +10,7 @@ import { User } from './User';
 import { Ratings } from './ratings';
 import { until } from 'protractor';
 import { Nutrient } from './nutrient';
+import { identifierModuleUrl } from '@angular/compiler';
 
 
 @Injectable({
@@ -91,13 +92,22 @@ export class RecipeAdministrationReqService {
   ): Promise<Recipe> {
 
     let modifiedIngredients: Object[] = [];
+    // ingredients.forEach((value, index) => {
+    //   modifiedIngredients[index] = new Object();
+    //   modifiedIngredients[index] = {
+    //     id: value.getId().toString(),
+    //     amount: value.getAmount().toString(),
+    //     unit: value.getUnit(),
+    //   };
+    // });
+
+    let ingr = new Array();
     ingredients.forEach((value, index) => {
-      modifiedIngredients[index] = new Object();
-      modifiedIngredients[index] = {
-        id: value.getId().toString(),
-        amount: value.getAmount().toString(),
-        unit: value.getUnit(),
-      };
+      ingr.push({
+        'id': value.getId(),
+        'amount': value.getAmount(),
+        'unit': value.getUnit()
+      })
     });
 
     console.log(modifiedIngredients);
@@ -106,6 +116,7 @@ export class RecipeAdministrationReqService {
     jsonFormat.myArray = JSON.stringify(modifiedIngredients);
     console.log(ingredients);
     console.log(jsonFormat.myArray);
+    console.log(this.convertRecipeKeywordsArray(keywords).join('|'));
 
       let values = {
         'title': title,
@@ -120,7 +131,7 @@ export class RecipeAdministrationReqService {
         'lastChange': 'null',
         'userId': userId.toString(),
         'keywords': this.convertRecipeKeywordsArray(keywords).join('|'),
-        'ingredients': JSON.stringify(modifiedIngredients)
+        'ingredients': ingr
       }
 
 
@@ -149,42 +160,46 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////Http-Request to change recipe///////////////////////////
-  getServerChangeRecipe(recipe: Recipe): Promise<Recipe> {
+  getServerChangeRecipe( title: string,
+    picture: string,
+    servings: number,
+    description: string,
+    instruction: string,
+    duration: number,
+    difficulty: string,
+    userId: number,
+    keywords: string[],
+    ingredients: Ingredient[]): Promise<Recipe> {
     console.log('server request with keywords');
 
-    let params = new HttpParams()
-      .set('id', recipe.getId().toString())
-      .set('title', recipe.getTitle())
-      .set('picture', recipe.getPicture().toString())
-      .set('servings', recipe.getServings().toString())
-      .set('description', recipe.getDescription())
-      .set('instruction', recipe.getInstruction())
-      .set('createionDate', recipe.getCreateionDate().toString())
-      .set('duration', recipe.getDuration().toString())
-      .set('difficulty', recipe.getDifficulty())
-      .set('certified', recipe.getCertified().toString())
-      .set('lastChangeDate', recipe.getLastChangeDate().toString())
-      .set('userId', recipe.getUserId().toString())
-      .set('keywords', this.convertRecipeKeywordsArray(recipe.getKeywords()).join('|') );
-
-      let modifiedIngredients: Object[] = [];
-    recipe.getIngredients().forEach((value, index) => {
-      modifiedIngredients[index] = new Object();
-      modifiedIngredients[index] = {
-        id: value.getId().toString(),
-        amount: value.getAmount().toString(),
-        unit: value.getUnit(),
-      };
+    let ingr = new Array();
+    ingredients.forEach((value, index) => {
+      ingr.push({
+        'id': value.getId(),
+        'amount': value.getAmount(),
+        'unit': value.getUnit()
+      })
     });
 
-    console.log(modifiedIngredients);
+    let values = {
+      //'id': id
+      'title': title,
+      'picture': picture,
+      'servings': servings.toString(),
+      'description': description,
+      'instruction': instruction,
+      'creationDate': this.date(),
+      'duration': duration.toString(),
+      'difficulty': difficulty,
+      'certified': '0',
+      'lastChange': this.date(),
+      'userId': userId.toString(),
+      'keywords': this.convertRecipeKeywordsArray(keywords).join('|'),
+      'ingredients': ingr
+    }
 
-    let jsonFormat: any = {};
-    jsonFormat.myArray = JSON.stringify(modifiedIngredients);
-    console.log(recipe.getIngredients());
-    console.log(jsonFormat.myArray);
 
-    params = params.append('ingredients', jsonFormat.myArray);
+
 
 
     //console.log(params);
@@ -196,7 +211,7 @@ export class RecipeAdministrationReqService {
 
     return (
       this.http
-        .get<Recipe>(requestLink, { params: params })
+        .post<Recipe>(requestLink, values)
         //.pipe(catchError(this.handleError))
         .toPromise()
     );
@@ -215,7 +230,7 @@ export class RecipeAdministrationReqService {
     keywords: string[],
     ingredients: Ingredient[]
   ): Promise<Recipe> {
-    console.log('hier sind wir');
+
     await this.getCreateRecipe(
       title,
       picture,
@@ -243,20 +258,20 @@ export class RecipeAdministrationReqService {
   }
 
   /////////////////////////////////////////////////save changed recipe from server response ///////////////////////////////////
-  async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
-    await this.getServerChangeRecipe(recipe)
-      .then((data: Recipe) => {
-        console.log(data['recipe']);
-        data['recipe'].forEach((value: Recipe) => {
-          this.userRecipes.push(new Recipe(value));
-        });
-      })
-      .catch((error) => {
-        this.handleErrorChangeRecipe(error);
-      });
-    console.log(this.userRecipe);
-    return this.userRecipe;
-  }
+  // async getChangeServerRecipe(recipe: Recipe): Promise<Recipe> {
+  //   await this.getServerChangeRecipe(recipe)
+  //     .then((data: Recipe) => {
+  //       console.log(data['recipe']);
+  //       data['recipe'].forEach((value: Recipe) => {
+  //         this.userRecipes.push(new Recipe(value));
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       this.handleErrorChangeRecipe(error);
+  //     });
+  //   console.log(this.userRecipe);
+  //   return this.userRecipe;
+  // }
 
   /////////////////////////////////convert keywords to their id///////////////////////////
   convertRecipeKeywordsArray(keywords: string[]): string[] {
