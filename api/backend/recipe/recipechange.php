@@ -167,85 +167,93 @@ $dummyarray['keywords'] = empty($keywordsFrontend) ? array() : $keywordsFrontend
 $recipeArray = array();
 $recipeArray["message"] = "";
 
-//Create Recipe
-$checkRecipeCreated = $recipe->createRecipe($dummyarray['title'], 
-                                            $dummyarray['picture'], 
-                                            $dummyarray['servings'], 
-                                            $dummyarray['description'], 
-                                            $dummyarray['instruction'],
-                                            $dummyarray['creationDate'],
-                                            $dummyarray['duration'],
-                                            $dummyarray['difficulty'],
-                                            $dummyarray['certified'],
-                                            $dummyarray['lastChange'],
-                                            $dummyarray['userId']);
+if($postdata === ''){
+    // set response code - 400
+    http_response_code(400);
+ 
+    $recipeArray["message"] = "Missing data";
+    echo json_encode($recipeArray);
+ }else{
 
-if(strcmp($checkRecipeCreated, "200")){
-    //get created recipe id
-    $recipeId = $recipe->fetchRecipe($dummyarray['creationDate'], $dummyarray['userId'], $dummyarray['lastChange']);
+    //Create Recipe
+    $checkRecipeCreated = $recipe->createRecipe($dummyarray['title'], 
+                                                $dummyarray['picture'], 
+                                                $dummyarray['servings'], 
+                                                $dummyarray['description'], 
+                                                $dummyarray['instruction'],
+                                                $dummyarray['creationDate'],
+                                                $dummyarray['duration'],
+                                                $dummyarray['difficulty'],
+                                                $dummyarray['certified'],
+                                                $dummyarray['lastChange'],
+                                                $dummyarray['userId']);
 
-    //Ingredient
-    //Insert recipe id to ingredients
-    for($_i = 0; $_i < count($dummyarray['ingredients']); $_i++){
-        $dummyarray['ingredients'][$_i]->r_id= strval($recipeId);
+    if(strcmp($checkRecipeCreated, "200")){
+        //get created recipe id
+        $recipeId = $recipe->fetchRecipe($dummyarray['creationDate'], $dummyarray['userId'], $dummyarray['lastChange']);
+
+        //Ingredient
+        //Insert recipe id to ingredients
+        for($_i = 0; $_i < count($dummyarray['ingredients']); $_i++){
+            $dummyarray['ingredients'][$_i]->r_id= strval($recipeId);
+        }
+
+        $checkIngredient = $ingredient->createIngredients($dummyarray['ingredients']);
+        if($checkIngredient === "200"){
+            //Keywords
+            $checkKeywords = $recipe->createKeywords($recipeId, $dummyarray['keywords']);
+            if($checkKeywords === "200"){
+                $recipeStatus = "200";
+            }else{
+                // set response code - 500
+                http_response_code(500);
+                
+                $recipeArray["message"] = "Cant create keywords";
+                echo json_encode($recipeArray);
+            }
+        }else{
+            // set response code - 500
+            http_response_code(500);
+
+            $recipeArray["message"] = "Cant create ingredient";
+            echo json_encode($recipeArray);
+        }
+    }else{
+        // set response code - 500
+        http_response_code(500);
+        
+        $recipeArray["message"] = "Cant create recipe";
+        echo json_encode($recipeArray);
     }
 
-    $checkIngredient = $ingredient->createIngredients($dummyarray['ingredients']);
-    if($checkIngredient === "200"){
-        //Keywords
-        $checkKeywords = $recipe->createKeywords($recipeId, $dummyarray['keywords']);
-        if($checkKeywords === "200"){
-            $recipeStatus = "200";
+
+    //Start overwrite 
+    $overwriteResult = overwriteRecipeId($oldRecipeId,$recipeId, $db);
+    if($overwriteResult === "200"){
+        //Drop old id
+        $dropResult = dropOldRecipe($oldRecipeId, $db);
+        if($dropResult === "200"){
+            // set response code - 200
+            http_response_code(200);
+
+            $recipeArray["message"] = "Recipe changed";
+            echo json_encode($recipeArray);
         }else{
             // set response code - 500
             http_response_code(500);
             
-            $recipeArray["message"] = "Cant create keywords";
+            $recipeArray["message"] = "Cant drop old recipe";
             echo json_encode($recipeArray);
         }
     }else{
         // set response code - 500
         http_response_code(500);
 
-        $recipeArray["message"] = "Cant create ingredient";
+        $recipeArray["message"] = "Cant overwrite recipe connection";
         echo json_encode($recipeArray);
     }
-}else{
-    // set response code - 500
-    http_response_code(500);
-    
-    $recipeArray["message"] = "Cant create recipe";
-    echo json_encode($recipeArray);
-}
 
-
-//Start overwrite 
-$overwriteResult = overwriteRecipeId($oldRecipeId,$recipeId, $db);
-if($overwriteResult === "200"){
-    //Drop old id
-    $dropResult = dropOldRecipe($oldRecipeId, $db);
-    if($dropResult === "200"){
-        // set response code - 200
-        http_response_code(200);
-
-        $recipeArray["message"] = "Recipe changed";
-        echo json_encode($recipeArray);
-    }else{
-        // set response code - 500
-        http_response_code(500);
-        
-        $recipeArray["message"] = "Cant drop old recipe";
-        echo json_encode($recipeArray);
-    }
-}else{
-    // set response code - 500
-    http_response_code(500);
-
-    $recipeArray["message"] = "Cant overwrite recipe connection";
-    echo json_encode($recipeArray);
-}
-
-
+ }
 
 
 
