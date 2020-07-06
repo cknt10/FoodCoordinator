@@ -74,7 +74,10 @@ class RegUser{
      */
     private $loggedin;
 
-
+    /**
+     * @var string
+     */
+    private $picture;
 
 
     // constructor with $db as database connection
@@ -407,7 +410,29 @@ class RegUser{
         return $this;
     }
 
+    /**
+     * Get the value of image
+     *
+     * @return  bool
+     */
+    public function getImage()
+    {
+        return $this->picture;
+    }
 
+    /**
+     * Set the value of image
+     *
+     * @param  bool  $_image
+     *
+     * @return  self
+     */
+    public function setImage($_picture)
+    {
+        $this->picture = $_picture;
+
+        return $this;
+    }
 
 
     /**
@@ -477,7 +502,7 @@ class RegUser{
         $_query = "";
 
         // select all query
-        if($_cityId){
+        if($_cityId != null){
             $_query = "SELECT * FROM cities WHERE C_ID = :C_ID";
 
             // prepare query statement
@@ -529,7 +554,12 @@ class RegUser{
                     $this->cityId = $C_ID;
                     $_result = true;
                 }
-
+                if($_cityId != null){
+                    $this->postcode = $PostalCode;
+                    $this->location = $City;
+                    $this->cityId = $C_ID;
+                    $_result = true;
+                }
             }
         }
 
@@ -660,6 +690,7 @@ class RegUser{
                 $this->street = $Street;
                 $this->password = $Password;
                 $this->cityId = $C_ID;
+                $this->picture = $U_Img;
             }
 
             $this->checkLocation("", "", $this->cityId);
@@ -873,6 +904,7 @@ class RegUser{
           "birthday" => $this->birthday,
           "postcode" => $this->postcode,
           "location" => $this->location,
+          "image" => $this->picture,
           "orders" => empty($this->orders) ? null : $this->orders,
           "recipes" => empty($this->recipes) ? null : $this->recipes,
         );

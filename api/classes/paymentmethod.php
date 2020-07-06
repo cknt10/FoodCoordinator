@@ -167,11 +167,9 @@ class PaymentMethod{
     public function getObjectAsArray()
     {
         return array(
-            // "id" => $this->_id,
-            // "amount" => $this->_amount,
-            // "unit" => $this->_unit,
-            // "description" => $this->_description,
-            // "nutrients" => empty($this->_nutrients) ? null : $this->_nutrients, 
+            "id" => $this->id,
+            "description" => $this->description,
+            "paymentMeans" => empty($this->paymentMeans) ? null : $this->paymentMeans,
           );
     }
 }

@@ -323,10 +323,10 @@ class Ingredient{
 
             //bind params
             for($_i=0; $_i<count($_multiarray); $_i++){
-                $_stmt->bindParam(":F_ID".strval($_i), $_multiarray[$_i]['f_id']);
-                $_stmt->bindParam(":Amount".strval($_i), $_multiarray[$_i]['amount']);
-                $_stmt->bindParam(":Unit".strval($_i), $_multiarray[$_i]['unit']);
-                $_stmt->bindParam(":R_ID".strval($_i), $_multiarray[$_i]['r_id']);
+                $_stmt->bindParam(":F_ID".strval($_i), $_multiarray[$_i]->id);
+                $_stmt->bindParam(":Amount".strval($_i), $_multiarray[$_i]->amount);
+                $_stmt->bindParam(":Unit".strval($_i), $_multiarray[$_i]->unit);
+                $_stmt->bindParam(":R_ID".strval($_i), $_multiarray[$_i]->r_id);
             }     
 
                                                          

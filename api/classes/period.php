@@ -2,6 +2,10 @@
 
 class Period{
     /**
+     * @var PDO
+     */
+    private $conn;
+    /**
      * @var int
      */
     private $duration;
@@ -14,6 +18,16 @@ class Period{
     public function __construct($duration = 0, $unit = ""){
         $this->duration = $duration;
         $this->unit = $unit;
+    }
+
+    /**
+     * creates connection in class to database
+     *
+     * @param $conn PDO
+     */
+    public function connection($_conn)
+    {
+        $this->conn = $_conn;
     }
 
     /**
@@ -62,6 +76,19 @@ class Period{
         $this->unit = $unit;
 
         return $this;
+    }
+
+        /**
+     * Get this Object as Array for JSON import
+     *
+     * @return array
+     */
+    public function getObjectAsArray()
+    {
+        return array(
+            "duration" => $this->duration,
+            "unit" => $this->unit,
+          );
     }
 }
 
