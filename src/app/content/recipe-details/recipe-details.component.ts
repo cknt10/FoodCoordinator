@@ -5,6 +5,9 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
 import { Location } from '@angular/common';
 import { Ingredient } from 'src/app/ingredient';
 import { Ratings } from 'src/app/ratings';
+import { AuthenticationService } from 'src/app/authentication.service';
+import { User } from 'src/app/User';
+import { Nutrient } from 'src/app/nutrient';
 
 @Component({
   selector: 'app-recipe-details',
@@ -14,28 +17,35 @@ import { Ratings } from 'src/app/ratings';
 export class RecipeDetailsComponent implements OnInit {
   recipe: Recipe;
   spezingredients: Ingredient[] = [];
+  speziNutrients: Nutrient[][] = [];
   ratings: Ratings[] = [];
 
   amount: number[]=[];
   unit: string[]=[];
   description: string[]=[];
 
+  userIsPremium: boolean = false;
+
   constructor(
     private route: ActivatedRoute,
     private recipeAdministrationReqService: RecipeAdministrationReqService,
-    private location: Location
+    private location: Location, 
+    private authenticationService: AuthenticationService
   ) { }
 
   async ngOnInit() {
     await this.getRecipe();
     this.spezingredients=this.recipe.getIngredients();
     console.log(this.spezingredients);
+
     /*this.setIngredients();
     this.setRatings();*/
+
   }
 
   async getRecipe(): Promise<Recipe> {
     const id = +this.route.snapshot.paramMap.get('id');
+    this.isPremium();
     await this.recipeAdministrationReqService.getServerRecipeDetails(id).then ((data: Recipe) => {
       this.recipe = data;
     })
@@ -62,5 +72,13 @@ export class RecipeDetailsComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
+  }
+
+  isPremium():boolean{
+    if(this.authenticationService.getUser() != null){
+    return this.userIsPremium = this.authenticationService.getUser().getIsPremium();
+    }else{
+      return this.userIsPremium;
+    }
   }
 }
