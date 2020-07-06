@@ -184,7 +184,7 @@ export class RecipeAdministrationReqService {
     difficulty: string,
     userId: number,
     keywords: string[],
-    ingredients: Ingredient[]): Promise<Recipe> {
+    ingredients: Ingredient[]): Promise<string> {
     console.log('server request with keywords');
 
     let ingr = new Array();
@@ -217,12 +217,28 @@ export class RecipeAdministrationReqService {
 
     const requestLink = this.constant.backendBaseURL + 'api/backend/recipe/recipechange.php';
 
+    let message: string;
+
     console.log('request finished');
 
-    return (this.http
-    .post<Recipe>(requestLink, values)
-    //.pipe(catchError(this.handleError))
-    .toPromise())
+    await (
+      this.http
+        .post<string>(requestLink, values)
+        //.pipe(catchError(this.handleError))
+        .toPromise()
+    )  .then((data: any) => {
+      message = data['message'];
+      if(message === 'Recipe changed'){
+        message = 'Rezept wurde erfolgreich verändert!';
+      }else{
+        message = 'Rezept konnte nicht verändert werden!'
+      }
+      })
+    .catch((error) => {
+      this.handleErrorRecipeDetails(error);
+    });
+
+    return message;
   }
 
 

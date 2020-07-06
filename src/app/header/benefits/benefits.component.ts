@@ -10,8 +10,8 @@ import { PremiumModel } from '../../PremiumModel'
 })
 export class BenefitsComponent implements OnInit {
 
-  checkStatus: boolean = false;
-  premium: PremiumModel[] = [];
+  private checkStatus: boolean = false;
+  private premium: PremiumModel[] = [];
 
   constructor(
     private premiumReqService: PremiumReqService,
@@ -32,15 +32,16 @@ export class BenefitsComponent implements OnInit {
   }
 
 
-  async getPremiumPackages(){
+  async getPremiumPackages(): Promise<PremiumModel[]>{
     if(this.checkPremiumStatus()){ 
      await this.premiumReqService.getPremium().then((data) => {
+
         this.premium = data;
         
        })
-       
+
     }
-    
+    return this.premium;
   }
   }
 
