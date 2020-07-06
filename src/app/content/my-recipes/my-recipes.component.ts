@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
 import { RecipeAdministrationReqService } from '../../recipe-administration-req.service';
-import {PremiumReqService} from '../../premium-req.service'
+import { PremiumReqService } from '../../premium-req.service'
 import { Recipe } from 'src/app/recipe';
 
 @Component({
@@ -16,7 +16,8 @@ export class MyRecipesComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private recipeAdministrationService: RecipeAdministrationReqService,
-    private premiumReqService: PremiumReqService
+    private premiumReqService: PremiumReqService,
+    private router: Router,
   ) { }
 
   async ngOnInit() {

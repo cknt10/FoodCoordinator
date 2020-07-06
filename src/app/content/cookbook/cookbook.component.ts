@@ -7,7 +7,7 @@ import { CookbookFormat } from 'src/app/cookbookFormat';
 @Component({
   selector: 'app-cookbook',
   templateUrl: './cookbook.component.html',
-  styleUrls: ['./cookbook.component.css']
+  styleUrls: ['./cookbook.component.scss']
 })
 
 export class CookbookComponent implements OnInit {

@@ -49,10 +49,11 @@ import { ChangeRecipeComponent } from './content/change-recipe/change-recipe.com
     MyRecipesComponent,
     RecipeDetailsComponent,
     UserManagementComponent,
-    CookbookComponent,
     ChangeRecipeComponent,
+    CookbookComponent,
 
   ],
+
   imports: [
     MatSelectModule,
     FormsModule,
@@ -77,6 +78,7 @@ import { ChangeRecipeComponent } from './content/change-recipe/change-recipe.com
       { path: 'detail/:id', component: RecipeDetailsComponent },
       { path: 'datenschutz', component: DatenschutzComponent },
       { path: 'cookbook', component: CookbookComponent },
+      { path: 'change/:id', component: ChangeRecipeComponent },
       { path: 'account', component: UserManagementComponent },
     ]),
   ],
