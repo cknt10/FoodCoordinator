@@ -5,7 +5,6 @@ import { Recipe } from 'src/app/recipe';
 
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 import { Ratings } from 'src/app/ratings';
-import { count } from 'rxjs/operators';
 
 @Component({
   selector: 'app-search',

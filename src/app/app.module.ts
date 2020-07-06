@@ -60,6 +60,7 @@ import { CookbookComponent } from './content/cookbook/cookbook.component';
     MatMenuModule,
     RouterModule.forRoot([
       { path: '',   redirectTo: '/content', pathMatch: 'full' },
+      { path: '**',   redirectTo: '/content'},
       { path: 'content', component: ContentComponent },
       { path: 'login', component: LoginComponent },
       { path: 'reg', component: RegComponent },
