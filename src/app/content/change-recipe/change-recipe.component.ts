@@ -17,8 +17,8 @@ import { SearchParameter } from 'src/app/searchParameter';
 
 export class ChangeRecipeComponent implements OnInit {
   recipe: Recipe;
-  title: String;
-  difficulty: String;
+  title: string;
+  difficulty: string;
   difficultyOptions: String[] = [];
   shortDescription: String;
   keyword: string;
@@ -31,8 +31,8 @@ export class ChangeRecipeComponent implements OnInit {
   ingredients: Ingredient[] = [];
   description: string;
   duration: any;
-  servings: Number;
-  instruction: String;
+  servings: number;
+  instruction: string;
   allParamsOfIngredient: Ingredient;
   imageUrl: String;
   fileToUpload: File = null;
@@ -40,6 +40,7 @@ export class ChangeRecipeComponent implements OnInit {
 
   drop = new FormControl();
   dro = new FormControl();
+  authenticationService: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -131,7 +132,6 @@ export class ChangeRecipeComponent implements OnInit {
       this.description = null;
       this.amount = null;
       this.unit = null;
-
       this.ingredients.push(this.allParamsOfIngredient);
       console.log(this.ingredients);
       this.allParamsOfIngredient = null;
@@ -141,31 +141,31 @@ export class ChangeRecipeComponent implements OnInit {
     }
   }
 
-////piss dich alla
-/*
-  addIngredient(){
-    console.log(this.ingredients);
-    this.ingredient.setDescription(this.description);
-      this.ingredient.setAmount(this.amount);
-      console.log(this.amount);
-      this.ingredient.setUnit(this.unit);
-      this.ingredients.push(this.ingredient);
-    if (!this.ingredients.includes(this.ingredient)){
-
-    }
-    else{
-      window.alert('Diese Zutat existiert bereits in diesem Rezept');
-    }
-    this.amount = null;
-    this.ingredient = null;
-    console.log(this.ingredients);
-  }
-*/
   removeIngredient(i: number){
     this.ingredients.splice(i, 1);
   }
 
-  changeRecipe(){
-
+  async changeRecipe(){
+    this.addIngredient();
+    this.addKeyword();
+    if(this.title != null && this.difficulty != null && this.shortDescription != null && this.duration != null && this.servings != null && this.description != null){
+      console.log(await this.recipeAdministrationReqService.getServerChangeRecipe(
+        this.recipe.getId(),
+        this.title,
+        this.picture,
+        this.servings,
+        this.description,
+        this.instruction,
+        this.duration,
+        this.difficulty,
+        this.authenticationService.getUser().getId(), //ein wenig geschummelt (siehe oben in der Deklaration)
+        this.keywords,
+        this.ingredients)); //Bitte füge eine Zutat hinzu?? Kann evtl nicht an das Edresultat weitergegeben werden??
+    }
+    else{
+      window.alert('Bitte füllen sie alle Felder aus.');
+    }
+    this.picture = null;
+    this.imageUrl="/assets/ich.jpg";
   }
 }

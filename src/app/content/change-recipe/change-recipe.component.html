@@ -1,12 +1,5 @@
 <div class="workspace" *ngIf="recipe">
-  <button
-    class="create"
-    mat-raised-button
-    (click)="changeRecipe()"
-    [disabled]="Image.value == ''"
-  >
-    Speichern
-  </button>
+  <button class="create" mat-raised-button (click)="changeRecipe()">Speichern</button>
   <div class="workspace">
     <div class="left">
       <label for="title">Titel:</label><br />
