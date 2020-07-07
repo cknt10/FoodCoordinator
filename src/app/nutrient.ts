@@ -1,4 +1,4 @@
-export interface Nutrient{
+export class Nutrient{
     id: number;
     description: string;
     unit: string;

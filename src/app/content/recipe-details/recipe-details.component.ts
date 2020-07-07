@@ -28,7 +28,11 @@ export class RecipeDetailsComponent implements OnInit {
 
   async ngOnInit() {
     await this.getRecipe();
+
     this.getNutrients();
+
+console.log(this.nutrients);
+
     console.log(this.countAmount());
 
   }
@@ -73,51 +77,51 @@ export class RecipeDetailsComponent implements OnInit {
   }
 
   countAmount() {
-   
 
 
-    let desc: Nutrient[] = this.nutrients;
 
-    //console.log(desc);
+    var desc: Nutrient[]=[];
+      //Zuweisung über nimmt hier die this.nutrients
 
-    /* sortiere nach Beschreibung */
-    desc.sort(this.compare);
 
-    //console.log(desc);
-    /* sortiere nach Beschreibung */
 
-    for (var i = 0; i <= desc.length -1; i++) {
+
+     /* initialisiere amount 0 */
+    for (var i = 0; i <= this.nutrients.length -1; i++) {
+      desc[i]=new Nutrient();
+      desc[i].id = this.nutrients[i].id;
       desc[i].amount = 0;
-
+      desc[i].description = this.nutrients[i].description;
+      desc[i].unit = this.nutrients[i].unit;
       }
 
+
+          /* sortiere nach Beschreibung */
+    desc.sort(this.compare);
+
+
+      /* filtere redundante Einträge */
     desc =  desc.filter(
       (value, index) =>desc.findIndex(t => t.id === value.id) === index
     );
 
+    // this.nutrients.forEach((value, index) =>{
+    //   desc.forEach((amount, i) =>{
+    //     if(value.description === amount.description){
+    //       desc[i].amount = amount.amount + value.amount;
+    //     }
+    //   })
+    // })
 
-    for(let i: number = 0; i<= this.nutrients.length-1; i++){
-      console.log(this.nutrients[i].amount);
-    }
-
-    this.nutrients.forEach((value, index) =>{
-      desc.forEach((amount, i) =>{
-        if(value.description === amount.description){
-          desc[i].amount = amount.amount + value.amount;
+    for (var i = 0; i <= desc.length -1; i++) {
+      for (var j = 0; j <= this.nutrients.length -1; j++) {
+        if(desc[i].description===this.nutrients[j].description){
+          desc[i].amount+=this.nutrients[j].amount;
         }
-      })
-    })
 
-    console.log(desc);
-
-    for (var i = 0; (i = desc.length); i++) {
-      for (var j = 0; (j = this.nutrients.length); j++) {
-        if (desc[i].description === this.nutrients[i].description) {
-          desc[i].amount += this.nutrients[i].amount;
-        }
       }
-    }
-    console.log(desc);
+      }
+
     return desc;
   }
 
@@ -130,4 +134,5 @@ export class RecipeDetailsComponent implements OnInit {
     }
     return 0;
   }
+
 }
