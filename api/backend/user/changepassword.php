@@ -14,6 +14,8 @@ $db = $database->connection();
 $user = new RegUser();
 $user->connection($db);
 
+$error = false;
+
 //Userdata from frontend
 $postdata = file_get_contents("php://input");
 // Extract the data.
@@ -30,8 +32,11 @@ $result["user"] = array();
 $userId = trim($userData->id);
 $password = trim($userData->password);
 
+if($userId === "" && $password === ""){
+    $error = true;
+}
 
-if($userId != "" && $password != ""){
+if(!$error){
     $result["user"] = $user->changePassword($userId, $password);
     
     if($result["user"] === "200"){
