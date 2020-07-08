@@ -63,12 +63,13 @@ getUserData(){
     }
 
 
-    const requestLink = this.constant.backendBaseURL + 'api/backend/login/usermanagment.php';
+    const requestLink = this.constant.backendBaseURL + 'api/backend/user/usermanagment.php';
 
   await this.http
     .post<User>(requestLink, values)
     .toPromise().then((data: User) => {
       this.UserData = new User(data['user']);
+      console.log(data['message']);
       this.userAuthentication.setUser(this.UserData);
     })
     .catch((error) => {
@@ -77,6 +78,39 @@ getUserData(){
     });
 
     return this.UserData;
+  }
+
+
+ ///////////////////////////////////////////////////////change password//////////////////////////////////////////
+  async postchangePassword(password: string, userid: number): Promise<string>{
+
+    let values={
+      'id': userid,
+      'password': password
+    }
+
+    console.log(password, userid);
+
+    const requestLink = this.constant.backendBaseURL + 'api/backend/user/changepassword.php';
+
+    let message: string = '';
+  await this.http
+    .post<string>(requestLink, values)
+    .toPromise().then((data: string) => {
+      console.log(data['message']);
+      message = data['message'];
+      if(message == ''){
+      message = 'Passwort wurde erfolgreich geändert';
+      }else{
+        message = 'Passwort kann nicht geändert werden';
+      }
+    })
+    .catch((error) => {
+      this.handleErrorUserChange(error);
+
+    });
+
+   return message;
   }
 
   /////////////////////////////////////////////analize server Errors for login////////////////////////////////////

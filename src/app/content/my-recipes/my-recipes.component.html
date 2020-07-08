@@ -4,10 +4,7 @@
 <div class="container">
   <div class="border" *ngFor="let recipe of recipes, let i = index;">
     <div class="edit">
-      <button id="change" mat-mini-fab><mat-icon>edit</mat-icon></button>
-      </div>
-     <div class="delete">
-      <button id="delete" mat-mini-fab disabled><mat-icon>delete_outline</mat-icon></button>
+      <button id="change" mat-mini-fab routerLink="/change/{{recipe.getId()}}"><mat-icon>edit</mat-icon></button>
     </div>
     <a routerLink="/detail/{{recipe.getId()}}">
     <div class="recipe">

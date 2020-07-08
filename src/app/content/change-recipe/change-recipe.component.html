@@ -1,0 +1,132 @@
+<div class="workspace" *ngIf="recipe">
+  <button class="create" mat-raised-button (click)="changeRecipe()">Speichern</button>
+  <div class="workspace">
+    <div class="left">
+      <label for="title">Titel:</label><br />
+      <input
+        type="text"
+        maxlength="20"
+        [(ngModel)]="title"
+        value="{{ title }}"
+      /><br />
+      <div id="schwierigkeit">
+        <label> Schwierigkeit </label>
+        <select [(value)]="difficulty" appearance="fill">
+          <option
+            *ngFor="let difficulty of difficultyOptions"
+            [value]="difficulty"
+          >
+            {{ difficulty }}
+          </option>
+        </select>
+      </div>
+      <br />
+      <label for="kurzbeschreibung">kurze Beschreibung:</label><br />
+      <textarea
+        id="descrip"
+        maxlength="200"
+        rows="6"
+        [(ngModel)]="shortDescription"
+        value="{{ shortDescription }}"
+      ></textarea
+      ><br />
+      <label for="stichwort">Stichwort:</label><br />
+      <input
+        type="text"
+        matInput
+        [formControl]="drop"
+        [matAutocomplete]="auto"
+        placeholder="Schlüsselwort"
+        [(ngModel)]="keyword"/>
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let option of searchReqService.getKeywords()"
+          [value]="option.name">
+          {{ option.name }}
+        </mat-option>
+      </mat-autocomplete>
+      <button id="add" mat-mini-fab (click)="addKeyword()">+</button>
+      <div class="keywords">
+        <span *ngFor="let keyword of keywords; let i"
+          >{{ keyword }}
+          <button id="add" mat-mini-fab (click)="removeKeyword(i)">-
+          </button>
+          </span>
+      </div>
+      <div class="ingredients">
+        <label for="menge">Menge:</label>
+        <input type="select" [(ngModel)]="amount" placeholder="Menge" />
+        <div id="schwierigkeit">
+          <label> Einheiten: </label>
+          <select [(ngModel)]="unit" [(value)]="unit" appearance="fill">
+            <option *ngFor="let unit of units" [value]="unit">
+              {{ unit }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="zutat">Zutat:</label>
+          <input
+            type="text"
+            matInput
+            [formControl]="dro"
+            [matAutocomplete]="aut"
+            placeholder="Zutat"
+            [(ngModel)]="description"
+          />
+          <mat-autocomplete #aut="matAutocomplete">
+            <mat-option
+              *ngFor="let option of searchReqService.getIngredients()"
+              [value]="option.description"
+            >
+              {{ option.description }}
+            </mat-option>
+          </mat-autocomplete>
+          <button id="add" mat-mini-fab (click)="addIngredient()">+</button>
+        </div>
+        <div id="ingredientTable">
+          <span *ngFor="let value of ingredients; let i">
+            {{ value.description }} {{ value.amount }} {{ value.unit }}
+            <button id="add" mat-mini-fab (click)="removeIngredient(i)">
+              -
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="zutaten"></div>
+      <label for="zubereitung">Zubereitungsdauer in Minuten:</label><br />
+      <input
+        type="select"
+        name="dauer"
+        id="dauer"
+        [(ngModel)]="duration"
+        value="{{ duration }}"
+      />
+    </div>
+    <div class="mid">
+      <label for="portion">Portionsmenge:</label><br />
+      <input
+        type="select"
+        [(ngModel)]="servings"
+        value="{{ servings }}"
+      /><br />
+      <label for="schritte">Zubereitungsschritte:</label><br />
+      <textarea
+        id="instruction"
+        rows="10"
+        [(ngModel)]="instruction"
+        value="{{ instruction }}"
+      ></textarea>
+    </div>
+    <div class="right">
+      <img [src]="imageUrl" />
+      <input
+        type="file"
+        (change)="handleFileInput($event.target.files)"
+        #Image
+        accept="image/*"
+      />
+      <label for="picture">Bild:</label>
+    </div>
+  </div>
+</div>

@@ -7,8 +7,8 @@ import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMenuModule} from '@angular/material/menu';
 import { ConstantsService } from './common/globals/constants.service';
 
@@ -28,6 +28,12 @@ import { MyRecipesComponent } from './content/my-recipes/my-recipes.component';
 import { RecipeDetailsComponent } from './content/recipe-details/recipe-details.component';
 import { UserManagementComponent } from './content/user-management/user-management.component';
 import { CookbookComponent } from './content/cookbook/cookbook.component';
+import { MatSelectModule } from '@angular/material/select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChangeRecipeComponent } from './content/change-recipe/change-recipe.component';
+import { MyFavoritesComponent } from './content/my-favorites/my-favorites.component';
+import { NewcomerComponent } from './content/newcomer/newcomer.component';
+import { GiftComponent } from './content/gift/gift.component';
 
 @NgModule({
   declarations: [
@@ -46,12 +52,19 @@ import { CookbookComponent } from './content/cookbook/cookbook.component';
     MyRecipesComponent,
     RecipeDetailsComponent,
     UserManagementComponent,
+    ChangeRecipeComponent,
     CookbookComponent,
+    MyFavoritesComponent,
+    NewcomerComponent,
+    GiftComponent,
 
   ],
+
   imports: [
+    MatSelectModule,
     FormsModule,
     BrowserModule,
+    BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatButtonModule,
@@ -71,10 +84,11 @@ import { CookbookComponent } from './content/cookbook/cookbook.component';
       { path: 'detail/:id', component: RecipeDetailsComponent },
       { path: 'datenschutz', component: DatenschutzComponent },
       { path: 'cookbook', component: CookbookComponent },
+      { path: 'change/:id', component: ChangeRecipeComponent },
       { path: 'account', component: UserManagementComponent },
     ]),
   ],
   providers: [DatePipe, ConstantsService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

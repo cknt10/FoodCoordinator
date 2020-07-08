@@ -8,9 +8,11 @@ import { AuthenticationService } from '../../authentication.service';
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
+
 export class MenuComponent implements OnInit {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   user: User;
+  isShowDiv: boolean = true;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -29,4 +31,7 @@ export class MenuComponent implements OnInit {
     this.trigger.openMenu();
   }
 
+  toggle(){
+    this.isShowDiv = !this.isShowDiv;
+  }
 }

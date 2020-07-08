@@ -131,7 +131,7 @@ export class CreateRecipeComponent implements OnInit {
        this.description,
        this.duration,
        this.difficulty,
-      this.authenticationService.getUser().getId(),
+       this.authenticationService.getUser().getId(),
        this.keywords,
        this.ingredients))
      }else{

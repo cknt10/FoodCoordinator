@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../../authentication.service';
 import { RecipeAdministrationReqService } from '../../recipe-administration-req.service';
-import {PremiumReqService} from '../../premium-req.service'
+import { PremiumReqService } from '../../premium-req.service'
 import { Recipe } from 'src/app/recipe';
 
 @Component({
@@ -16,15 +16,16 @@ export class MyRecipesComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private recipeAdministrationService: RecipeAdministrationReqService,
-    private premiumReqService: PremiumReqService
+    private premiumReqService: PremiumReqService,
+    private router: Router,
   ) { }
 
-  async ngOnInit() {
-    //if (this.authenticationService.getUser() != null){
-      this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
-    /*}else{
-      this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.premiumReqService.getPremiumUser());
-    }*/
+  ngOnInit(): void {
+    this.getRecipes();
+  }
+
+  async getRecipes(){
+    this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
     console.log(this.recipes);
   }
 
@@ -32,6 +33,4 @@ export class MyRecipesComponent implements OnInit {
     console.log(this.recipeAdministrationService.getErrorMessage());
     //window.alert(this.error);
   }
-
-
 }

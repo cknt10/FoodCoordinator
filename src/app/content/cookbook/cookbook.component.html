@@ -1,1 +1,46 @@
-<p>cookbook works!</p>
+<div class="container">
+  <div id="erstellen" *ngIf="!cookbookFormat && !choose">
+    <span> Sie haben noch kein Kochbuch angelegt. Legen Sie ein Kochbuch an und fügen sie Rezepte hinzu </span>
+    <button mat-raised-button (click)="chooseFormat()" id="choseFormate"> Erstellen </button>
+  </div>
+  <div id="formate" *ngIf="choose">
+    <div id="formatName">
+      <mat-form-field appearance="fill">
+        <mat-label> Formate </mat-label>
+          <mat-select [(value)]="formatName">
+            <mat-option *ngFor="let format of formats" [value]="format.getFormat()">
+              {{ format.getFormat() }}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+      <p>Format: {{ formatName }} </p>
+    </div>
+    <div id="seitenzahl">
+      <mat-form-field appearance="fill">
+        <mat-label> Seitenzahl </mat-label>
+          <mat-select [(value)]="pages">
+            <mat-option *ngFor="let format of formats" [value]="format.getPages()">
+              {{ format.getPages() }}
+            </mat-option>
+          </mat-select>
+      </mat-form-field>
+      <p>Seitenzahl: {{ pages }} </p>
+    </div>
+    <div id="Titel">
+      <input type="text" placeholder="Kochbuch Titel" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Kochbuch Titel'" [(ngModel)]="title">
+    </div>
+    <button mat-raised-button (click)="createCookbookFormat()" id="createCookbook"> Erstellen </button>
+  </div>
+  <div id="cookbook" *ngIf="created && choose">
+    <div>
+      <span [(ngModel)]="title">{{ title }}</span>>
+    </div>
+    <div>
+      <span [(ngModel)]="formatName">{{ formatName }}</span>>
+    </div>
+    <div>
+      <span [(ngModel)]="pages">{{ pages }}</span>>
+    </div>
+    <span> Ihr Kochbuch ist nun angelegt, Sie können nun in der Rezeptesuche Ihre gewünschten Rezepte auswählen und hinzufügen. </span>
+  </div>
+</div>
