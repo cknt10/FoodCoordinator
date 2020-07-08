@@ -31,6 +31,9 @@ import { CookbookComponent } from './content/cookbook/cookbook.component';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ChangeRecipeComponent } from './content/change-recipe/change-recipe.component';
+import { MyFavoritesComponent } from './content/my-favorites/my-favorites.component';
+import { NewcomerComponent } from './content/newcomer/newcomer.component';
+import { GiftComponent } from './content/gift/gift.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +54,9 @@ import { ChangeRecipeComponent } from './content/change-recipe/change-recipe.com
     UserManagementComponent,
     ChangeRecipeComponent,
     CookbookComponent,
+    MyFavoritesComponent,
+    NewcomerComponent,
+    GiftComponent,
 
   ],
 

@@ -38,6 +38,14 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['content']);
   }
 
+  async logoutUser(){
+    console.log('start logout');
+    await this.authenticationService.readUserData(this.username, this.password).then((user: User) =>{
+      this.user = null;
+    });
+    this.router.navigate(['content']);
+  }
+
   goBack(){
     this.router.navigate(['content']);
   }
