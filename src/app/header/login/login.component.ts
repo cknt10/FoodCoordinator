@@ -14,6 +14,7 @@ export class LoginComponent implements OnInit {
   username: string;
   password: string;
   user: User;
+  logedIn: boolean;
 
   constructor(
     private router: Router,
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
       this.authenticationService.getUser();
     }
     this.router.navigate(['content']);
+    this.logedIn = true;
   }
 
   async logoutUser(){
@@ -44,6 +46,7 @@ export class LoginComponent implements OnInit {
       this.user = null;
     });
     this.router.navigate(['content']);
+    this.logedIn = false;
   }
 
   goBack(){
