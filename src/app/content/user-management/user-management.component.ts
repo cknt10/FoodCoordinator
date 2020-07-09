@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-import { AuthenticationService } from '../../authentication.service';
-import { UserManagementServiceReqService } from '../../user-management-service-req.service';
-
+import { AuthenticationService } from './../../authentication.service';
+import { UserManagementServiceReqService } from './../../user-management-service-req.service';
 import { User } from '../../User';
 import { Router } from '@angular/router';
 
@@ -46,28 +44,6 @@ export class UserManagementComponent implements OnInit {
     console.log(this.user);
   }
 
-  async safe(){
-   await this.userManagement.changeUserData(
-    this.user.getId(),
-    this.username,
-    this.firstname,
-    this.name,
-    this.gender,
-    this.street,
-    this.houseNumber,
-    this.postalCode,
-    this.city,
-    this.birthday,
-    this.email,
-    this.picture
-
-    );
-    
-   // await this.userManagement.postchangePassword( this.password, this.user.getId());
-    //@Frontend, wenn erfolreich dann set-Methode um die lokalen Werte des Users zu überschreiben
-
-  }
-
   setValue() {
     this.firstname = this.user.getFirstname();
     this.name = this.user.getName();
@@ -80,10 +56,32 @@ export class UserManagementComponent implements OnInit {
     this.username = this.user.getUsername();
     this.email = this.user.getEmail();
     this.picture = this.user.getPicture();
+    console.log(this.user);
+  }
 
-    //picture fehlt noch
+  async safe(){
+    if(this.password == this.passwordConfirm && this.email == this.emailConfirm){
+      await this.userManagement.changeUserData(
+        this.user.getId(),
+        this.username,
+        this.firstname,
+        this.name,
+        this.gender,
+        this.street,
+        this.houseNumber,
+        this.postalCode,
+        this.city,
+        this.birthday,
+        this.email,
+        this.picture
+        );
+      //await this.userManagement.postchangePassword( this.password, this.user.getId());
+      //@Frontend, wenn erfolreich dann set-Methode um die lokalen Werte des Users zu überschreiben
+      window.alert('Ihre Daten wurden erfolgreich geändert.');
+    }
+    else{
+      window.alert('Bitte alle Felder ausfüllen oder die Email / das Passwort überprüfen.');
+    }
   }
 
 }
-
-

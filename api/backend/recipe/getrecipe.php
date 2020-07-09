@@ -135,7 +135,7 @@ function fetchRecipe($_id, $_conn)
         $recipe->setPicture($picture);
         $recipe->setDescription($R_Descr);
         $recipe->setInstruction($instruction);
-        $recipe->setDuration($R_Descr);
+        $recipe->setDuration($Duration);
         $recipe->setCreationDate($creationDate);
         $recipe->setLastChange($LastChange);
         $recipe->setDifficulty($Difficulty);

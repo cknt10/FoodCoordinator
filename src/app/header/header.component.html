@@ -6,7 +6,7 @@
   <div class="right">
     <button id="vorteile" mat-raised-button routerLink="/benefits" *ngIf="!user">Jetzt Mitglied werden!</button>
     <button id="vorteile" mat-raised-button routerLink="/benefits" *ngIf="user">Werden Sie Premium-Mitglied!</button>
-    <button id="login" mat-raised-button routerLink="/login" *ngIf="!user"> Login </button>
-    <button id="login" mat-raised-button routerLink="/content" *ngIf="user"> Logout </button>
+    <button id="login" mat-raised-button routerLink="/login" *ngIf="!user && !logedIn"> Login </button>
+    <button id="login" mat-raised-button routerLink="/content" *ngIf="user && logedIn" (click)="logoutUser()"> Logout </button>
   </div>
 </div>

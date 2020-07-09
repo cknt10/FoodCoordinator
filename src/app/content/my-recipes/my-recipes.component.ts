@@ -20,12 +20,12 @@ export class MyRecipesComponent implements OnInit {
     private router: Router,
   ) { }
 
-  async ngOnInit() {
-    //if (this.authenticationService.getUser() != null){
-      this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
-    /*}else{
-      this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.premiumReqService.getPremiumUser());
-    }*/
+  ngOnInit(): void {
+    this.getRecipes();
+  }
+
+  async getRecipes(){
+    this.recipes = await this.recipeAdministrationService.getServerUserRecipe(this.authenticationService.getUser());
     console.log(this.recipes);
   }
 
@@ -33,6 +33,4 @@ export class MyRecipesComponent implements OnInit {
     console.log(this.recipeAdministrationService.getErrorMessage());
     //window.alert(this.error);
   }
-
-
 }

@@ -24,7 +24,7 @@ $userData = json_decode($postdata);
 $result = array();
 $result["message"] = "";
 $result["user"] = array();
-
+$error = false;
 
 //DUMMY data
 
@@ -53,9 +53,13 @@ if(!$user->checkLocation($zip, $city)){
     $cityId = $user->getCityId();
 }
 
+if($mail === "" || $userId === "" || $username === ""){
+    $error = true;
+}
 
 
-if($mail != "" || $userId != "" || $username != "" || $firstName != ""){
+
+if(!$error){
     $result["user"] = $user->changeUser($userId, $mail, $username, $firstName, $name, $gender, $street, $birthday, $cityId, $userImg);
     sleep(2);
     if($result["user"] === "200"){
