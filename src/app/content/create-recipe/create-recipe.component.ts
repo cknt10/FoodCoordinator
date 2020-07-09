@@ -29,7 +29,7 @@ export class CreateRecipeComponent implements OnInit {
   options: string[] = [];
 
   fileToUpload: File = null;
-  imageUrl: string = "/assets/ich.jpg";
+  imageUrl: string = "/assets/f_template.png";
 
   serverIngredients: SearchParameter[] = [];
   serverKeywords: SearchParameter[] = [];
@@ -139,7 +139,7 @@ export class CreateRecipeComponent implements OnInit {
      }
 
     this.picture = null;
-    this.imageUrl = "/assets/ich.jpg";
+    this.imageUrl = "/assets/f_template.png";
   }
 
   throwError() {
