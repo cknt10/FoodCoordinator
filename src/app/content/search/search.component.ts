@@ -2,8 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { SearchReqService } from '../../search-req.service';
 import { Recipe } from 'src/app/recipe';
-
-import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 import { RecipeAdministrationService } from 'src/app/recipe-administration.service';
 
 import { Ratings } from 'src/app/ratings';

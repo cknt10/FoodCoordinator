@@ -4,7 +4,6 @@ import { RecipeAdministrationReqService } from 'src/app/recipe-administration-re
 import { SearchReqService } from 'src/app/search-req.service';
 import { AuthenticationService } from 'src/app/authentication.service';
 import { SearchParameter } from 'src/app/searchParameter';
-import { Recipe } from 'src/app/recipe';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
