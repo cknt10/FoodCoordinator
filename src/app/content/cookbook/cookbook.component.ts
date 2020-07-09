@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Cookbook } from 'src/app/cookbook';
-import { FormControl } from '@angular/forms';
 import { CookbookReqService } from 'src/app/cookbook-req.service';
 import { CookbookFormat } from 'src/app/cookbookFormat';
 

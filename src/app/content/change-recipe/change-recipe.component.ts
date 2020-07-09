@@ -7,7 +7,6 @@ import { AuthenticationService } from 'src/app/authentication.service';
 import { RecipeAdministrationReqService } from 'src/app/recipe-administration-req.service';
 import { SearchReqService } from 'src/app/search-req.service';
 import { FormControl, Validators } from '@angular/forms';
-import { SearchParameter } from 'src/app/searchParameter';
 
 @Component({
   selector: 'app-change-recipe',

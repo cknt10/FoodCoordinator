@@ -14,16 +14,16 @@
             {{ ingredient.description }}
           </p>
         </div>
-        
+
       </div>
       <div *ngFor="let ingredient of ingredients">
         <div *ngFor="let nutrient of ingredient.nutrients">
               <p>
-                {{ nutrient.amount }} {{ nutrient.unit }} {{ nutrient.description }} 
+                {{ nutrient.amount }} {{ nutrient.unit }} {{ nutrient.description }}
               </p>
         </div>
       </div>
-      
+
       <div id="duration">
         <p>{{ recipe.getDuration() }}</p>
       </div>
@@ -38,7 +38,7 @@
     </div>
   </div>
   <div class="right">
-    <div id="image">Bild:<img src="" /></div>
+    <div id="image">Bild:<img src="" alt="Rezeptbild"/></div>
     <div class="result-rating">
       <p>Note: {{ recipe.getRating() }}</p>
       <div *ngFor="let rating of ratings">

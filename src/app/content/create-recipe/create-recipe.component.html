@@ -45,9 +45,9 @@
     <input type="text" [(ngModel)]="description" />
   </div>
   <div class="right">
-    <img [src] = "imageUrl">
-    <input type="file" (change)="handleFileInput($event.target.files)" #Image accept="image/*"/>
     <label for="picture">Bild:</label>
+    <img [src] = "imageUrl" alt="Rezeptbild">
+    <input type="file" (change)="handleFileInput($event.target.files)" #Image accept="image/*"/>
   </div>
 </div>
 
