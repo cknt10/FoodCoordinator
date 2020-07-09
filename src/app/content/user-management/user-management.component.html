@@ -35,9 +35,10 @@
     <input type="password" [(ngModel)]="password" ><br>
     <label>Passwort bestätigen:</label>
     <input type="password" [(ngModel)]="passwordConfirm"><br>
-    <label>Profilbild:</label>
-    <input type="file"><br>
-    <img [src]= "picture"><br>
+    <button id="pSafe" mat-raised-button (click)="safePassword()">Ändern</button>
+    <label for="picture">Profilbild:</label>
+    <img [src] = "imageUrl">
+    <input type="file" (change)="handleFileInput($event.target.files)" #Image accept="image/*"/>
   </div>
   <button id="safe" mat-raised-button (click)="safe()">Speichern</button>
 </div>

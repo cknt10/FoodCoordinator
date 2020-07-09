@@ -27,6 +27,10 @@ export class UserManagementComponent implements OnInit {
   passwordConfirm: String;//Kontrolle der beiden n icht vergessen :)
   picture: String;
 
+  fileToUpload: File = null;
+  imageUrl: String = "";
+
+
   constructor(
     private router: Router,
     private authenticationService: AuthenticationService,
@@ -44,6 +48,25 @@ export class UserManagementComponent implements OnInit {
     console.log(this.user);
   }
 
+  handleFileInput(file: FileList){
+    this.fileToUpload= file.item(0);
+
+    //Show image preview
+    var reader= new FileReader();
+    reader.readAsDataURL(this.fileToUpload);
+    let text = reader;
+    reader.onload = (event:any) =>{
+      console.log(text.result)
+      this.imageUrl = <string>text.result;
+      this.picture = <string>text.result;
+    };
+  }
+
+  safePassword(){
+
+  }
+
+
   setValue() {
     this.firstname = this.user.getFirstname();
     this.name = this.user.getName();
@@ -55,12 +78,13 @@ export class UserManagementComponent implements OnInit {
     this.birthday = this.user.getBirthday();
     this.username = this.user.getUsername();
     this.email = this.user.getEmail();
-    this.picture = this.user.getPicture();
+    this.imageUrl = this.user.getPicture();
     console.log(this.user);
   }
 
   async safe(){
     if(this.password == this.passwordConfirm && this.email == this.emailConfirm){
+      console.log(this.picture);
       await this.userManagement.changeUserData(
         this.user.getId(),
         this.username,
