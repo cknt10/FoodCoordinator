@@ -22,11 +22,11 @@
     <a routerLink="/detail/{{recipe.getId()}}">
   <div class="cookbook">cookbook
     <!-- img-tag for logo (?)-->
-    <img src="">
+    <img src="" alt="Logo">
     <button id="addCb">+</button>
   </div>
   <div class="image">Bild
-      <img src="">
+      <img src="" alt="Rezeptbild">
   </div>
   <div class="title">
    <p>{{ recipe.getTitle() }} </p>
@@ -44,8 +44,6 @@
  </div>
 </div>
   <div class="certified" *ngIf="recipe.getCertified()">
-    <!-- img-tag for logo (?)-->
-      <img src="">
      <p>Zertifiziert</p>
   </div>
 </a>

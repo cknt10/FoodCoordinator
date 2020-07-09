@@ -46,7 +46,7 @@
   </div>
   <div class="right">
     <label for="picture">Bild:</label>
-    <img [src] = "imageUrl">
+    <img [src] = "imageUrl" alt="Rezeptbild">
     <input type="file" (change)="handleFileInput($event.target.files)" #Image accept="image/*"/>
   </div>
 </div>

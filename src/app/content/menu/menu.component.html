@@ -1,5 +1,5 @@
 <div class="container" *ngIf="user">
-  <button class="menu" (click)="toggle()"><img [src]= "user.getPicture()" ></button>
+  <button class="menu" (click)="toggle()"><img [src]= "user.getPicture()" alt="Benutzerfoto"></button>
   <div class="menuuu" [hidden]="isShowDiv">
     <p>{{this.user.getFirstname()}}</p>
     <button class="nav" routerLink="/account">Konto verwalten</button>
