@@ -36,6 +36,36 @@ export class AuthenticationService {
     this.UserData=newUser;
     return this.UserData;
   }
+
+  changeUserdata(
+    username: String, 
+    firstname: String, 
+    name: String,
+    gender: String,
+    street: String,
+    houseNumber: String,
+    postalCode: number,
+    city: String,
+    birthday: Date,
+    email: String,
+    picture: String
+    ): User{
+
+    this.UserData.setUsername(username);
+    this.UserData.setFirstname(firstname);
+    this.UserData.setName(name);
+    this.UserData.setGender(gender);
+    this.UserData.setStreet(street);
+    this.UserData.setHouseNumber(houseNumber);
+    this.UserData.setPostalCode(postalCode);
+    this.UserData.setCity(city);
+    this.UserData.setBirthday(birthday);
+    this.UserData.setEmail(email);
+    this.UserData.setPicture(picture);
+    console.log(this.UserData);
+    return this.UserData;
+  }
+
   //////////////////////////////////////////////////display error message for the user/////////////////////////////////////////////////////////
   getErrorMessage() {
     return this.errorValue;
