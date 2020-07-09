@@ -47,10 +47,9 @@ export class UserManagementComponent implements OnInit {
   }
 
   async safe(){
-   /*await this.userManagement.changeUserData(
+   await this.userManagement.changeUserData(
     this.user.getId(),
     this.username,
-    this.password,
     this.firstname,
     this.name,
     this.gender,
@@ -62,9 +61,9 @@ export class UserManagementComponent implements OnInit {
     this.email,
     this.picture
 
-    )*/
+    );
     
-    await this.userManagement.postchangePassword( this.password, this.user.getId());
+   // await this.userManagement.postchangePassword( this.password, this.user.getId());
     //@Frontend, wenn erfolreich dann set-Methode um die lokalen Werte des Users zu überschreiben
 
   }
