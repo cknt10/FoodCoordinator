@@ -88,7 +88,7 @@ export class UserManagementComponent implements OnInit {
       this.password == this.passwordConfirm &&
       this.email == this.emailConfirm
     ) {
-      console.log(this.user);
+      //console.log(this.user);
       await this.userManagement.changeUserData(
         this.user.getId(),
         this.username,
