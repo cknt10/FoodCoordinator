@@ -31,7 +31,6 @@ getUserData(){
   async changeUserData(
     id: number,
     username: String,
-    password: String,
     firstname: String,
     name: String,
     gender: String,
@@ -57,7 +56,6 @@ getUserData(){
       'birthday': birthday,
       'username': username,
       'email': email,
-      'password': password,
       'picture': picture
 
     }

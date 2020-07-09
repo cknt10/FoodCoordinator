@@ -9,7 +9,7 @@ export class User{
   private birthday: Date;
   private gender: String;
   private street: String;
-  private houseNumber: string;
+  private houseNumber: String;
   private postalCode: number;
   private city: String;
   private isPremium: boolean;
@@ -72,7 +72,7 @@ export class User{
   getPicture(): String {
     return this.picture;
   }
-  getHouseNumber(): string {
+  getHouseNumber(): String {
     return this.houseNumber;
   }
 
@@ -80,7 +80,56 @@ export class User{
     this.id = id;
   }
 
-  setStreet(street: string){
+  setPremiumUser(){ 
+  }
+
+  setUsername(username: String): String {
+    this.username = username;
+    return this.username;
+  }
+  setEmail(email: String): String {
+    this.email = email;
+    return this.email;
+  }
+  setFirstname(firstname: String): String {
+    this.firstname = firstname;
+    return this.firstname;
+  }
+  setName(name: String): String {
+    this.name = name;
+    return this.name;
+  }
+  setBirthday(birthday: Date): Date {
+    this.birthday = birthday;
+    return this.birthday;
+  }
+  setGender(gender: String): String {
+    this.gender = gender;
+    return this.gender;
+  }
+ 
+  setPostalCode(postalCode: number): number {
+    this.postalCode = postalCode;
+    return this.postalCode;
+  }
+  setCity(city: String): String {
+    this.city = city;
+    return this.city;
+  }
+  setIsPremium(isPremium: boolean): boolean {
+    this.isPremium = isPremium;
+    return this.isPremium;
+  }
+  setPicture(picture: String): String {
+    this.picture = picture;
+    return this.picture;
+  }
+  setHouseNumber(street: String): String {
+    this.street = street;
+    return this.houseNumber;
+  }
+
+  setStreet(street: String){
     this.street = street;
   }
 
