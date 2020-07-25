@@ -25,7 +25,7 @@
       </div>
 
       <div id="duration">
-        <p>{{ recipe.getDuration() }}</p>
+        <p>{{ recipe.getDuration() }} Minuten</p>
       </div>
     </div>
   </div>
@@ -38,7 +38,7 @@
     </div>
   </div>
   <div class="right">
-    <div id="image">Bild:<img src="" alt="Rezeptbild"/></div>
+    <div id="image"><img class="picture" [src]= "this.picture" alt="Rezeptbild"/></div>
     <div class="result-rating">
       <p>Note: {{ recipe.getRating() }}</p>
       <div *ngFor="let rating of ratings">
