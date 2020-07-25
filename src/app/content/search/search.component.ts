@@ -6,6 +6,9 @@ import { RecipeAdministrationService } from 'src/app/recipe-administration.servi
 
 import { Ratings } from 'src/app/ratings';
 
+
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
@@ -20,10 +23,12 @@ export class SearchComponent implements OnInit {
   drop = new FormControl();
   ratings: Ratings[] = [];
   countRating: number;
+  pictures: SafeUrl[]=[];
 
   constructor(
     private searchReqService: SearchReqService,
-    private recipeAdministrationService: RecipeAdministrationService
+    private recipeAdministrationService: RecipeAdministrationService,
+    private sanitizer: DomSanitizer
     ) {}
 
   ////////////////////////get Keywords from Server as proposition///////////////////////////////////////////
@@ -58,10 +63,8 @@ export class SearchComponent implements OnInit {
     );
     this.recipes = this.searchReqService.getUserResults();
     this.recipeAdministrationService.setRecipes(this.recipes);
-    //this.throwError();
-    //show rating
+
     this.setRatings();
-    //console.log( this.recipes[0].getRatings()[2]);
   }
 
   setRatings() {
@@ -126,12 +129,10 @@ export class SearchComponent implements OnInit {
   throwError() {
     window.alert(this.searchReqService.getErrorMessage());
   }
+  ////////////////////////safe image for base64///////////////////////////////////////////
+  conpic(picture: string){
 
-  /*setCountRating(rating: Ratings[]){
-    this.countRating = rating.length;
-  }
+    return this.sanitizer.bypassSecurityTrustUrl(picture);
+}
 
-  getCountRating(): number{
-    return this.countRating;
-  }*/
 }

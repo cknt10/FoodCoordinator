@@ -22,11 +22,11 @@
     <a routerLink="/detail/{{recipe.getId()}}">
   <div class="cookbook">cookbook
     <!-- img-tag for logo (?)-->
-    <img src="" alt="Logo">
+    <img src= "../../../assets/logo.png" alt="Logo">
     <button id="addCb">+</button>
   </div>
-  <div class="image">Bild
-      <img src="" alt="Rezeptbild">
+  <div class="image">
+    <img class="picture" [src]= "this.conpic(recipe.getPicture())" alt="Rezeptbild"/>
   </div>
   <div class="title">
    <p>{{ recipe.getTitle() }} </p>
