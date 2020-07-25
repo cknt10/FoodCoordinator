@@ -9,6 +9,8 @@ import { Ingredient } from 'src/app/ingredient';
 import { Ratings } from 'src/app/ratings';
 import { Nutrient } from 'src/app/nutrient';
 
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-recipe-details',
   templateUrl: './recipe-details.component.html',
@@ -20,22 +22,34 @@ export class RecipeDetailsComponent implements OnInit {
   nutrients: Nutrient[] = [];
   ratings: Ratings[] = [];
 
+  picture: SafeUrl;
+
   constructor(
     private route: ActivatedRoute,
     private recipeAdministrationReqService: RecipeAdministrationReqService,
-    private user: AuthenticationService
+    private user: AuthenticationService,
+    private sanitizer: DomSanitizer
   ) {}
 
   async ngOnInit() {
+
     await this.getRecipe();
 
     this.getNutrients();
+    this.picture=this.conpic();
 
 console.log(this.nutrients);
 
     console.log(this.countAmount());
+    console.log(this.recipe.getDescription());
 
   }
+
+conpic(){
+  return this.sanitizer.bypassSecurityTrustUrl(this.recipe.getPicture());
+}
+
+
 
   async getRecipe(): Promise<Recipe> {
     const id = +this.route.snapshot.paramMap.get('id');
